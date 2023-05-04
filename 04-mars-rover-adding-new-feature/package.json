@@ -1,7 +1,7 @@
 {
-  "name": "ts-gilded-rose",
+  "name": "ts-mars-rover-adding-new-feature",
   "version": "0.0.1",
-  "description": "TypeScript Skeleton to play",
+  "description": "ts-mars-rover-adding-new-feature",
   "main": "build/index.js",
   "keywords": [],
   "devDependencies": {
