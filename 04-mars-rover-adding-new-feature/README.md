@@ -1,7 +1,5 @@
-Smelly Mars Rover code refactoring
-=============================================
+# Mars Rover: adding a feature to existing code
 
-Smelly Mars Rover code to practice refactoring.
+We'll practice adding a new feature to an existing code base.
 
-We'll use it to learn to recognize some code smells
-and to fix them applying some useful refactorings.
+We'll have to refactor a bit first to make the change easy.
