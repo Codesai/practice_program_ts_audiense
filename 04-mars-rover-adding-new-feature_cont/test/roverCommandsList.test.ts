@@ -1,13 +1,20 @@
 import {Rover} from '../src/Rover';
 
 describe('Rover Commands List', () => {
-
   it('no commands', () => {
     const rover = new Rover(0, 0, "N");
 
     rover.receive("");
 
     expect(new Rover(0, 0, "N")).toEqual(rover);
+  });
+
+  it('ignores unknown commands', () => {
+    const rover = new Rover(1, 2, "S");
+
+    rover.receive("*");
+
+    expect(new Rover(1, 2, "S")).toEqual(rover);
   });
 
   it('two commands', () => {

@@ -1,38 +1,20 @@
-import {Direction} from "./Direction";
-import {Coordinates} from "./Coordinates";
+import {Vector} from "./Vector";
+import {NasaCommunicationProtocol} from "./NasaCommunicationProtocol";
 
 export class Rover {
-    private direction: Direction;
-    private coordinates: Coordinates;
     private readonly DISPLACEMENT: number = 1;
+    private readonly communicationProtocol: NasaCommunicationProtocol;
+    private vector: Vector;
 
     constructor(x: number, y: number, direction: string) {
-        this.coordinates = new Coordinates(x, y);
-        this.direction = Direction.create(direction);
+        this.vector = Vector.create(x, y, direction);
+        this.communicationProtocol = new NasaCommunicationProtocol();
     }
 
-    receive(commandsSequence: string): void {
-        const commands = this.extractCommands(commandsSequence);
-        commands.forEach(command => this.executeCommand(command));
-    }
-    private extractCommands(commandsSequence: string): Array<string> {
-        const commands: Array<string> = [];
-        for (let i = 0; i < commandsSequence.length; ++i) {
-            const command = commandsSequence.substring(i, i + 1);
-            commands.push(command);
-        }
-        return commands;
-    }
-
-    private executeCommand(command: string): void {
-        if (command === "l") {
-            this.direction = this.direction.rotateLeft();
-        } else if (command === "r") {
-            this.direction = this.direction.rotateRight();
-        } else if (command === "f") {
-            this.coordinates = this.direction.move(this.coordinates, this.DISPLACEMENT);
-        } else {
-            this.coordinates = this.direction.move(this.coordinates, -this.DISPLACEMENT);
-        }
+    receive(message: string): void {
+        const commands = this.communicationProtocol.interpret(message);
+        commands.forEach((command) => {
+            this.vector = command.execute(this.vector, this.DISPLACEMENT);
+        })
     }
 }

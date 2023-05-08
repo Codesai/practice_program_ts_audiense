@@ -1,6 +1,52 @@
-import {Coordinates} from "./Coordinates";
+export class Vector {
+    private readonly coordinates: Coordinates;
+    private readonly direction: Direction;
 
-export abstract class Direction {
+    static create(x: number, y: number, direction: string): Vector {
+        return new Vector(new Coordinates(x, y), Direction.create(direction));
+    }
+
+    private constructor(coordinates: Coordinates, direction: Direction) {
+        this.coordinates = coordinates;
+        this.direction = direction;
+    }
+
+    rotateRight(): Vector {
+        return new Vector(this.coordinates, this.direction.rotateRight());
+    }
+
+    rotateLeft(): Vector {
+        return new Vector(this.coordinates, this.direction.rotateLeft());
+    }
+
+    moveForward(displacement: number): Vector {
+        return new Vector(this.direction.move(this.coordinates, displacement), this.direction);
+    }
+
+    moveBackwards(displacement: number): Vector {
+        return new Vector(this.direction.move(this.coordinates, -displacement), this.direction);
+    }
+}
+
+class Coordinates {
+    private readonly x: number;
+    private readonly y: number;
+
+    constructor(x: number, y: number) {
+        this.x = x;
+        this.y = y;
+    }
+
+    moveAlongYAxis(displacement: number): Coordinates {
+        return new Coordinates(this.x, this.y + displacement);
+    }
+
+    moveAlongXAxis(displacement: number): Coordinates {
+        return new Coordinates(this.x + displacement, this.y);
+    }
+}
+
+abstract class Direction {
     private direction: string;
     protected static NORTH_ENCODING: string = "N";
     protected static SOUTH_ENCODING: string = "S";
