@@ -1,7 +1,7 @@
 {
   "name": "ts-gilded-rose",
   "version": "0.0.1",
-  "description": "TypeScript Skeleton to play",
+  "description": "Gilded Rose refactoring kata",
   "main": "build/index.js",
   "keywords": [],
   "devDependencies": {
