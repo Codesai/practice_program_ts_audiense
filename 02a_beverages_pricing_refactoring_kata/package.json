@@ -1,7 +1,7 @@
 {
-  "name": "ts-gilded-rose",
+  "name": "beverages-pricing-refactoring",
   "version": "0.0.1",
-  "description": "TypeScript Skeleton to play",
+  "description": "Beverages pricing refactoring kata",
   "main": "build/index.js",
   "keywords": [],
   "devDependencies": {
