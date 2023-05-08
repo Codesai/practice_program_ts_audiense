@@ -1,7 +1,7 @@
 {
-  "name": "ts-video-store-2",
+  "name": "video-store-refactoring-2",
   "version": "0.0.1",
-  "description": "TypeScript Skeleton to play",
+  "description": "2nd part of Video Store refactoring kata",
   "main": "build/index.js",
   "keywords": [],
   "devDependencies": {

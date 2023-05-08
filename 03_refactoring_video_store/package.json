@@ -1,7 +1,7 @@
 {
   "name": "video-store-refactoring",
   "version": "0.0.1",
-  "description": "TypeScript Skeleton to play",
+  "description": "Video Store refactoring kata",
   "main": "build/index.js",
   "keywords": [],
   "devDependencies": {
