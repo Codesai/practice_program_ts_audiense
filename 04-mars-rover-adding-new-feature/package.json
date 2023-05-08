@@ -1,7 +1,7 @@
 {
-  "name": "ts-mars-rover-adding-new-feature",
+  "name": "mars-rover-adding-new-feature",
   "version": "0.0.1",
-  "description": "ts-mars-rover-adding-new-feature",
+  "description": "adding new feature to mars rover kata",
   "main": "build/index.js",
   "keywords": [],
   "devDependencies": {
