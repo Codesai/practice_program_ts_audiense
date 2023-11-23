@@ -1,33 +1,42 @@
 import {Notifier} from "./notifier";
-import {Player} from "./player";
+import {Players} from "./players";
+import {Category} from "./category";
 
 const POP_CATEGORY = 'Pop';
 const SCIENCE_CATEGORY = 'Science';
 const SPORTS_CATEGORY = 'Sports';
 const ROCK_CATEGORY = 'Rock';
 
+class Position {
+    constructor(private category: Category) {}
+
+    askQuestion() {
+        this.category.askQuestion()
+    }
+}
+
 export class Game {
-
     private notifier: Notifier;
-
-    private players: Array<Player> = []
-    private currentPlayer: number = 0;
+    private players: Players;
     private isGettingOutOfPenaltyBox: boolean = false;
-    private popQuestions: Array<string> = [];
-    private scienceQuestions: Array<string> = [];
-    private sportsQuestions: Array<string> = [];
-    private rockQuestions: Array<string> = [];
+    private categories: Record<string, Category>;
     private readonly boardSize = 12;
+    private positions: Position[]
 
     constructor(notifier: Notifier) {
+        this.categories = {
+            [POP_CATEGORY]: new Category(POP_CATEGORY, notifier),
+            [SCIENCE_CATEGORY]: new Category(SCIENCE_CATEGORY, notifier),
+            [SPORTS_CATEGORY]: new Category(SPORTS_CATEGORY, notifier),
+            [ROCK_CATEGORY]: new Category(ROCK_CATEGORY, notifier),
+        }
         this.notifier = notifier;
-
-        for (let i = 0; i < 50; i++) {
-            this.popQuestions.push("Pop Question " + i);
-            this.scienceQuestions.push("Science Question " + i);
-            this.sportsQuestions.push("Sports Question " + i);
-            this.rockQuestions.push(this.createRockQuestion(i));
-          }
+        this.positions = []
+        this.players = new Players(notifier);
+        for (let i = 0; i < this.boardSize; i++) {
+            const currentCategory = this.currentCategory2(i)
+            this.positions.push(new Position( this.categories[currentCategory]))
+        }
     }
 
     public run(): void {
@@ -45,10 +54,7 @@ export class Game {
     }
 
     public add(name: string): boolean {
-        this.players.push(new Player(name));
-
-        this.notifier.notify(name + " was added");
-        this.notifier.notify("They are player number " + this.getNumberOfPlayers());
+        this.players.add(name);
 
         return true;
     }
@@ -61,10 +67,6 @@ export class Game {
         return Math.floor(Math.random() * 6) + 1
     }
 
-    private createRockQuestion(index: number): string {
-        return "Rock Question " + index;
-    }
-
     private roll(roll: number) {
         this.notifier.notify(this.getCurrentPlayerName() + " is the current player");
         this.notifier.notify("They have rolled a " + roll);
@@ -73,7 +75,7 @@ export class Game {
             if (this.isOdd(roll)) {
                 this.isGettingOutOfPenaltyBox = true;
                 this.notifier.notify(this.getCurrentPlayerName() + " is getting out of the penalty box");
-                this.moveForward(roll);
+                this.moveForward(roll, this.boardSize);
                 this.notifier.notify("The category is " + this.currentCategory());
                 this.askQuestion();
             } else {
@@ -81,7 +83,7 @@ export class Game {
                 this.isGettingOutOfPenaltyBox = false;
             }
         } else {
-            this.moveForward(roll)
+            this.moveForward(roll, this.boardSize);
             this.notifier.notify("The category is " + this.currentCategory());
             this.askQuestion();
         }
@@ -92,28 +94,29 @@ export class Game {
     }
 
     private getCurrentPlayerName(): string {
-        return this.getCurrentPlayer().name;
+        return this.players.currentPlayer().name;
     }
-
-    private getCurrentPlayer(): Player {
-        return this.players[this.currentPlayer];
-    }
-
-    private moveForward(roll: number) {
-        this.getCurrentPlayer().moveForward(roll, this.boardSize);
-        this.notifier.notify(this.getCurrentPlayerName() + "'s new location is " + this.getCurrentPlayerPosition());
-    }
-
     private getCurrentPlayerPosition() {
-        return this.getCurrentPlayer().position;
+        return this.players.currentPlayer().position;
     }
 
     private askQuestion(): void {
         const currentCategory = this.currentCategory();
-        if (currentCategory == POP_CATEGORY) this.notifier.notify(this.popQuestions.shift());
-        if (currentCategory == SCIENCE_CATEGORY) this.notifier.notify(this.scienceQuestions.shift());
-        if (currentCategory == SPORTS_CATEGORY) this.notifier.notify(this.sportsQuestions.shift());
-        if (currentCategory == ROCK_CATEGORY) this.notifier.notify(this.rockQuestions.shift());
+        this.categories[currentCategory].askQuestion()
+    }
+
+    private askQuestion2(): void {
+        const currentPosition = this.positions[this.getCurrentPlayerPosition()];
+        currentPosition.askQuestion()
+    }
+
+    moveForward(roll: number, boardSize: number) {
+        let newPosition = this.getCurrentPlayerPosition() + roll;
+        if (newPosition >= boardSize) {
+            newPosition = newPosition - boardSize;
+        }
+
+        this.players.currentPlayer().moveForward(newPosition);
     }
 
     private currentCategory(): string {
@@ -130,28 +133,35 @@ export class Game {
         return ROCK_CATEGORY;
     }
 
+    private currentCategory2(positionNumber: number): string {
+        if (positionNumber == 0) return POP_CATEGORY;
+        if (positionNumber == 4) return POP_CATEGORY;
+        if (positionNumber == 8) return POP_CATEGORY;
+        if (positionNumber == 1) return SCIENCE_CATEGORY;
+        if (positionNumber == 5) return SCIENCE_CATEGORY;
+        if (positionNumber == 9) return SCIENCE_CATEGORY;
+        if (positionNumber == 2) return SPORTS_CATEGORY;
+        if (positionNumber == 6) return SPORTS_CATEGORY;
+        if (positionNumber == 10) return SPORTS_CATEGORY;
+        return ROCK_CATEGORY;
+    }
+
     private wrongAnswer(): boolean {
         this.notifier.notify('Question was incorrectly answered');
-        this.sendCurrentPlayerIntoPenaltyBox();
+        this.players.currentPlayer().putInPenaltyBox();
         this.nextPlayerTurn();
         return true;
     }
-
-    private sendCurrentPlayerIntoPenaltyBox() {
-        this.notifier.notify(this.getCurrentPlayerName() + " was sent to the penalty box");
-        this.getCurrentPlayer().putInPenaltyBox();
-    }
-
     private wasCorrectlyAnswered(): boolean {
         let isNotWinner = true;
         if (this.isCurrentPlayerInPenaltyBox() && this.isGettingOutOfPenaltyBox) {
             this.notifier.notify('Answer was correct!!!!');
-            this.currentPlayerEarnsGoldCoin();
+            this.players.currentPlayer().earnGoldCoin();
             isNotWinner = this.currentPlayerDidNotWin();
         }
         if (!this.isCurrentPlayerInPenaltyBox()) {
             this.notifier.notify("Answer was correct!!!!");
-            this.currentPlayerEarnsGoldCoin();
+            this.players.currentPlayer().earnGoldCoin();
             isNotWinner = this.currentPlayerDidNotWin();
         }
         this.nextPlayerTurn()
@@ -159,24 +169,14 @@ export class Game {
     }
 
     private currentPlayerDidNotWin() {
-        return !(this.getCurrentPlayer().didWin());
+        return !(this.players.currentPlayer().didWin());
     }
 
     private nextPlayerTurn() {
-        this.currentPlayer += 1;
-        if (this.currentPlayer == this.getNumberOfPlayers()) this.currentPlayer = 0;
-    }
-
-    private getNumberOfPlayers() {
-        return this.players.length;
-    }
-
-    private currentPlayerEarnsGoldCoin() {
-        this.getCurrentPlayer().earnGoldCoin();
-        this.notifier.notify(this.getCurrentPlayerName() + " now has " + this.getCurrentPlayer().goldCoins + " Gold Coins.");
+        this.players.nextPlayerTurn();
     }
 
     private isCurrentPlayerInPenaltyBox() {
-        return this.getCurrentPlayer().inPenaltyBox;
+        return this.players.currentPlayer().inPenaltyBox;
     }
 }
