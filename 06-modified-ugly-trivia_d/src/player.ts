@@ -1,47 +1,54 @@
-import {Notifier} from "./notifier";
+import { Position } from './Position';
+import { Board } from './board';
+import { Notifier } from './notifier';
 
 export class Player {
-    readonly name: string;
-    private _position: number;
-    private _inPenaltyBox: boolean;
-    private _goldCoins: number;
+  readonly name: string;
+  private _position: Position;
+  private _inPenaltyBox: boolean;
+  private _goldCoins: number;
 
-    constructor(name: string, private readonly notifier: Notifier) {
-        this.name = name;
-        this._position = 0;
-        this._goldCoins = 0;
-        this._inPenaltyBox = false;
-    }
+  constructor(name: string, private readonly notifier: Notifier, position: Position) {
+    this.name = name;
+    this._goldCoins = 0;
+    this._inPenaltyBox = false;
+    this._position = position;
+  }
 
-    get goldCoins(): number {
-        return this._goldCoins;
-    }
+  get inPenaltyBox(): boolean {
+    return this._inPenaltyBox;
+  }
 
-    get position(): number {
-        return this._position;
-    }
+  earnGoldCoin() {
+    this._goldCoins += 1;
+    this.notifier.notify(this.name + ' now has ' + this._goldCoins + ' Gold Coins.');
+  }
 
-    get inPenaltyBox(): boolean {
-        return this._inPenaltyBox;
-    }
+  putInPenaltyBox() {
+    this._inPenaltyBox = true;
+    this.notifier.notify(this.name + ' was sent to the penalty box');
+  }
 
-    moveForward(position: number) {
-        this._position = position;
+  didWin(): boolean {
+    return this._goldCoins === 6;
+  }
 
-        this.notifier.notify(this.name + "'s new location is " + this.position);
-    }
+  moveAndAskQuestion(board: Board, roll: number) {
+    const newPosition = this.nextPosition(board, roll);
+    this.moveForwardTo(newPosition);
+    this.askQuestion();
+  }
 
-    earnGoldCoin() {
-        this._goldCoins += 1;
-        this.notifier.notify(this.name + " now has " + this.goldCoins + " Gold Coins.");
-    }
+  private askQuestion() {
+    this._position.askQuestion();
+  }
 
-    putInPenaltyBox() {
-        this._inPenaltyBox = true;
-        this.notifier.notify(this.name + " was sent to the penalty box");
-    }
+  private nextPosition(board: Board, roll: number) {
+    return board.moveForward(this._position.index, roll);
+  }
 
-    didWin(): boolean {
-        return this._goldCoins === 6;
-    }
+  private moveForwardTo(position: Position) {
+    this._position = position;
+    this.notifier.notify(this.name + "'s new location is " + this._position.index);
+  }
 }
