@@ -6,8 +6,10 @@ import {Board} from "./board";
 export class Players {
     private currentPlayerIndex: number;
     private readonly _players: Array<Player>;
+    private readonly notifier: Notifier;
 
-    constructor(private readonly notifier: Notifier) {
+    constructor(notifier: Notifier) {
+        this.notifier = notifier;
         this.currentPlayerIndex = 0;
         this._players = [];
     }
