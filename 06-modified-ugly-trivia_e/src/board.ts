@@ -32,15 +32,6 @@ export class Board {
     }
 }
 
-function createCategories(notifier: Notifier) {
-    return {
-        [POP_CATEGORY]: new Category(POP_CATEGORY, notifier),
-        [SCIENCE_CATEGORY]: new Category(SCIENCE_CATEGORY, notifier),
-        [SPORTS_CATEGORY]: new Category(SPORTS_CATEGORY, notifier),
-        [ROCK_CATEGORY]: new Category(ROCK_CATEGORY, notifier),
-    };
-}
-
 function createPositions(notifier: Notifier, boardSize: number): Position[] {
     const categories: Record<string, Category> = createCategories(notifier);
     const positions: Array<Position> = [];
@@ -48,6 +39,20 @@ function createPositions(notifier: Notifier, boardSize: number): Position[] {
         positions.push(createPosition(positionNumber, categories))
     }
     return positions;
+}
+
+function createCategories(notifier: Notifier): {
+    [POP_CATEGORY]: Category;
+    [ROCK_CATEGORY]: Category;
+    [SCIENCE_CATEGORY]: Category;
+    [SPORTS_CATEGORY]: Category
+} {
+    return {
+        [POP_CATEGORY]: new Category(POP_CATEGORY, notifier),
+        [SCIENCE_CATEGORY]: new Category(SCIENCE_CATEGORY, notifier),
+        [SPORTS_CATEGORY]: new Category(SPORTS_CATEGORY, notifier),
+        [ROCK_CATEGORY]: new Category(ROCK_CATEGORY, notifier),
+    };
 }
 
 function createPosition(positionNumber: number, categories: Record<string, Category>): Position {
