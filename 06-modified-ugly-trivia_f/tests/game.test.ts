@@ -1,8 +1,9 @@
 import {Notifier} from "../src/notifier";
 import {Game} from "../src/game";
-import {capture, instance, mock, when} from "ts-mockito";
+import {instance, mock, when} from "ts-mockito";
 import {Referee} from "../src/referee";
 import {Board} from "../src/board";
+import {Spies} from "./ts-mockito-helpers";
 
 describe("Ugly trivia", () => {
     let notifier: Notifier;
@@ -298,7 +299,7 @@ describe("Ugly trivia", () => {
         game.add("Laura");
         game.run();
 
-        const notifications: Array<string>[] = getCallsArguments(notifier.notify);
+        const notifications: Array<string>[] = Spies.captureCallsArguments(notifier.notify);
         expect(notifications).toEqual(expectedNotifications);
     });
 
@@ -323,12 +324,5 @@ describe("Ugly trivia", () => {
             this.getRollNumberCalls++;
             return value;
         }
-    }
-
-    function getCallsArguments(fn: (notification: (string | undefined)) => void): Array<string>[] {
-        const calls: { actions: Array<{ args: Array<string> }> } = capture(
-            fn
-        ) as any as { actions: Array<{ args: Array<string> }> };
-        return calls["actions"].map((item: { args: Array<string> }) => item["args"]);
     }
 });
