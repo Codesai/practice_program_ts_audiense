@@ -3,12 +3,14 @@ import {Position} from "./position";
 import {Board} from "./board";
 
 export class Player {
-    readonly name: string;
+    private readonly name: string;
     private _position: Position;
     private _inPenaltyBox: boolean;
     private _goldCoins: number;
+    private readonly notifier: Notifier;
 
-    constructor(name: string, private readonly notifier: Notifier, initialPosition: Position) {
+    constructor(name: string, notifier: Notifier, initialPosition: Position) {
+        this.notifier = notifier;
         this.name = name;
         this._position = initialPosition;
         this._goldCoins = 0;

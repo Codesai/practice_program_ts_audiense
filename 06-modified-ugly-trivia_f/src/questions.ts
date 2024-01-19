@@ -4,7 +4,7 @@ import {Notifier} from "./notifier";
 export class Questions {
     private readonly _questions: Array<Question>;
     private readonly categoryName: string;
-    private notifier: Notifier;
+    private readonly notifier: Notifier;
 
     private constructor(questions: Array<Question>, categoryName: string, notifier: Notifier) {
         this.categoryName = categoryName;
