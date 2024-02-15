@@ -1,6 +1,6 @@
-import {Position} from "./position";
-import {Notifier} from "./notifier";
+import {Tile} from "./tile";
 import {Category} from "./category";
+import {AskingQuestionsEvents} from "./game-events";
 
 const POP_CATEGORY = 'Pop';
 const SCIENCE_CATEGORY = 'Science';
@@ -10,67 +10,67 @@ const BOARD_SIZE: number = 12;
 const NUMBER_OF_QUESTIONS_BY_CATEGORY: number = 50;
 
 export class Board {
-    private readonly _positions: Position[];
+    private readonly _tiles: Tile[];
 
-    private constructor(positions: Array<Position>) {
-        this._positions = positions;
+    private constructor(tiles: Array<Tile>) {
+        this._tiles = tiles;
     }
 
-    initialPosition(): Position {
-        return this._positions[0];
+    initialTile(): Tile {
+        return this._tiles[0];
     }
 
-    public getPositionInside(position: number): Position {
+    public getTileAtPosition(position: number): Tile {
         if (position >= BOARD_SIZE) {
             position = position - BOARD_SIZE;
         }
-        return this._positions[position]
+        return this._tiles[position]
     }
 
-    static create(notifier: Notifier): Board {
-        return new Board(createPositions(notifier, BOARD_SIZE));
+    static create(askingQuestionsEvents: AskingQuestionsEvents): Board {
+        const categories: Record<string, Category> = createCategories(askingQuestionsEvents);
+        const tiles: Array<Tile> = createTiles(categories);
+        return new Board(tiles);
     }
 }
 
-function createPositions(notifier: Notifier, boardSize: number): Position[] {
-    const categories: Record<string, Category> = createCategories(notifier);
-    const positions: Array<Position> = [];
-    for (let positionNumber = 0; positionNumber < boardSize; positionNumber++) {
-        positions.push(createPosition(positionNumber, categories))
+function createTiles(categories: Record<string, Category>): Array<Tile> {
+    const tiles: Array<Tile> = [];
+    for (let position: number = 0; position < BOARD_SIZE; position++) {
+        tiles.push(createTile(position, categories))
     }
-    return positions;
+    return tiles;
 }
 
-function createCategories(notifier: Notifier): {
+function createCategories(askingQuestionsEvents: AskingQuestionsEvents): {
     [POP_CATEGORY]: Category;
     [ROCK_CATEGORY]: Category;
     [SCIENCE_CATEGORY]: Category;
     [SPORTS_CATEGORY]: Category
 } {
     return {
-        [POP_CATEGORY]: Category.generate(POP_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, notifier),
-        [SCIENCE_CATEGORY]: Category.generate(SCIENCE_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, notifier),
-        [SPORTS_CATEGORY]: Category.generate(SPORTS_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, notifier),
-        [ROCK_CATEGORY]: Category.generate(ROCK_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, notifier),
+        [POP_CATEGORY]: Category.generate(POP_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, askingQuestionsEvents),
+        [SCIENCE_CATEGORY]: Category.generate(SCIENCE_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, askingQuestionsEvents),
+        [SPORTS_CATEGORY]: Category.generate(SPORTS_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, askingQuestionsEvents),
+        [ROCK_CATEGORY]: Category.generate(ROCK_CATEGORY, NUMBER_OF_QUESTIONS_BY_CATEGORY, askingQuestionsEvents),
     };
 }
 
-function createPosition(positionNumber: number, categories: Record<string, Category>): Position {
-    let category = selectCurrentCategory(positionNumber, categories);
-    return new Position(positionNumber, category);
+function createTile(position: number, categories: Record<string, Category>): Tile {
+    return new Tile(position, selectCorrespondingCategory(position, categories));
 }
 
-function selectCurrentCategory(positionNumber: number, categories: Record<string, Category>): Category {
-    return categories[selectCurrentCategoryName(positionNumber)];
+function selectCorrespondingCategory(position: number, categories: Record<string, Category>): Category {
+    return categories[selectCategoryName(position)];
 
-    function selectCurrentCategoryName(positionNumber: number): string {
-        if ([0, 4, 8].includes(positionNumber)) {
+    function selectCategoryName(position: number): string {
+        if ([0, 4, 8].includes(position)) {
             return POP_CATEGORY;
         }
-        if ([1, 5, 9].includes(positionNumber)) {
+        if ([1, 5, 9].includes(position)) {
             return SCIENCE_CATEGORY;
         }
-        if ([2, 6, 10].includes(positionNumber)) {
+        if ([2, 6, 10].includes(position)) {
             return SPORTS_CATEGORY;
         }
         return ROCK_CATEGORY;

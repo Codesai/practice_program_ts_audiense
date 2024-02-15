@@ -1,29 +1,34 @@
 import {Question} from "./question";
-import {Notifier} from "./notifier";
+import {AskingQuestionsEvents, CategoryEvents} from "./game-events";
 
 export class Category {
     private readonly _questions: Array<Question>;
     private readonly _name: string;
-    private readonly _notifier: Notifier;
+    private readonly _categoryEvents: CategoryEvents;
 
-    private constructor(questions: Array<Question>, name: string, notifier: Notifier) {
+    constructor(questions: Array<Question>, name: string, categoryEvents: CategoryEvents) {
         this._name = name;
         this._questions = questions;
-        this._notifier = notifier;
+        this._categoryEvents = categoryEvents;
     }
 
     askQuestion(): void {
-        const question: Question | undefined = this._questions.shift();
-        this._notifier.notify("The category is " + this._name);
+        const question = this.selectQuestion();
         question?.ask();
     }
 
-    static generate(name: string, numberOfQuestions: number, notifier: Notifier): Category {
+    private selectQuestion(): Question | undefined {
+        const question: Question | undefined = this._questions.shift();
+        this._categoryEvents.questionSelected(this._name);
+        return question;
+    }
+
+    static generate(name: string, numberOfQuestions: number, askingQuestionsEvents: AskingQuestionsEvents): Category {
         let questions: Question[];
         questions = [];
         for (let i = 0; i < numberOfQuestions; i++) {
-            questions.push(new Question(`${name} Question ${i}`, notifier));
+            questions.push(new Question(`${name} Question ${i}`, askingQuestionsEvents));
         }
-        return new Category(questions, name, notifier);
+        return new Category(questions, name, askingQuestionsEvents);
     }
 }

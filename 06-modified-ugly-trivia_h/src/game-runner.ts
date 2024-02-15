@@ -2,9 +2,15 @@ import {Game} from './game';
 import {ConsoleNotifier} from "./consoleNotifier";
 import {RandomReferee} from "./randomReferee";
 
+import {StringBasedGameEvents} from "./game-events";
+import {AnalogDie} from "./Die";
+
 export class GameRunner {
     static run(): void {
-        const game: Game = Game.create(new ConsoleNotifier(), new RandomReferee());
+        const game: Game = Game.create(
+            new RandomReferee(),
+            new StringBasedGameEvents(new ConsoleNotifier()),
+            new AnalogDie(6));
         game.add("Chet");
         game.add("Pat");
         game.add("Sue");

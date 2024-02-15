@@ -1,20 +1,23 @@
 import {Player} from "./player";
-import {Notifier} from "./notifier";
-import {Position} from "./position";
 import {Board} from "./board";
 import {Referee} from './referee';
+import {PlayerEvents, PlayersEvents} from "./game-events";
 
 export class Players {
     private readonly _players: Array<Player>;
-    private readonly _notifier: Notifier;
+    private readonly _playersEvents: PlayersEvents;
     private _currentPlayerIndex: number;
     private _thereIsAWinner: boolean;
 
-    constructor(notifier: Notifier) {
-        this._notifier = notifier;
+    constructor(playersEvents: PlayersEvents) {
+        this._playersEvents = playersEvents;
         this._currentPlayerIndex = 0;
         this._players = [];
         this._thereIsAWinner = false;
+    }
+
+    static create(playersEvents: PlayersEvents): Players {
+        return new Players(playersEvents)
     }
 
     playCurrentPlayer(rollNumber: number): void {
@@ -23,8 +26,8 @@ export class Players {
         this.nextPlayerTurn();
     }
 
-    add(name: string, initialPosition: Position, referee: Referee, board: Board): void {
-        this._players.push(new Player(name, initialPosition, this._notifier, referee, board));
+    add(name: string, referee: Referee, board: Board, playerEvents: PlayerEvents): void {
+        this._players.push(new Player(name, referee, board, playerEvents));
         this.notifyNewPlayer(name);
     }
 
@@ -44,7 +47,6 @@ export class Players {
     }
 
     private notifyNewPlayer(name: string): void {
-        this._notifier.notify(name + " was added");
-        this._notifier.notify("They are player number " + this._players.length);
+        this._playersEvents.addedNewPlayer(name, this._players.length)
     }
 }

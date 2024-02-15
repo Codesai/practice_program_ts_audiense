@@ -1,7 +1,7 @@
 import {Board} from "./board";
 import {Category} from "./category";
 
-export class Position {
+export class Tile {
     private readonly _number: number;
     private readonly _category: Category;
 
@@ -18,7 +18,7 @@ export class Position {
         this._category.askQuestion();
     }
 
-    moveForward(board: Board, roll: number): Position {
-        return board.getPositionInside(this._number + roll);
+    moveForward(board: Board, roll: number): Tile {
+        return board.getTileAtPosition(this._number + roll);
     }
 }
