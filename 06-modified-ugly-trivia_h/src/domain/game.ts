@@ -2,7 +2,7 @@ import {Players} from "./players";
 import {Board} from "./board";
 import {Referee} from "./referee";
 import {GameEvents} from "./game-events";
-import {Die} from "./Die";
+import {Die} from "./die";
 
 export class Game {
     private readonly _players: Players;
@@ -27,11 +27,20 @@ export class Game {
 
     run(): void {
         do {
-            this._players.playCurrentPlayer(this._die.roll());
-        } while (!this._players.isThereAWinner());
+            this.playCurrentPlayer();
+        } while (this.gameContinues());
     }
 
     add(name: string): void {
         this._players.add(name, this._referee, this._board, this._gameEvents);
+    }
+
+    private gameContinues(): boolean {
+        return !this._players.isThereAWinner();
+    }
+
+    private playCurrentPlayer(): void {
+        const rollNumber: number = this._die.roll();
+        this._players.playCurrentPlayer(rollNumber);
     }
 }

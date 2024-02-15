@@ -1,9 +1,8 @@
-import {Game} from './game';
-import {ConsoleNotifier} from "./consoleNotifier";
-import {RandomReferee} from "./randomReferee";
-
-import {StringBasedGameEvents} from "./game-events";
-import {AnalogDie} from "./Die";
+import {Game} from './domain/game';
+import {StringBasedGameEvents} from "./domain/game-events";
+import {ConsoleNotifier} from "./infrastructure/consoleNotifier";
+import {RandomReferee} from "./infrastructure/randomReferee";
+import {AnalogDie} from "./infrastructure/analog-die";
 
 export class GameRunner {
     static run(): void {

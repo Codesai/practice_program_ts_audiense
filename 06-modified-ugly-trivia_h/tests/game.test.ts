@@ -1,11 +1,11 @@
-import {Notifier} from "../src/notifier";
-import {Game} from "../src/game";
-import {instance, mock, when} from "ts-mockito";
-import {Referee} from "../src/referee";
 import {Spies} from "./ts-mockito-helpers";
+import {instance, mock, when} from "ts-mockito";
 
-import {StringBasedGameEvents} from "../src/game-events";
-import {Die} from "../src/Die";
+import {Notifier} from "../src/domain/notifier";
+import {Game} from "../src/domain/game";
+import {Die} from "../src/domain/die";
+import {StringBasedGameEvents} from "../src/domain/game-events";
+import {Referee} from "../src/domain/referee";
 
 describe("Ugly trivia", () => {
     it("a repeatable simulation with high coverage", () => {

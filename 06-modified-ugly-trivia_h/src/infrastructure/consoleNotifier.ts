@@ -1,4 +1,4 @@
-import {Notifier} from "./notifier";
+import {Notifier} from "../domain/notifier";
 
 export class ConsoleNotifier implements Notifier {
     notify(notification: string): void {

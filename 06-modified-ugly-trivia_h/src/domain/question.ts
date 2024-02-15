@@ -10,6 +10,6 @@ export class Question {
     }
 
     ask(): void {
-        this._questionEvents?.questionAsked(this._question);
+        this._questionEvents.questionAsked(this._question);
     }
 }
