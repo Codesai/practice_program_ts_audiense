@@ -4,8 +4,8 @@ import {instance, mock, when} from "ts-mockito";
 import {Notifier} from "../src/domain/notifier";
 import {Game} from "../src/domain/game";
 import {Die} from "../src/domain/die";
-import {StringBasedGameEvents} from "../src/domain/game-events";
 import {Referee} from "../src/domain/referee";
+import {StringBasedGameEvents} from "../src/domain/game-events/string-based-game-events";
 
 describe("Ugly trivia", () => {
     it("a repeatable simulation with high coverage", () => {
