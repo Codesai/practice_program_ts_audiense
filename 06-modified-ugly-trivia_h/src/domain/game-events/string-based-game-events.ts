@@ -49,8 +49,8 @@ export class StringBasedGameEvents implements GameEvents {
         this._notifier.notify(playerName + " was sent to the penalty box");
     }
 
-    addedNewPlayer(playerName: string, numberOfPlayers1: number): void {
+    addedNewPlayer(playerName: string, numberOfPlayers: number): void {
         this._notifier.notify(playerName + " was added");
-        this._notifier.notify("They are player number " + numberOfPlayers1);
+        this._notifier.notify("They are player number " + numberOfPlayers);
     }
 }
