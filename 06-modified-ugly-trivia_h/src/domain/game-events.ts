@@ -25,7 +25,7 @@ export interface QuestionEvents {
 }
 
 export interface PlayersEvents {
-    addedNewPlayer(playerName: string, numberOfPlayers1: number): void;
+    addedNewPlayer(playerName: string, numberOfPlayers: number): void;
 }
 
 export interface AskingQuestionsEvents extends QuestionEvents, CategoryEvents {
