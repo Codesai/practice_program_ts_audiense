@@ -1,4 +1,3 @@
 # Project
 
-Your task is to refactor the code to remove the temporary field code smell in the `selectedDrink` field of
-the `OrderProcessing` class.
+Your task is to cover with tests and then refactor the computation of the value of our assets portfolio.
