@@ -1,5 +1,6 @@
 import {Portfolio} from "../src/Portfolio";
 import {Asset} from "../src/Asset";
+import {createUTCDate} from "./DateUtils";
 
 export class TestingPortfolio extends Portfolio {
     messages: string[] = [];
@@ -29,13 +30,6 @@ export class TestingPortfolio extends Portfolio {
     }
 
     protected createDate(year: string, month: string, day: string): Date {
-        // all dates are UTC
-        return new Date(
-            Date.UTC(
-                Number.parseInt(year),
-                Number.parseInt(month) - 1,
-                Number.parseInt(day),
-                0, 0, 0,
-                0));
+        return createUTCDate(year, month, day);
     }
 }

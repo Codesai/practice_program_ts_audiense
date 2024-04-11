@@ -1,5 +1,6 @@
 import {TestingPortfolio} from "./TestingPortfolio";
 import {AssetsFileLineBuilder} from "./AssetsFileLineBuilder";
+import {createUTCDateFrom} from "./DateUtils";
 
 export function aPortFolio(): TestingPortFolioBuilder {
     return new TestingPortFolioBuilder();
@@ -23,18 +24,8 @@ class TestingPortFolioBuilder {
         return this;
     };
 
-    public onDate(dateInString: string): TestingPortFolioBuilder {
-        const [year, month, day] = dateInString.split("/");
-        if ([year, month, day].some((value) => value === undefined)) {
-            throw new Error("wrong date");
-        }
-        this.now = new Date(
-            Date.UTC(
-                Number.parseInt(year),
-                Number.parseInt(month) - 1,
-                Number.parseInt(day),
-                0, 0, 0,
-                0));
+    public onDate(dateAsString: string): TestingPortFolioBuilder {
+        this.now = createUTCDateFrom(dateAsString);
         return this;
     };
 
