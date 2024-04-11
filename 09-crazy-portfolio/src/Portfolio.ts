@@ -14,7 +14,7 @@ export class Portfolio {
         const lines = readText.split(/\r?\n/);
         let portfolioValue = new MeasurableValue(0);
 
-        for (let i = 0; i < lines.length; i++){
+        for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             const columns = line.split(",");
 
