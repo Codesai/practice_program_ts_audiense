@@ -134,10 +134,24 @@ describe("Portfolio", () => {
                     expect(portfolio.messages[0]).toEqual("20")
                 });
 
+                it('not before now value 0 remains the same', () => {
+                    const portfolio = aPortFolio()
+                        .with(anAsset().describedAs("Some Regular Asset").fromDate("2023/01/01").withValue(0))
+                        .onDate("2023/01/01")
+                        .build();
+
+                    portfolio.computePortfolioValue();
+
+                    expect(portfolio.messages[0]).toEqual("0")
+                });
+
+
+
+
             });
         });
 
-        describe("with several asset:", () => {
+        describe("with several assets:", () => {
             it('including a Unicorn', () => {
                 const portfolio = aPortFolio()
                     .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(100))
