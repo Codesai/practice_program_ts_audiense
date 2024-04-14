@@ -31,18 +31,38 @@ describe("Portfolio", () => {
                         expect(portfolio.messages[0]).toEqual("55")
                     });
 
-                    it.each([
+                    describe.each([
                         ["2024/04/14"], // 10 days, off point for boundary between [6, 11) and [11, +inf]
                         ["2024/04/10"]  // 6 days, on point for boundary between [0, 6) and [6, 11)
-                    ])("less than 11 days value grows by 25", (assetDate: string) => {
-                        const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(50))
-                            .onDate('2024/04/04')
-                            .build();
+                    ])("less than 11 days", (assetDate: string) => {
+                        const valueComputationDate = '2024/04/04';
+                        it.each([
+                            [50],
+                            [794], // off point
+                        ])("value grows by 25 if it was less than 795", (value: number)=> {
+                            const portfolio = aPortFolio()
+                                .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(value))
+                                .onDate(valueComputationDate)
+                                .build();
 
-                        portfolio.computePortfolioValue();
+                            portfolio.computePortfolioValue();
 
-                        expect(portfolio.messages[0]).toEqual("75");
+                            expect(portfolio.messages[0]).toEqual(`${value + 25}`);
+                        });
+
+                        it.each([
+                            [795], // on point
+                            [800],
+                        ])("value remains the same for values >= 795", (value: number)=> {
+                            const portfolio = aPortFolio()
+                                .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(value))
+                                .onDate(valueComputationDate)
+                                .build();
+
+                            portfolio.computePortfolioValue();
+
+                            expect(portfolio.messages[0]).toEqual("800");
+                        });
                     });
 
                     it("less than 6 days  value grows by 125", () => {
