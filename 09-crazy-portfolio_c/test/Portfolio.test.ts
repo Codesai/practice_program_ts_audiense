@@ -78,6 +78,7 @@ describe("Portfolio", () => {
 
                         expect(portfolio.messages[0]).toEqual(`${value + 20}`);
                     });
+
                     it.each([
                         [200], // on point
                         [201]
@@ -93,15 +94,34 @@ describe("Portfolio", () => {
                     });
                 });
 
-                it("after now value grows by 10", () => {
-                    const portfolio = aPortFolio()
-                        .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(100))
-                        .onDate('2024/01/01')
-                        .build();
+                describe("after now", () => {
+                    it.each([
+                        [100],
+                        [199] // off point
+                    ])("value grows by 10 if it's less than 200", (value: number) => {
+                        const portfolio = aPortFolio()
+                            .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(value))
+                            .onDate('2024/01/01')
+                            .build();
 
-                    portfolio.computePortfolioValue();
+                        portfolio.computePortfolioValue();
 
-                    expect(portfolio.messages[0]).toEqual("110");
+                        expect(portfolio.messages[0]).toEqual(`${value + 10}`);
+                    });
+
+                    it.each([
+                        [200], // on point
+                        [201]
+                    ])("value remains the same if it's 200 or more", (value: number) => {
+                        const portfolio = aPortFolio()
+                            .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(value))
+                            .onDate('2024/01/01')
+                            .build();
+
+                        portfolio.computePortfolioValue();
+
+                        expect(portfolio.messages[0]).toEqual(`${value}`);
+                    });
                 });
             });
 
