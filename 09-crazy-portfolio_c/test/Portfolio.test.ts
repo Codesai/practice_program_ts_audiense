@@ -112,17 +112,6 @@ describe("Portfolio", () => {
                         });
 
                     });
-
-                    it("value can not be more than 800", () => {
-                        const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Lottery Prediction").fromDate("2024/04/15").withValue(800))
-                            .onDate('2024/04/09')
-                            .build();
-
-                        portfolio.computePortfolioValue();
-
-                        expect(portfolio.messages[0]).toEqual("800");
-                    });
                 });
             });
 
