@@ -65,16 +65,52 @@ describe("Portfolio", () => {
                         });
                     });
 
-                    it("less than 6 days  value grows by 125", () => {
+                    describe("less than 6 days", () => {
                         const assetDate = "2024/04/09"; // 5 days, off point for boundary between [0, 6) and [6, 11)
-                        const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(50))
-                            .onDate('2024/04/04')
-                            .build();
+                        const valueComputationDate = '2024/04/04';
 
-                        portfolio.computePortfolioValue();
+                        it.each([
+                            [50],
+                            [774], // off point
+                        ])("value grows by 125 for values less than 775", (assetValue: number)=>{
+                            const portfolio = aPortFolio()
+                                .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(assetValue))
+                                .onDate(valueComputationDate)
+                                .build();
 
-                        expect(portfolio.messages[0]).toEqual("175");
+                            portfolio.computePortfolioValue();
+
+                            expect(portfolio.messages[0]).toEqual(`${assetValue + 125}`);
+                        });
+
+                        it.each([
+                            [775], // on point
+                            [779],
+                        ])("value grows by 25 for values [775, 800)", (assetValue: number)=>{
+                            const portfolio = aPortFolio()
+                                .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(assetValue))
+                                .onDate(valueComputationDate)
+                                .build();
+
+                            portfolio.computePortfolioValue();
+
+                            expect(portfolio.messages[0]).toEqual(`${assetValue + 25}`);
+                        });
+
+                        it.each([
+                            [800], // on point
+                            [850],
+                        ])("value remains the same for values >= 800", (assetValue: number)=>{
+                            const portfolio = aPortFolio()
+                                .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(assetValue))
+                                .onDate(valueComputationDate)
+                                .build();
+
+                            portfolio.computePortfolioValue();
+
+                            expect(portfolio.messages[0]).toEqual(`${assetValue}`);
+                        });
+
                     });
 
                     it("value can not be more than 800", () => {
