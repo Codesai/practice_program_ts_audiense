@@ -17,10 +17,13 @@ describe("Portfolio", () => {
                 });
 
                 describe("not before now", () => {
-                    it("11 days or more value grows by 5", () => {
+                    it.each([
+                        ["2024/04/18"], // 14 days
+                        ["2024/04/15"], // 11 days, on point for boundary between [6, 11) y [11, +inf]
+                    ])("11 days or more value grows by 5", () => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("Lottery Prediction").fromDate("2024/04/15").withValue(50))
-                            .onDate('2024/01/01')
+                            .onDate('2024/04/04')
                             .build();
 
                         portfolio.computePortfolioValue();
@@ -28,9 +31,12 @@ describe("Portfolio", () => {
                         expect(portfolio.messages[0]).toEqual("55")
                     });
 
-                    it("less than 11 days value grows by 25", () => {
+                    it.each([
+                        ["2024/04/14"], // 10 days, off point for boundary between [6, 11) and [11, +inf]
+                        ["2024/04/10"]  // 6 days, on point for boundary between [0, 6) and [6, 11)
+                    ])("less than 11 days value grows by 25", (assetDate: string) => {
                         const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Lottery Prediction").fromDate("2024/04/14").withValue(50))
+                            .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(50))
                             .onDate('2024/04/04')
                             .build();
 
@@ -40,8 +46,9 @@ describe("Portfolio", () => {
                     });
 
                     it("less than 6 days  value grows by 125", () => {
+                        const assetDate = "2024/04/09"; // 5 days, off point for boundary between [0, 6) and [6, 11)
                         const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Lottery Prediction").fromDate("2024/04/09").withValue(50))
+                            .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(50))
                             .onDate('2024/04/04')
                             .build();
 
