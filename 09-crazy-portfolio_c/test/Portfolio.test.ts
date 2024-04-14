@@ -64,11 +64,12 @@ describe("Portfolio", () => {
             });
 
             describe("French Wine", () => {
-                describe("before now", () => {
-                    it.each([
-                        [100],
-                        [199] // off point
-                    ])("value grows by 20 if it's less than 200", (value: number) => {
+
+                describe.each([
+                    [100],
+                    [199] // off point
+                ])("when its value is less than 200", (value: number) => {
+                    it("it grows by 20 before now", () => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(value))
                             .onDate('2025/01/01')
@@ -79,26 +80,7 @@ describe("Portfolio", () => {
                         expect(portfolio.messages[0]).toEqual(`${value + 20}`);
                     });
 
-                    it.each([
-                        [200], // on point
-                        [201]
-                    ])("value remains the same if it's 200 or more", (value: number) => {
-                        const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(value))
-                            .onDate('2025/01/01')
-                            .build();
-
-                        portfolio.computePortfolioValue();
-
-                        expect(portfolio.messages[0]).toEqual(`${value}`);
-                    });
-                });
-
-                describe("after now", () => {
-                    it.each([
-                        [100],
-                        [199] // off point
-                    ])("value grows by 10 if it's less than 200", (value: number) => {
+                    it("it grows by 10 after now", () => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(value))
                             .onDate('2024/01/01')
@@ -108,14 +90,21 @@ describe("Portfolio", () => {
 
                         expect(portfolio.messages[0]).toEqual(`${value + 10}`);
                     });
+                });
+
+                describe.each([
+                    [200], // on point
+                    [201]
+                ])("when its value is 200 or more it remains the same before and after now", (value: number) => {
+                    const valueComputationDate = '2025/01/01';
 
                     it.each([
-                        [200], // on point
-                        [201]
-                    ])("value remains the same if it's 200 or more", (value: number) => {
+                        ["2024/01/15"], // before
+                        ["2025/01/15"]  // after
+                    ])("", (assetDate: string) => {
                         const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("French Wine").fromDate("2024/01/15").withValue(value))
-                            .onDate('2024/01/01')
+                            .with(anAsset().describedAs("French Wine").fromDate(assetDate).withValue(value))
+                            .onDate(valueComputationDate)
                             .build();
 
                         portfolio.computePortfolioValue();
