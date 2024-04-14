@@ -112,9 +112,12 @@ describe("Portfolio", () => {
             });
 
             describe("any other asset", () => {
-                it('before now value decreases by 20', () => {
+                it.each([
+                    ["2024/04/15"],
+                    ["2025/04/08"] // off point
+                ])('before now value decreases by 20', (assetDate: string) => {
                     const portfolio = aPortFolio()
-                        .with(anAsset().describedAs("Another asset").fromDate("2024/04/15").withValue(189))
+                        .with(anAsset().describedAs("Another asset").fromDate(assetDate).withValue(189))
                         .onDate('2025/04/09')
                         .build();
 
@@ -124,9 +127,12 @@ describe("Portfolio", () => {
                 });
 
                 describe("not before now", () => {
-                    it('value decreases by 10', () => {
+                    it.each([
+                        ["2024/04/15"],
+                        ['2024/04/09'] // on point
+                    ])('value decreases by 10', (assetDate: string) => {
                         const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Another asset").fromDate("2024/04/15").withValue(30))
+                            .with(anAsset().describedAs("Another asset").fromDate(assetDate).withValue(30))
                             .onDate('2024/04/09')
                             .build();
 
