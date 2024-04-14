@@ -112,18 +112,34 @@ describe("Portfolio", () => {
             });
 
             describe("any other asset", () => {
-                it.each([
-                    ["2024/04/15"],
-                    ["2025/04/08"] // off point
-                ])('before now value decreases by 20', (assetDate: string) => {
-                    const portfolio = aPortFolio()
-                        .with(anAsset().describedAs("Another asset").fromDate(assetDate).withValue(189))
-                        .onDate('2025/04/09')
-                        .build();
 
-                    portfolio.computePortfolioValue();
+                describe("before now", () => {
+                    const valueComputationDate = '2025/04/09';
+                    it.each([
+                        ["2024/04/15"],
+                        ["2025/04/08"] // off point
+                    ])('with values greater than zero decrease by 20', (assetDate: string) => {
+                        const portfolio = aPortFolio()
+                            .with(anAsset().describedAs("Another asset").fromDate(assetDate).withValue(189))
+                            .onDate(valueComputationDate)
+                            .build();
 
-                    expect(portfolio.messages[0]).toEqual("169");
+                        portfolio.computePortfolioValue();
+
+                        expect(portfolio.messages[0]).toEqual("169");
+                    });
+
+                    it('with value zero remains the same', () => {
+                        const assetValue = 0;
+                        const portfolio = aPortFolio()
+                            .with(anAsset().describedAs("Another asset").fromDate("2025/04/08").withValue(assetValue))
+                            .onDate(valueComputationDate)
+                            .build();
+
+                        portfolio.computePortfolioValue();
+
+                        expect(portfolio.messages[0]).toEqual(`${assetValue}`);
+                    });
                 });
 
                 describe("not before now", () => {
