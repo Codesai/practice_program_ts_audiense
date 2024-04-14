@@ -71,7 +71,6 @@ describe("Portfolio", () => {
             });
 
             describe("French Wine", () => {
-
                 describe.each([
                     [100],
                     [199] // off point
@@ -108,7 +107,7 @@ describe("Portfolio", () => {
                     it.each([
                         ["2024/01/15"], // before
                         ["2025/01/15"]  // after
-                    ])("", (assetDate: string) => {
+                    ])(`Computation date: ${valueComputationDate}, Asset date: %s, Asset value: ${value}`, (assetDate: string) => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("French Wine").fromDate(assetDate).withValue(value))
                             .onDate(valueComputationDate)
