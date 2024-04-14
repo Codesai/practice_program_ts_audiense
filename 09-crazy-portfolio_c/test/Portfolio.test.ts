@@ -19,7 +19,7 @@ describe("Portfolio", () => {
                 describe("not before now", () => {
                     it.each([
                         ["2024/04/18"], // 14 days
-                        ["2024/04/15"], // 11 days, on point for boundary between [6, 11) y [11, +inf]
+                        ["2024/04/15"], // 11 days, on point for days boundary between [6, 11) y [11, +inf]
                     ])("11 days or more value grows by 5", () => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("Lottery Prediction").fromDate("2024/04/15").withValue(50))
@@ -32,14 +32,14 @@ describe("Portfolio", () => {
                     });
 
                     describe.each([
-                        ["2024/04/14"], // 10 days, off point for boundary between [6, 11) and [11, +inf]
-                        ["2024/04/10"]  // 6 days, on point for boundary between [0, 6) and [6, 11)
+                        ["2024/04/14"], // 10 days, off point for days boundary between [6, 11) and [11, +inf]
+                        ["2024/04/10"]  // 6 days, on point for days boundary between [0, 6) and [6, 11)
                     ])("less than 11 days", (assetDate: string) => {
                         const valueComputationDate = '2024/04/04';
                         it.each([
                             [50],
-                            [794], // off point
-                        ])("value grows by 25 if it was less than 795", (value: number)=> {
+                            [794], // off point for value of asset boundary between (-inf, 795) and [795, +inf] (for less than 11 days)
+                        ])("value grows by 25 if value < 795", (value: number)=> {
                             const portfolio = aPortFolio()
                                 .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(value))
                                 .onDate(valueComputationDate)
@@ -51,7 +51,7 @@ describe("Portfolio", () => {
                         });
 
                         it.each([
-                            [795], // on point
+                            [795], // on point for value of asset boundary between (-inf, 795) and [795, +inf] (for less than 11 days)
                             [800],
                         ])("value remains the same for values >= 795", (value: number)=> {
                             const portfolio = aPortFolio()
@@ -66,12 +66,12 @@ describe("Portfolio", () => {
                     });
 
                     describe("less than 6 days", () => {
-                        const assetDate = "2024/04/09"; // 5 days, off point for boundary between [0, 6) and [6, 11)
+                        const assetDate = "2024/04/09"; // 5 days, off point for days boundary between [0, 6) and [6, 11)
                         const valueComputationDate = '2024/04/04';
 
                         it.each([
                             [50],
-                            [774], // off point
+                            [774], // off point for value of asset boundary between (-inf, 775) and [775, 800) (for less than 6 days)
                         ])("value grows by 125 for values less than 775", (assetValue: number)=>{
                             const portfolio = aPortFolio()
                                 .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(assetValue))
@@ -84,8 +84,8 @@ describe("Portfolio", () => {
                         });
 
                         it.each([
-                            [775], // on point
-                            [779],
+                            [775], // on point for value of asset boundary between (-inf, 775) and [775, 800) (for less than 6 days)
+                            [779], // off point for value of asset boundary between [775, 800) and [800, +inf] (for less than 6 days)
                         ])("value grows by 25 for values [775, 800)", (assetValue: number)=>{
                             const portfolio = aPortFolio()
                                 .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(assetValue))
@@ -98,7 +98,7 @@ describe("Portfolio", () => {
                         });
 
                         it.each([
-                            [800], // on point
+                            [800], // on point for value of asset boundary between [775, 800) and [800, +inf] (for less than 6 days)
                             [850],
                         ])("value remains the same for values >= 800", (assetValue: number)=>{
                             const portfolio = aPortFolio()
@@ -110,7 +110,6 @@ describe("Portfolio", () => {
 
                             expect(portfolio.messages[0]).toEqual(`${assetValue}`);
                         });
-
                     });
                 });
             });
@@ -118,7 +117,7 @@ describe("Portfolio", () => {
             describe("French Wine", () => {
                 describe.each([
                     [100],
-                    [199] // off point
+                    [199] // off point for value of asset boundary between (-inf, 200) and [200, +inf)
                 ])("when its value is less than 200", (value: number) => {
                     it("it grows by 20 before now", () => {
                         const portfolio = aPortFolio()
@@ -144,7 +143,7 @@ describe("Portfolio", () => {
                 });
 
                 describe.each([
-                    [200], // on point
+                    [200], // on point for value of asset boundary between (-inf, 200) and [200, +inf)
                     [201]
                 ])("when its value is 200 or more it remains the same before and after now", (value: number) => {
                     const valueComputationDate = '2025/01/01';
@@ -195,7 +194,7 @@ describe("Portfolio", () => {
                     const valueComputationDate = '2025/04/09';
                     it.each([
                         ["2024/04/15"],
-                        ["2025/04/08"] // off point
+                        ["2025/04/08"] // 1 day, off point for days boundary between before and after
                     ])('with values greater than zero decrease by 20', (assetDate: string) => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("Another asset").fromDate(assetDate).withValue(189))
@@ -223,7 +222,7 @@ describe("Portfolio", () => {
                 describe("not before now", () => {
                     it.each([
                         ["2024/04/15"],
-                        ['2024/04/09'] // on point
+                        ['2024/04/09'] // 0 days, on point for days boundary between before and after
                     ])('value decreases by 10', (assetDate: string) => {
                         const portfolio = aPortFolio()
                             .with(anAsset().describedAs("Another asset").fromDate(assetDate).withValue(30))
