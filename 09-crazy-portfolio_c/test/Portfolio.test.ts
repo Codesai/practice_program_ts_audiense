@@ -20,9 +20,9 @@ describe("Portfolio", () => {
                     it.each([
                         ["2024/04/18"], // 14 days
                         ["2024/04/15"], // 11 days, on point for days boundary between [6, 11) y [11, +inf]
-                    ])("11 days or more value grows by 5", () => {
+                    ])("11 days or more value grows by 5", (assetDate: string) => {
                         const portfolio = aPortFolio()
-                            .with(anAsset().describedAs("Lottery Prediction").fromDate("2024/04/15").withValue(50))
+                            .with(anAsset().describedAs("Lottery Prediction").fromDate(assetDate).withValue(50))
                             .onDate('2024/04/04')
                             .build();
 
