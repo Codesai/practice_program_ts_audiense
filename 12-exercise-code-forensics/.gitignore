@@ -1,0 +1,5 @@
+repositories/
+output/
+revisions-report.json
+sloc-report.json
+main-dev-report.json

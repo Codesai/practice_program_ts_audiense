@@ -1,0 +1,16 @@
+{
+  "name": "example-code-forensics",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "gulp webserver",
+    "hotspot": "gulp hotspot-analysis",
+    "knowledge-map": "gulp knowledge-map-analysis",
+    "list-analysis-tasks": "gulp list-analysis-tasks"
+  },
+  "dependencies": {
+    "code-forensics": "3.1.0",
+    "gulp": "4.0.2"
+  }
+}
