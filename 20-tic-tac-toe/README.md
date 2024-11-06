@@ -1,24 +1,25 @@
-# Interactive Tic Tac Toe kata
+# Interactive Tic Tac Toe kata.
 
-A kata to practice using test doubles
+A kata to practice using TDD with test doubles.
 
-## What we need to build
+## The game.
 
-Tic-tac-toe is a game played on a three-by-three grid by two players, who alternately place the marks X and O in one of the nine spaces in the grid.
+Tic-tac-toe is a game played on a three-by-three grid by two players, who alternately place the marks X and O in one of the nine fields in the grid.
 
 Tic Tac Toe rules are summarized below:
 
-- A game is over when all fields in a row are taken by a player
-- Players take turns taking fields until the game is over
-- A game is over when all fields in a diagonal are taken by a player
-- A game is over when all fields are taken
-- There are two players in the game (X and O)
-- A game has nine fields in a 3x3 grid
-- A game is over when all fields in a column are taken by a player
-- A player can take a field if not already taken
-- X player always starts the game
-- A player only changes his turn when he chooses a valid field
-- A player takes the field using a number from 1 to 9
+- A game is over when all fields in a row are taken by a player.
+- Players take turns taking fields until the game is over.
+- A game is over when all fields in a diagonal are taken by a player.
+- A game is over when all fields are taken.
+- There are two players in the game (X and O).
+- A game has nine fields in a 3x3 grid.
+- A game is over when all fields in a column are taken by a player.
+- A player can take a field if it is not already taken.
+- X player always starts the game.
+- A player only changes his turn when he chooses a valid field.
+- A player takes the field using a number from 1 to 9. The correspondence from numbers to fields is indicated in the following figure:
+
 ```
 1 | 2 | 3
 ---------
@@ -27,7 +28,7 @@ Tic Tac Toe rules are summarized below:
 7 | 8 | 9
 ```
 
-These are possible outputs of the game:
+These are possible states of the game (a number indicates that no player has taken the field):
 
 ```
 1 | 2 | 3      X | 2 | X      X | O | X
@@ -37,12 +38,18 @@ These are possible outputs of the game:
 7 | 8 | 9      7 | O | X      O | X | X 
 ```
 
-Each player will indicate the play through his own console.
+## The interactive game.
+
+### The course of the game.
+
+* Each player indicates the field that they would like to take passing its corresponding number through their own console (there are two independent consoles).
 
 For example:
 
+When the game is started the `X` player will see the following on their console:
+
 ```
-player1$  
+playerX$  
 
 1 | 2 | 3
 ---------
@@ -51,12 +58,15 @@ player1$
 7 | 8 | 9
 
 you turn...
-player1$  
+
+playerX$  
 
 ```
-Player takes the 1 field
+
+Then, if the `X` player takes the `1` field, `X` player's console will show:
+
 ```
-player1$ 1 
+playerX$ 1 
 
 X | 2 | 3
 ---------
@@ -64,9 +74,11 @@ X | 2 | 3
 ---------
 7 | 8 | 9
 ```
-In the player 2 console shows:
+
+and `O` player's console will show:
+
 ```
-player2$  
+playerO$  
 
 X | 2 | 3
 ---------
@@ -75,11 +87,14 @@ X | 2 | 3
 7 | 8 | 9
 
 you turn...
-player2$  
+
+playerO$  
 ```
-Player takes the 5 field
+
+Then, if `O` player takes the `5` field, `O` player's console will show:
+
 ```
-player2$ 5 
+playerO$ 5 
 
 X | 2 | 3
 ---------
@@ -88,9 +103,11 @@ X | 2 | 3
 7 | 8 | 9
 
 ```
-In the player 1 console shows:
+
+and `X` player's console will show:
+
 ```
-player1$ 
+playerX$ 
 
 X | 2 | 3
 ---------
@@ -99,11 +116,19 @@ X | 2 | 3
 X | 8 | 9
 
 you turn...
-player1$ 
-```
-And so on until game is over:
 
-A) Some wins the game in both console shows:
+playerX$ 
+```
+
+And so on until the game is over.
+
+### How the game ends?
+
+There are two options:
+
+a.  If any player wins the game, both consoles will show the result.
+
+If, for example, the `X` player wins both consoles will show:
 ```
 X | O | X
 --------- 
@@ -111,10 +136,11 @@ O | O | X
 ---------
 O | X | X 
 
-Player 1 wins
+X wins!
 ```
 
-B) There is a draw in both console shows:
+b. If the game ends without a winner both consoles will show:
+
 ```
 X | O | X
 --------- 
@@ -125,13 +151,12 @@ O | X | X
 Draw!
 ```
 
-## Hint
+## Constraint.
 
 The interface (public methods) of the `TicTacToeGame` class is:
 
-```ts#
-start(): void
+```ts
+start(): void;
 ```
-
 
 Inspired by https://kata-log.rocks/tic-tac-toe-kata
