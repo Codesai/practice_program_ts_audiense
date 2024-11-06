@@ -60,7 +60,7 @@ For example, if the player 1 wins it will show the following message:
 
 The interface (public methods) of the `GameScoreBoard` class is:
 
-```c#
+```ts#
 startGame(): void
 ```
 
