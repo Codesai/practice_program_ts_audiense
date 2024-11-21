@@ -1,12 +1,12 @@
 import {Game} from "../../src/Game";
-import {Player} from "../../src/Player";
+import {PlayerInteraction} from "../../src/PlayerInteraction";
 import {GameStateDto} from "../../src/GameStateDto";
 import {Field} from "../../src/Field";
 import {GameStateDtoBuilder} from "../helpers/GameStateDtoBuilder";
 
 describe("Tic Tac Toe", () => {
-    let playerX: jest.Mocked<Player>;
-    let playerO: jest.Mocked<Player>;
+    let playerX: jest.Mocked<PlayerInteraction>;
+    let playerO: jest.Mocked<PlayerInteraction>;
     let game: Game;
 
     beforeEach(() => {

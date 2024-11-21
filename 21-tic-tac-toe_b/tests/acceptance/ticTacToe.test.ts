@@ -1,7 +1,7 @@
 import {Input} from "../../src/Input";
 import {Output} from "../../src/Output";
 import {Game} from "../../src/Game";
-import {TextBasedPlayer} from "../../src/TextBasedPlayer";
+import {TextBasedPlayerInteraction} from "../../src/TextBasedPlayerInteraction";
 
 describe("a Tic Tac Toe game on the console", () => {
     let inputX: jest.Mocked<Input>;
@@ -28,7 +28,7 @@ describe("a Tic Tac Toe game on the console", () => {
             display: jest.fn(),
         }
 
-        game = new Game(new TextBasedPlayer(inputX, outputX), new TextBasedPlayer(inputO, outputO));
+        game = new Game(new TextBasedPlayerInteraction(inputX, outputX), new TextBasedPlayerInteraction(inputO, outputO));
     });
 
     it("player X wins after her third turn", () => {

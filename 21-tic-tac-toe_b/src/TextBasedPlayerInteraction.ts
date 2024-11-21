@@ -1,10 +1,10 @@
 import {Field} from "./Field";
 import {GameStateDto} from "./GameStateDto";
-import {Player} from "./Player";
+import {PlayerInteraction} from "./PlayerInteraction";
 import {Input} from "./Input";
 import {Output} from "./Output";
 
-export class TextBasedPlayer implements Player {
+export class TextBasedPlayerInteraction implements PlayerInteraction {
     private readonly input: Input;
     private readonly output: Output;
 

@@ -1,13 +1,13 @@
-import {Player} from "./Player";
+import {PlayerInteraction} from "./PlayerInteraction";
 import {GameState} from "./GameState";
 
 export class Game {
-    private readonly playerX: Player;
+    private readonly xPlayerInteraction: PlayerInteraction;
     private state: GameState;
 
-    constructor(playerX: Player, playerO: Player) {
-        this.playerX = playerX;
-        this.state = GameState.Initial(playerX, playerO);
+    constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction) {
+        this.xPlayerInteraction = xPlayerInteraction;
+        this.state = GameState.Initial(xPlayerInteraction, oPlayerInteraction);
     }
 
     start(): void {
@@ -16,7 +16,7 @@ export class Game {
     }
 
     private showInitialMessage(): void {
-        this.state.showInitialMessageTo(this.playerX);
+        this.state.showInitialMessageTo(this.xPlayerInteraction);
     }
 
     private startTurns(): void {
