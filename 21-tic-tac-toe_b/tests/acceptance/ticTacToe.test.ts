@@ -42,7 +42,7 @@ describe("a Tic Tac Toe game on the console", () => {
 
         game.start();
 
-        expectInitialPrompt();
+        expectInitialDisplay();
         expectTurnForPlayerX(
             "X | 2 | 3\n" +
             "---------\n" +
@@ -93,7 +93,7 @@ describe("a Tic Tac Toe game on the console", () => {
 
         game.start();
 
-        expectInitialPrompt();
+        expectInitialDisplay();
         expectTurnForPlayerX(
             "1 | 2 | 3\n" +
             "---------\n" +
@@ -155,7 +155,7 @@ describe("a Tic Tac Toe game on the console", () => {
 
         game.start();
 
-        expectInitialPrompt();
+        expectInitialDisplay();
         expectTurnForPlayerX(
             "X | 2 | 3\n" +
             "---------\n" +
@@ -222,7 +222,7 @@ describe("a Tic Tac Toe game on the console", () => {
         );
     })
 
-    function expectInitialPrompt(): void {
+    function expectInitialDisplay(): void {
         expect(outputX.display.mock.calls[outputXDisplayCalls][0]).toEqual(
             "1 | 2 | 3\n" +
             "---------\n" +

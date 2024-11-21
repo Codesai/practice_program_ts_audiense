@@ -32,7 +32,7 @@ describe("Tic Tac Toe", () => {
 
         game.start();
 
-        expectInitialPrompt();
+        expectInitialDisplay();
         expectPlayerTurn(1, aGameStateDto().withFieldsWithX(Field.One).build());
         expectPlayerTurn(2, aGameStateDto().withFieldsWithX(Field.One).withFieldsWithO(Field.Four).build());
         expectPlayerTurn(3, aGameStateDto().withFieldsWithX(Field.One, Field.Two).withFieldsWithO(Field.Four).build());
@@ -52,7 +52,7 @@ describe("Tic Tac Toe", () => {
 
         game.start();
 
-        expectInitialPrompt();
+        expectInitialDisplay();
         expectPlayerTurn(1, aGameStateDto().withFieldsWithX(Field.Four).build());
         expectPlayerTurn(2, aGameStateDto().withFieldsWithX(Field.Four).withFieldsWithO(Field.One).build());
         expectPlayerTurn(3, aGameStateDto().withFieldsWithX(Field.Four, Field.Five).withFieldsWithO(Field.One).build());
@@ -76,7 +76,7 @@ describe("Tic Tac Toe", () => {
 
         game.start();
 
-        expectInitialPrompt();
+        expectInitialDisplay();
         expectPlayerTurn(1, aGameStateDto().withFieldsWithX(Field.One).build());
         expectPlayerTurn(2, aGameStateDto().withFieldsWithX(Field.One).withFieldsWithO(Field.Five).build());
         expectPlayerTurn(3, aGameStateDto().withFieldsWithX(Field.One, Field.Nine).withFieldsWithO(Field.Five).build());
@@ -93,11 +93,8 @@ describe("Tic Tac Toe", () => {
         expect(playerO.display.mock.calls[turnNumber - 1][0]).toEqual(gameStateDto);
     }
 
-    function expectInitialPrompt(): void {
-        expect(playerX.display).toHaveBeenNthCalledWith(
-            1,
-            InitialGameStateDto(),
-        );
+    function expectInitialDisplay(): void {
+        expect(playerX.display.mock.calls[0][0]).toEqual( InitialGameStateDto());
     }
 
     function InitialGameStateDto(): GameStateDto {
