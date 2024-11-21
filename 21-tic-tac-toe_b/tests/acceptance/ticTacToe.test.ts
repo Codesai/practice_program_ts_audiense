@@ -10,11 +10,11 @@ describe("a Tic Tac Toe game on the console", () => {
     let outputO: jest.Mocked<Output>;
     let game: Game;
     let outputXDisplayCalls: number;
-    let numberOfMessagesToO: number;
+    let outputODisplayCalls: number;
 
     beforeEach(() => {
         outputXDisplayCalls = 0;
-        numberOfMessagesToO = 0;
+        outputODisplayCalls = 0;
         inputX = {
             read: jest.fn(),
         };
@@ -237,14 +237,14 @@ describe("a Tic Tac Toe game on the console", () => {
         expect(outputX.display.mock.calls[outputXDisplayCalls][0]).toEqual("your turn...");
         expect(outputX.display.mock.calls[outputXDisplayCalls + 1][0]).toEqual(boardRepresentation);
         outputXDisplayCalls += 2;
-        expect(outputO.display.mock.calls[numberOfMessagesToO][0]).toEqual(boardRepresentation);
-        numberOfMessagesToO++;
+        expect(outputO.display.mock.calls[outputODisplayCalls][0]).toEqual(boardRepresentation);
+        outputODisplayCalls++;
     }
 
     function expectTurnForPlayerO(boardRepresentation: string): void {
-        expect(outputO.display.mock.calls[numberOfMessagesToO][0]).toEqual("your turn...");
-        expect(outputO.display.mock.calls[numberOfMessagesToO + 1][0]).toEqual(boardRepresentation);
-        numberOfMessagesToO += 2;
+        expect(outputO.display.mock.calls[outputODisplayCalls][0]).toEqual("your turn...");
+        expect(outputO.display.mock.calls[outputODisplayCalls + 1][0]).toEqual(boardRepresentation);
+        outputODisplayCalls += 2;
         expect(outputX.display.mock.calls[outputXDisplayCalls + 1][0]).toEqual(boardRepresentation);
         outputXDisplayCalls++;
     }
