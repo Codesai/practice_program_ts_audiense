@@ -3,8 +3,8 @@ import {GameStateDto} from "./GameStateDto";
 import {Player} from "./Player";
 
 export abstract class GameState {
-    protected readonly playerXFields: Field[];
-    protected readonly playerOFields: Field[];
+    private readonly playerXFields: Field[];
+    private readonly playerOFields: Field[];
 
     static Initial(playerX: Player, playerO: Player): GameState {
         return new TurnX([], [], playerX, playerO);
@@ -25,24 +25,6 @@ export abstract class GameState {
         return !this.hasXWon() && !this.isBoardFull() && !this.HasOWon();
     }
 
-    private isBoardFull(): boolean {
-        return (this.playerXFields.length + this.playerOFields.length) === 9;
-    }
-
-    private hasXWon(): boolean {
-        return this.playerXFields.length === 3
-            && this.playerXFields[0] === Field.One &&
-            this.playerXFields[1] === Field.Two &&
-            this.playerXFields[2] === Field.Three;
-    }
-
-    private HasOWon(): boolean {
-        return this.playerOFields.length === 3
-            && this.playerOFields[0] === Field.One &&
-            this.playerOFields[1] === Field.Two &&
-            this.playerOFields[2] === Field.Three;
-    }
-
     protected addFieldToPlayerX(field: Field): void {
         this.playerXFields.push(field);
     }
@@ -54,6 +36,14 @@ export abstract class GameState {
     protected displayTurnState(playerX: Player, playerO: Player): void {
         playerX.display(this.toDto());
         playerO.display(this.toDto());
+    }
+
+    protected nextTurnForX(playerX: Player, playerO: Player): GameState {
+        return new TurnX(this.playerXFields, this.playerOFields, playerX, playerO);
+    }
+
+    protected nextTurnForO(playerX: Player, playerO: Player): GameState {
+        return new TurnO(this.playerXFields, this.playerOFields, playerX, playerO);
     }
 
     private toDto(): GameStateDto {
@@ -71,6 +61,24 @@ export abstract class GameState {
         }
         return GameStateDto.OnGoing(playerX, playerO);
     }
+
+    private isBoardFull(): boolean {
+        return (this.playerXFields.length + this.playerOFields.length) === 9;
+    }
+
+    private hasXWon(): boolean {
+        return this.playerXFields.length === 3
+            && this.playerXFields[0] === Field.One &&
+            this.playerXFields[1] === Field.Two &&
+            this.playerXFields[2] === Field.Three;
+    }
+
+    private HasOWon(): boolean {
+        return this.playerOFields.length === 3
+            && this.playerOFields[0] === Field.One &&
+            this.playerOFields[1] === Field.Two &&
+            this.playerOFields[2] === Field.Three;
+    }
 }
 
 class TurnO extends GameState {
@@ -86,7 +94,7 @@ class TurnO extends GameState {
     turn(): GameState {
         this.addFieldToPlayerO(this.playerO.yourTurn());
         this.displayTurnState(this.playerX, this.playerO);
-        return new TurnX(this.playerXFields, this.playerOFields, this.playerX, this.playerO);
+        return this.nextTurnForX(this.playerX, this.playerO);
     }
 }
 
@@ -103,6 +111,6 @@ class TurnX extends GameState {
     turn(): GameState {
         this.addFieldToPlayerX(this.playerX.yourTurn());
         this.displayTurnState(this.playerX, this.playerO);
-        return new TurnO(this.playerXFields, this.playerOFields, this.playerX, this.playerO);
+        return this.nextTurnForO(this.playerX, this.playerO);
     }
 }
