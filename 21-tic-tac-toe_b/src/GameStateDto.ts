@@ -26,7 +26,7 @@ export class Over {
     }
 }
 
-class OnGoing {
+export class OnGoing {
 }
 
 export class GameStateDto {
@@ -34,7 +34,7 @@ export class GameStateDto {
     public readonly playerO: Field[];
     public readonly status: Over | OnGoing;
 
-    constructor(playerX: Field[], playerO: Field[], status: Over | OnGoing = new OnGoing()) {
+    constructor(playerX: Field[], playerO: Field[], status: Over | OnGoing) {
         this.playerX = playerX;
         this.playerO = playerO;
         this.status = status;

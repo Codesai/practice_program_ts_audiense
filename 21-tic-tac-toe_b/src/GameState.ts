@@ -1,4 +1,3 @@
-import {Field} from "./Field";
 import {GameStateDto} from "./GameStateDto";
 import {PlayerInteraction} from "./PlayerInteraction";
 import {Player} from "./Player";

@@ -1,14 +1,15 @@
 import {Field} from "../../src/Field";
-import {GameStateDto, Over} from "../../src/GameStateDto";
+import {GameStateDto, OnGoing, Over} from "../../src/GameStateDto";
 
 export class GameStateDtoBuilder {
     private _playerX: Field[] = [];
     private _playerO: Field[] = [];
-    private _status: Over;
+    private _status: Over | OnGoing;
 
     private constructor() {
         this._playerX = [];
         this._playerO = [];
+        this._status = new OnGoing()
     }
 
     static aGameStateDto(): GameStateDtoBuilder {
@@ -41,9 +42,6 @@ export class GameStateDtoBuilder {
     }
 
     build(): GameStateDto {
-        if (this._status) {
-            return new GameStateDto(this._playerX, this._playerO, this._status);
-        }
-        return new GameStateDto(this._playerX, this._playerO)
+       return new GameStateDto(this._playerX, this._playerO, this._status);
     }
 }
