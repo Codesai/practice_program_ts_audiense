@@ -38,11 +38,11 @@ export abstract class GameState {
         playerO.display(this.toDto());
     }
 
-    protected nextTurnForX(playerX: Player, playerO: Player): GameState {
+    protected createTurnForX(playerX: Player, playerO: Player): GameState {
         return new TurnX(this.playerXFields, this.playerOFields, playerX, playerO);
     }
 
-    protected nextTurnForO(playerX: Player, playerO: Player): GameState {
+    protected createTurnForO(playerX: Player, playerO: Player): GameState {
         return new TurnO(this.playerXFields, this.playerOFields, playerX, playerO);
     }
 
@@ -94,7 +94,7 @@ class TurnO extends GameState {
     turn(): GameState {
         this.addFieldToPlayerO(this.playerO.yourTurn());
         this.displayTurnState(this.playerX, this.playerO);
-        return this.nextTurnForX(this.playerX, this.playerO);
+        return this.createTurnForX(this.playerX, this.playerO);
     }
 }
 
@@ -111,6 +111,6 @@ class TurnX extends GameState {
     turn(): GameState {
         this.addFieldToPlayerX(this.playerX.yourTurn());
         this.displayTurnState(this.playerX, this.playerO);
-        return this.nextTurnForO(this.playerX, this.playerO);
+        return this.createTurnForO(this.playerX, this.playerO);
     }
 }
