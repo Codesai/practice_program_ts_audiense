@@ -17,8 +17,8 @@ export abstract class GameState {
 
     abstract turn(): GameState;
 
-    showInitialPromptTo(playerX: Player): void {
-        playerX.display(this.toDto());
+    showInitialMessageTo(player: Player): void {
+        player.display(this.toDto());
     }
 
     onGoing(): boolean {

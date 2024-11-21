@@ -11,12 +11,12 @@ export class Game {
     }
 
     start(): void {
-        this.showInitialPrompt();
+        this.showInitialMessage();
         this.startTurns();
     }
 
-    private showInitialPrompt(): void {
-        this.state.showInitialPromptTo(this.playerX);
+    private showInitialMessage(): void {
+        this.state.showInitialMessageTo(this.playerX);
     }
 
     private startTurns(): void {
