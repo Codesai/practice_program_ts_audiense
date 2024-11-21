@@ -1,13 +1,11 @@
 import {PlayerInteraction} from "./PlayerInteraction";
-import {GameState} from "./GameState";
+import {Board} from "./Board";
 
 export class Game {
-    private readonly xPlayerInteraction: PlayerInteraction;
-    private state: GameState;
+    private board: Board;
 
     constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction) {
-        this.xPlayerInteraction = xPlayerInteraction;
-        this.state = GameState.Initial(xPlayerInteraction, oPlayerInteraction);
+        this.board = Board.Initial(xPlayerInteraction, oPlayerInteraction);
     }
 
     start(): void {
@@ -16,12 +14,12 @@ export class Game {
     }
 
     private showInitialMessage(): void {
-        this.state.showInitialMessageTo(this.xPlayerInteraction);
+        this.board.showInitialMessage();
     }
 
     private startTurns(): void {
-        while (this.state.onGoing()) {
-            this.state = this.state.turn();
+        while (this.board.gameGoesOn()) {
+            this.board = this.board.turn();
         }
     }
 }
