@@ -6,13 +6,13 @@ export abstract class GameState {
     private readonly playerXFields: Field[];
     private readonly playerOFields: Field[];
 
-    static Initial(playerX: Player, playerO: Player): GameState {
-        return new TurnX([], [], playerX, playerO);
-    }
-
     protected constructor(playerXFields: Field[], playerOFields: Field[]) {
         this.playerXFields = playerXFields;
         this.playerOFields = playerOFields;
+    }
+
+    static Initial(playerX: Player, playerO: Player): GameState {
+        return new TurnX([], [], playerX, playerO);
     }
 
     abstract turn(): GameState;
@@ -49,7 +49,7 @@ export abstract class GameState {
     private toDto(): GameStateDto {
         const playerX = [...this.playerXFields];
         const playerO = [...this.playerOFields];
-        
+
         if (this.hasXWon()) {
             return GameStateDto.WinningX(playerX, playerO);
         }
