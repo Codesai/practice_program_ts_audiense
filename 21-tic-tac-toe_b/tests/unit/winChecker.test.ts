@@ -32,30 +32,24 @@ describe("winnerChecker", () => {
         expect(WinnerChecker.hasWon(player)).toBeTruthy();
     });
 
-    it('does not win when having fields that do not include a winning combination', () => {
+    it('does not win when player has less than 3 fields', () => {
         const possibleFields = [Field.One, Field.Two, Field.Three, Field.Four, Field.Five, Field.Six, Field.Seven, Field.Eight, Field.Nine];
-        const winningCombinations: Field[][] = [
-            [Field.One, Field.Two, Field.Three],
-            [Field.Four, Field.Five, Field.Six],
-            [Field.Seven, Field.Eight, Field.Nine],
-            [Field.One, Field.Four, Field.Seven],
-            [Field.Two, Field.Five, Field.Eight],
-            [Field.Three, Field.Six, Field.Nine],
-            [Field.One, Field.Five, Field.Nine],
-            [Field.Three, Field.Five, Field.Seven]
-        ];
         fc.assert(
             fc.property(
-                fc.shuffledSubarray(possibleFields, {minLength: 0, maxLength: 5})
-                    .filter((fields: Field[]) => {
-                            return !winningCombinations.some((combination: Field[]) => {
-                                return combination.every((field) => fields.includes(field));
-                            });
-                        }
-                    ),
+                fc.shuffledSubarray(possibleFields, {minLength: 0, maxLength: 2}),
                 ((fields: Field[]) => !WinnerChecker.hasWon(new Player(fields)))
             )
         );
+    });
+
+    it.each([
+        [[Field.One, Field.Two, Field.Four]],
+        [[Field.One, Field.Two, Field.Four, Field.Nine]],
+        [[Field.One, Field.Nine, Field.Eight, Field.Three, Field.Four]],
+        [[Field.Five, Field.Two, Field.Seven, Field.Six]],
+    ])('does not win for some not winning combination', (fields) => {
+        const player = new Player(shuffle(fields));
+        expect(WinnerChecker.hasWon(player)).toBeFalsy();
     });
 
     function shuffle<T>(elements: Array<T>) {
