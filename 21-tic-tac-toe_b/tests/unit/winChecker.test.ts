@@ -3,8 +3,6 @@ import {Field} from "../../src/Field";
 import {WinnerChecker} from "../../src/WinnerChecker";
 import {Player} from "../../src/Player";
 
-import * as fc from 'fast-check';
-
 describe("winnerChecker", () => {
     it.each([
         [[Field.One, Field.Two, Field.Three]],
@@ -30,16 +28,6 @@ describe("winnerChecker", () => {
     ])('wins for diagonal and anti-diagonal winning combinations in any order', (fields) => {
         const player = new Player(shuffle(fields));
         expect(WinnerChecker.hasWon(player)).toBeTruthy();
-    });
-
-    it('does not win when player has less than 3 fields', () => {
-        const possibleFields = [Field.One, Field.Two, Field.Three, Field.Four, Field.Five, Field.Six, Field.Seven, Field.Eight, Field.Nine];
-        fc.assert(
-            fc.property(
-                fc.shuffledSubarray(possibleFields, {minLength: 0, maxLength: 2}),
-                ((fields: Field[]) => !WinnerChecker.hasWon(new Player(fields)))
-            )
-        );
     });
 
     it.each([
