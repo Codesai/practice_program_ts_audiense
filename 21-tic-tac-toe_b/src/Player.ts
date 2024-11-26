@@ -12,7 +12,7 @@ export class Player {
         this.fields.push(field);
     }
 
-    getFields() {
+    toDto() {
         return [...this.fields];
     }
 

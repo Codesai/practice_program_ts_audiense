@@ -50,15 +50,15 @@ export abstract class Board {
     }
 
     private NoWinnerDto(): GameStateDto {
-        return GameStateDto.NoWinner(this.xPlayer.getFields(), this.oPlayer.getFields());
+        return GameStateDto.NoWinner(this.xPlayer.toDto(), this.oPlayer.toDto());
     }
 
     private OnGoingDto(): GameStateDto {
-        return GameStateDto.OnGoing(this.xPlayer.getFields(), this.oPlayer.getFields());
+        return GameStateDto.OnGoing(this.xPlayer.toDto(), this.oPlayer.toDto());
     }
 
     private isBoardFull(): boolean {
-        return (this.xPlayer.getFields().length + this.oPlayer.getFields().length) === 9;
+        return (this.xPlayer.toDto().length + this.oPlayer.toDto().length) === 9;
     }
 }
 
@@ -75,7 +75,7 @@ class TurnO extends Board {
 
     protected toDto(): GameStateDto {
         if (this.oPlayer.hasWon()) {
-            return GameStateDto.WinningO(this.xPlayer.getFields(), this.oPlayer.getFields());
+            return GameStateDto.WinningO(this.xPlayer.toDto(), this.oPlayer.toDto());
         }
         return super.toDto();
     }
@@ -94,7 +94,7 @@ class TurnX extends Board {
 
     protected toDto(): GameStateDto {
         if (this.xPlayer.hasWon()) {
-            return GameStateDto.WinningX(this.xPlayer.getFields(), this.oPlayer.getFields());
+            return GameStateDto.WinningX(this.xPlayer.toDto(), this.oPlayer.toDto());
         }
         return super.toDto();
     }

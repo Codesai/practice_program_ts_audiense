@@ -2,7 +2,7 @@ import {Player} from "./Player";
 import {Field} from "./Field";
 
 export class WinnerChecker {
-    static hasWon(player: Player) {
+    static hasWon(player: Player): boolean {
         const WINNING_STATES: Field[][] = [
             [Field.One, Field.Two, Field.Three],
             [Field.Four, Field.Five, Field.Six],
@@ -14,10 +14,8 @@ export class WinnerChecker {
             [Field.Three, Field.Five, Field.Seven]
         ];
 
-        const fields = player.getFields();
-
-        return fields.length >= 3 &&  WINNING_STATES.some((combination: Field[]) => {
-            return combination.every((field) => fields.includes(field));
+        return WINNING_STATES.some((combination: Field[]) => {
+            return combination.every((field) => player.owns(field));
         });
     }
 }

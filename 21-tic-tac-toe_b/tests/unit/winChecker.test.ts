@@ -32,7 +32,7 @@ describe("winnerChecker", () => {
         expect(WinnerChecker.hasWon(player)).toBeTruthy();
     });
 
-    it('does not win having three fields forming a not winning combination', () => {
+    it('does not win when having fields that do not include a winning combination', () => {
         const possibleFields = [Field.One, Field.Two, Field.Three, Field.Four, Field.Five, Field.Six, Field.Seven, Field.Eight, Field.Nine];
         const winningCombinations: Field[][] = [
             [Field.One, Field.Two, Field.Three],
