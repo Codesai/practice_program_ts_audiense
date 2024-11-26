@@ -1,4 +1,5 @@
 import {Field} from "./Field";
+import {WinnerChecker} from "./WinnerChecker";
 
 export class Player {
     private readonly fields: Field[];
@@ -16,9 +17,10 @@ export class Player {
     }
 
     hasWon(): boolean {
-        return this.fields.length === 3
-            && this.fields[0] === Field.One &&
-            this.fields[1] === Field.Two &&
-            this.fields[2] === Field.Three;
+        return WinnerChecker.hasWon(this);
+    }
+
+    owns(field: Field): boolean {
+        return this.fields.includes(field);
     }
 }
