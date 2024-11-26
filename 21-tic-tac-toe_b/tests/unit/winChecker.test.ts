@@ -31,6 +31,9 @@ describe("winnerChecker", () => {
     });
 
     it.each([
+        [[]],
+        [[Field.Six]],
+        [[Field.One, Field.Two]],
         [[Field.One, Field.Two, Field.Four]],
         [[Field.One, Field.Two, Field.Four, Field.Nine]],
         [[Field.One, Field.Nine, Field.Eight, Field.Three, Field.Four]],
