@@ -1,7 +1,7 @@
-import {Game} from "../../src/Game";
-import {PlayerInteraction} from "../../src/PlayerInteraction";
-import {GameStateDto} from "../../src/GameStateDto";
-import {Field} from "../../src/Field";
+import {Game} from "../../src/app/Game";
+import {PlayerInteraction} from "../../src/app/PlayerInteraction";
+import {GameStateDto} from "../../src/app/GameStateDto";
+import {Field} from "../../src/app/Field";
 import {aGameStateDto, initialGameStateDto} from "../helpers/GameStateDtoBuilder";
 
 describe("Tic Tac Toe", () => {

@@ -1,8 +1,8 @@
-import {Field} from "./Field";
-import {GameStateDto, OnGoing, Over, Result} from "./GameStateDto";
-import {PlayerInteraction} from "./PlayerInteraction";
-import {Input} from "./Input";
-import {Output} from "./Output";
+import {Field} from "../Field";
+import {GameStateDto, OnGoing, Over, Result} from "../GameStateDto";
+import {PlayerInteraction} from "../PlayerInteraction";
+import {Input} from "../ports/Input";
+import {Output} from "../ports/Output";
 
 const fieldsByRepresentation = {
     '1': Field.One,

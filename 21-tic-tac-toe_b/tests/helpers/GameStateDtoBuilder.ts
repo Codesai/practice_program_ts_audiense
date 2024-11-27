@@ -1,5 +1,5 @@
-import {Field} from "../../src/Field";
-import {GameStateDto, OnGoing, Over} from "../../src/GameStateDto";
+import {Field} from "../../src/app/Field";
+import {GameStateDto, OnGoing, Over} from "../../src/app/GameStateDto";
 
 export function initialGameStateDto(): GameStateDto {
     return GameStateDtoBuilder.aGameStateDto().build()

@@ -1,4 +1,4 @@
-import {Input} from "../Input";
+import {Input} from "../app/ports/Input";
 import input from "readline-sync";
 
 export class ConsoleInput implements Input {

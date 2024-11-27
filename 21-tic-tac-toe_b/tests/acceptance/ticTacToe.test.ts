@@ -1,7 +1,7 @@
-import {Input} from "../../src/Input";
-import {Output} from "../../src/Output";
-import {Game} from "../../src/Game";
-import {TextBasedPlayerInteraction} from "../../src/TextBasedPlayerInteraction";
+import {Input} from "../../src/app/ports/Input";
+import {Output} from "../../src/app/ports/Output";
+import {Game} from "../../src/app/Game";
+import {TextBasedPlayerInteraction} from "../../src/app/playerInteractions/TextBasedPlayerInteraction";
 
 describe("a Tic Tac Toe game on the console", () => {
     let inputX: jest.Mocked<Input>;

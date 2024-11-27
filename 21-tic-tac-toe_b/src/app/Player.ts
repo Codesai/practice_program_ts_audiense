@@ -1,8 +1,17 @@
 import {Field} from "./Field";
-import {WinnerChecker} from "./WinnerChecker";
 import {PlayerInteraction} from "./PlayerInteraction";
 
 export class Player {
+    private readonly WINNING_COMBINATIONS: Field[][] = [
+        [Field.One, Field.Two, Field.Three],
+        [Field.Four, Field.Five, Field.Six],
+        [Field.Seven, Field.Eight, Field.Nine],
+        [Field.One, Field.Four, Field.Seven],
+        [Field.Two, Field.Five, Field.Eight],
+        [Field.Three, Field.Six, Field.Nine],
+        [Field.One, Field.Five, Field.Nine],
+        [Field.Three, Field.Five, Field.Seven]
+    ];
     private readonly fields: Field[];
     private readonly playerInteraction: PlayerInteraction;
 
@@ -12,11 +21,9 @@ export class Player {
     }
 
     hasWon(): boolean {
-        return WinnerChecker.hasWon(this);
-    }
-
-    owns(field: Field): boolean {
-        return this.fields.includes(field);
+        return this.WINNING_COMBINATIONS.some((combination: Field[]): boolean => {
+            return combination.every((field: Field) => this.owns(field));
+        });
     }
 
     playTurn(): void {
@@ -33,5 +40,9 @@ export class Player {
 
     private addField(field: Field) {
         this.fields.push(field);
+    }
+
+    private owns(field: Field): boolean {
+        return this.fields.includes(field);
     }
 }

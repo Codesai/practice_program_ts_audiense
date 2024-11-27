@@ -1,10 +1,9 @@
-import {Field} from "../../src/Field";
+import {Field} from "../../src/app/Field";
 
-import {WinnerChecker} from "../../src/WinnerChecker";
-import {Player} from "../../src/Player";
-import {PlayerInteraction} from "../../src/PlayerInteraction";
+import {Player} from "../../src/app/Player";
+import {PlayerInteraction} from "../../src/app/PlayerInteraction";
 
-describe("winnerChecker", () => {
+describe("A player", () => {
 
     it.each([
         [[Field.One, Field.Two, Field.Three]],
@@ -12,7 +11,7 @@ describe("winnerChecker", () => {
         [[Field.Seven, Field.Eight, Field.Nine]],
     ])('wins for all rows winning combinations in any order', (fields) => {
         const player = aPlayer(fields);
-        expect(WinnerChecker.hasWon(player)).toBeTruthy();
+        expect(player.hasWon()).toBeTruthy();
     });
 
     it.each([
@@ -21,7 +20,7 @@ describe("winnerChecker", () => {
         [[Field.Three, Field.Six, Field.Nine]],
     ])('wins for all columns winning combinations in any order', (fields) => {
         const player = aPlayer(shuffle(fields));
-        expect(WinnerChecker.hasWon(player)).toBeTruthy();
+        expect(player.hasWon()).toBeTruthy();
     });
 
     it.each([
@@ -29,7 +28,7 @@ describe("winnerChecker", () => {
         [[Field.Three, Field.Five, Field.Seven]],
     ])('wins for diagonal and anti-diagonal winning combinations in any order', (fields) => {
         const player = aPlayer(shuffle(fields));
-        expect(WinnerChecker.hasWon(player)).toBeTruthy();
+        expect(player.hasWon()).toBeTruthy();
     });
 
     it.each([
@@ -42,10 +41,10 @@ describe("winnerChecker", () => {
         [[Field.Five, Field.Two, Field.Seven, Field.Six]],
     ])('does not win for some not winning combination', (fields) => {
         const player = aPlayer(shuffle(fields));
-        expect(WinnerChecker.hasWon(player)).toBeFalsy();
+        expect(player.hasWon()).toBeFalsy();
     });
 
-    function shuffle<T>(elements: Array<T>) {
+    function shuffle<T>(elements: Array<T>): Array<T> {
         return elements.sort(() => Math.random() - 0.5);
     }
 
