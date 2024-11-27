@@ -29,6 +29,10 @@ export abstract class Board {
         return !this.xPlayer.hasWon() && !this.isBoardFull() && !this.oPlayer.hasWon();
     }
 
+    protected abstract currentPlayer(): Player;
+
+    protected abstract createWinningDto(): GameStateDto;
+
     protected playTurnOf(player: Player): void {
         player.playTurn();
         this.displayStateAfterTurn();
@@ -42,7 +46,10 @@ export abstract class Board {
         return new BoardWhenTurnForO(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
     }
 
-    protected toDto(): GameStateDto {
+    private toDto(): GameStateDto {
+        if (this.currentPlayer().hasWon()) {
+            return this.createWinningDto();
+        }
         if (this.gameGoesOn()) {
             return this.OnGoingDto();
         }
@@ -58,7 +65,7 @@ export abstract class Board {
     }
 
     private isBoardFull(): boolean {
-        return (this.xPlayer.toDto().length + this.oPlayer.toDto().length) === 9;
+        return (this.xPlayer.numberOfFields() + this.oPlayer.numberOfFields()) === 9;
     }
 
     private displayStateAfterTurn(): void {
@@ -82,11 +89,12 @@ class BoardWhenTurnForO extends Board {
         return this.turnForX();
     }
 
-    protected toDto(): GameStateDto {
-        if (this.player.hasWon()) {
-            return GameStateDto.WinningO(this.otherPlayer.toDto(), this.player.toDto());
-        }
-        return super.toDto();
+    protected currentPlayer(): Player {
+        return this.player;
+    }
+
+    protected createWinningDto(): GameStateDto {
+        return GameStateDto.WinningO(this.otherPlayer.toDto(), this.player.toDto());
     }
 }
 
@@ -101,14 +109,15 @@ class BoardWhenTurnForX extends Board {
     }
 
     turn(): Board {
-        this.playTurnOf(this.player)
+        this.playTurnOf(this.currentPlayer())
         return this.turnForO();
     }
 
-    protected toDto(): GameStateDto {
-        if (this.player.hasWon()) {
-            return GameStateDto.WinningX(this.player.toDto(), this.otherPlayer.toDto());
-        }
-        return super.toDto();
+    protected currentPlayer() {
+        return this.player;
+    }
+
+    protected createWinningDto() {
+        return GameStateDto.WinningX(this.player.toDto(), this.otherPlayer.toDto());
     }
 }

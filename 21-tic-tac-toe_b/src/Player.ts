@@ -27,6 +27,10 @@ export class Player {
         return [...this.fields];
     }
 
+    numberOfFields(): number {
+        return this.fields.length;
+    }
+
     private addField(field: Field) {
         this.fields.push(field);
     }
