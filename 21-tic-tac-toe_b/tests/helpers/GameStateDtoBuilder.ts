@@ -9,7 +9,7 @@ export function aGameStateDto(): GameStateDtoBuilder {
     return GameStateDtoBuilder.aGameStateDto();
 }
 
-class GameStateDtoBuilder {
+export class GameStateDtoBuilder {
     private _playerX: Field[] = [];
     private _playerO: Field[] = [];
     private _status: Over | OnGoing;
@@ -22,6 +22,16 @@ class GameStateDtoBuilder {
 
     static aGameStateDto(): GameStateDtoBuilder {
         return new GameStateDtoBuilder();
+    }
+
+    addingFieldToX(field: Field): GameStateDtoBuilder {
+        this._playerX.push(field);
+        return this;
+    }
+
+    addingFieldToO(field: Field): GameStateDtoBuilder {
+        this._playerO.push(field);
+        return this;
     }
 
     withFieldsWithX(...playerX: Field[]): GameStateDtoBuilder {

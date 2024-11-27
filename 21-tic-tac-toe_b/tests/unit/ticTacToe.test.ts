@@ -2,12 +2,13 @@ import {Game} from "../../src/app/Game";
 import {PlayerInteraction} from "../../src/app/PlayerInteraction";
 import {GameStateDto} from "../../src/app/GameStateDto";
 import {Field} from "../../src/app/Field";
-import {aGameStateDto, initialGameStateDto} from "../helpers/GameStateDtoBuilder";
+import {aGameStateDto, GameStateDtoBuilder, initialGameStateDto} from "../helpers/GameStateDtoBuilder";
 
 describe("Tic Tac Toe", () => {
     let playerX: jest.Mocked<PlayerInteraction>;
     let playerO: jest.Mocked<PlayerInteraction>;
     let game: Game;
+    let gameDto: GameStateDtoBuilder;
 
     beforeEach(() => {
         playerX = {
@@ -18,6 +19,7 @@ describe("Tic Tac Toe", () => {
             display: jest.fn(),
             yourTurn: jest.fn(),
         };
+        gameDto = aGameStateDto();
         game = new Game(playerX, playerO);
     });
 
@@ -33,11 +35,11 @@ describe("Tic Tac Toe", () => {
         game.start();
 
         expectInitialDisplay();
-        expectPlayerTurn(1, aGameStateDto().withFieldsWithX(Field.One).build());
-        expectPlayerTurn(2, aGameStateDto().withFieldsWithX(Field.One).withFieldsWithO(Field.Four).build());
-        expectPlayerTurn(3, aGameStateDto().withFieldsWithX(Field.One, Field.Two).withFieldsWithO(Field.Four).build());
-        expectPlayerTurn(4, aGameStateDto().withFieldsWithX(Field.One, Field.Two).withFieldsWithO(Field.Four, Field.Five).build());
-        expectPlayerTurn(5, aGameStateDto().withFieldsWithX(Field.One, Field.Two, Field.Three).withFieldsWithO(Field.Four, Field.Five).winningPlayerX().build());
+        expectPlayerTurn(1, gameDto.addingFieldToX(Field.One).build());
+        expectPlayerTurn(2, gameDto.addingFieldToO(Field.Four).build());
+        expectPlayerTurn(3, gameDto.addingFieldToX( Field.Two).build());
+        expectPlayerTurn(4, gameDto.addingFieldToO(Field.Five).build());
+        expectPlayerTurn(5, gameDto.addingFieldToX(Field.Three).winningPlayerX().build());
     });
 
     it("player O wins after her third turn", () => {
@@ -53,12 +55,12 @@ describe("Tic Tac Toe", () => {
         game.start();
 
         expectInitialDisplay();
-        expectPlayerTurn(1, aGameStateDto().withFieldsWithX(Field.Four).build());
-        expectPlayerTurn(2, aGameStateDto().withFieldsWithX(Field.Four).withFieldsWithO(Field.One).build());
-        expectPlayerTurn(3, aGameStateDto().withFieldsWithX(Field.Four, Field.Five).withFieldsWithO(Field.One).build());
-        expectPlayerTurn(4, aGameStateDto().withFieldsWithX(Field.Four, Field.Five).withFieldsWithO(Field.One, Field.Two).build());
-        expectPlayerTurn(5, aGameStateDto().withFieldsWithX(Field.Four, Field.Five, Field.Seven).withFieldsWithO(Field.One, Field.Two).build());
-        expectPlayerTurn(6, aGameStateDto().withFieldsWithX(Field.Four, Field.Five, Field.Seven).withFieldsWithO(Field.One, Field.Two, Field.Three).winningPlayerO().build());
+        expectPlayerTurn(1, gameDto.addingFieldToX(Field.Four).build());
+        expectPlayerTurn(2, gameDto.addingFieldToO(Field.One).build());
+        expectPlayerTurn(3, gameDto.addingFieldToX(Field.Five).build());
+        expectPlayerTurn(4, gameDto.addingFieldToO(Field.Two).build());
+        expectPlayerTurn(5, gameDto.addingFieldToX(Field.Seven).build());
+        expectPlayerTurn(6, gameDto.addingFieldToO(Field.Three).winningPlayerO().build());
     });
 
     it("there is a draw when X1 → O5 → X9 → O2 → X8 → O7 → X3 → O6 → X4", () => {
@@ -77,15 +79,15 @@ describe("Tic Tac Toe", () => {
         game.start();
 
         expectInitialDisplay();
-        expectPlayerTurn(1, aGameStateDto().withFieldsWithX(Field.One).build());
-        expectPlayerTurn(2, aGameStateDto().withFieldsWithX(Field.One).withFieldsWithO(Field.Five).build());
-        expectPlayerTurn(3, aGameStateDto().withFieldsWithX(Field.One, Field.Nine).withFieldsWithO(Field.Five).build());
-        expectPlayerTurn(4, aGameStateDto().withFieldsWithX(Field.One, Field.Nine).withFieldsWithO(Field.Five, Field.Two).build());
-        expectPlayerTurn(5, aGameStateDto().withFieldsWithX(Field.One, Field.Nine, Field.Eight).withFieldsWithO(Field.Five, Field.Two).build());
-        expectPlayerTurn(6, aGameStateDto().withFieldsWithX(Field.One, Field.Nine, Field.Eight).withFieldsWithO(Field.Five, Field.Two, Field.Seven).build());
-        expectPlayerTurn(7, aGameStateDto().withFieldsWithX(Field.One, Field.Nine, Field.Eight, Field.Three).withFieldsWithO(Field.Five, Field.Two, Field.Seven).build());
-        expectPlayerTurn(8, aGameStateDto().withFieldsWithX(Field.One, Field.Nine, Field.Eight, Field.Three).withFieldsWithO(Field.Five, Field.Two, Field.Seven, Field.Six).build());
-        expectPlayerTurn(9, aGameStateDto().withFieldsWithX(Field.One, Field.Nine, Field.Eight, Field.Three, Field.Four).withFieldsWithO(Field.Five, Field.Two, Field.Seven, Field.Six).withNoOneWinning().build());
+        expectPlayerTurn(1, gameDto.addingFieldToX(Field.One).build());
+        expectPlayerTurn(2, gameDto.addingFieldToO(Field.Five).build());
+        expectPlayerTurn(3, gameDto.addingFieldToX(Field.Nine).build());
+        expectPlayerTurn(4, gameDto.addingFieldToO(Field.Two).build());
+        expectPlayerTurn(5, gameDto.addingFieldToX(Field.Eight).build());
+        expectPlayerTurn(6, gameDto.addingFieldToO(Field.Seven).build());
+        expectPlayerTurn(7, gameDto.addingFieldToX(Field.Three).build());
+        expectPlayerTurn(8, gameDto.addingFieldToO(Field.Six).build());
+        expectPlayerTurn(9, gameDto.addingFieldToX(Field.Four).withNoOneWinning().build());
     })
 
     function expectPlayerTurn(turnNumber: number, gameStateDto: GameStateDto): void {
