@@ -1,7 +1,15 @@
 import {Field} from "../../src/Field";
 import {GameStateDto, OnGoing, Over} from "../../src/GameStateDto";
 
-export class GameStateDtoBuilder {
+export function initialGameStateDto(): GameStateDto {
+    return GameStateDtoBuilder.aGameStateDto().build()
+}
+
+export function aGameStateDto(): GameStateDtoBuilder {
+    return GameStateDtoBuilder.aGameStateDto();
+}
+
+class GameStateDtoBuilder {
     private _playerX: Field[] = [];
     private _playerO: Field[] = [];
     private _status: Over | OnGoing;

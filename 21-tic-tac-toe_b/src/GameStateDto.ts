@@ -1,6 +1,6 @@
 import {Field} from "./Field";
 
-enum Result {
+export enum Result {
     X_Wins,
     O_Wins,
     Draw,

@@ -2,7 +2,7 @@ import {Game} from "../../src/Game";
 import {PlayerInteraction} from "../../src/PlayerInteraction";
 import {GameStateDto} from "../../src/GameStateDto";
 import {Field} from "../../src/Field";
-import {GameStateDtoBuilder} from "../helpers/GameStateDtoBuilder";
+import {aGameStateDto, initialGameStateDto} from "../helpers/GameStateDtoBuilder";
 
 describe("Tic Tac Toe", () => {
     let playerX: jest.Mocked<PlayerInteraction>;
@@ -94,14 +94,6 @@ describe("Tic Tac Toe", () => {
     }
 
     function expectInitialDisplay(): void {
-        expect(playerX.display.mock.calls[0][0]).toEqual(InitialGameStateDto());
-    }
-
-    function InitialGameStateDto(): GameStateDto {
-        return GameStateDtoBuilder.aGameStateDto().build()
-    }
-
-    function aGameStateDto(): GameStateDtoBuilder {
-        return GameStateDtoBuilder.aGameStateDto();
+        expect(playerX.display.mock.calls[0][0]).toEqual(initialGameStateDto());
     }
 });

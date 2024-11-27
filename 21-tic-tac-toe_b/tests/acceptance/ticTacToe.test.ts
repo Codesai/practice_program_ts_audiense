@@ -48,36 +48,36 @@ describe("a Tic Tac Toe game on the console", () => {
             "---------\n" +
             "4 | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9"
+            "7 | 8 | 9\n"
         );
         expectTurnForPlayerO(
             "X | 2 | 3\n" +
             "---------\n" +
             "O | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerX(
             "X | X | 3\n" +
             "---------\n" +
             "O | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerO(
             "X | X | 3\n" +
             "---------\n" +
             "O | O | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerX(
             "X | X | X\n" +
             "---------\n" +
             "O | O | 6\n" +
             "---------\n" +
-            "7 | 8 | 9|n" +
-            "X wins!",
+            "7 | 8 | 9\n" +
+            "X wins!\n",
         );
     });
 
@@ -99,55 +99,54 @@ describe("a Tic Tac Toe game on the console", () => {
             "---------\n" +
             "X | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerO(
             "O | 2 | 3\n" +
             "---------\n" +
             "X | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerX(
             "O | 2 | 3\n" +
             "---------\n" +
             "X | X | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerO(
             "O | O | 3\n" +
             "---------\n" +
             "X | X | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerX(
             "O | O | 3\n" +
             "---------\n" +
             "X | X | 6\n" +
             "---------\n" +
-            "X | 8 | 9",
+            "X | 8 | 9\n",
         );
         expectTurnForPlayerO(
-            "O | O | 0\n" +
+            "O | O | O\n" +
             "---------\n" +
             "X | X | 6\n" +
             "---------\n" +
             "X | 8 | 9\n" +
-            "O wins!",
+            "O wins!\n",
         );
     });
 
     it("there is a draw when X1 → O5 → X9 → O2 → X8 → O7 → X3 → O6 → X4", () => {
-        inputO.read
+        inputX.read
             .mockReturnValueOnce("1")
             .mockReturnValueOnce("9")
             .mockReturnValueOnce("8")
-            .mockReturnValueOnce("8")
             .mockReturnValueOnce("3")
             .mockReturnValueOnce("4");
-        inputX.read
+        inputO.read
             .mockReturnValueOnce("5")
             .mockReturnValueOnce("2")
             .mockReturnValueOnce("7")
@@ -161,56 +160,56 @@ describe("a Tic Tac Toe game on the console", () => {
             "---------\n" +
             "4 | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9"
+            "7 | 8 | 9\n"
         );
         expectTurnForPlayerO(
             "X | 2 | 3\n" +
             "---------\n" +
             "4 | O | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         expectTurnForPlayerX(
             "X | 2 | 3\n" +
             "---------\n" +
             "4 | O | 6\n" +
             "---------\n" +
-            "7 | 8 | X",
+            "7 | 8 | X\n",
         );
         expectTurnForPlayerO(
             "X | O | 3\n" +
             "---------\n" +
             "4 | O | 6\n" +
             "---------\n" +
-            "7 | 8 | X",
+            "7 | 8 | X\n",
         );
         expectTurnForPlayerX(
             "X | O | 3\n" +
             "---------\n" +
             "4 | O | 6\n" +
             "---------\n" +
-            "7 | X | X",
+            "7 | X | X\n",
         );
         expectTurnForPlayerO(
             "X | O | 3\n" +
             "---------\n" +
             "4 | O | 6\n" +
             "---------\n" +
-            "O | X | X",
+            "O | X | X\n",
         );
         expectTurnForPlayerX(
             "X | O | X\n" +
             "---------\n" +
             "4 | O | 6\n" +
             "---------\n" +
-            "O | X | X",
+            "O | X | X\n",
         );
         expectTurnForPlayerO(
             "X | O | X\n" +
             "---------\n" +
             "4 | O | O\n" +
             "---------\n" +
-            "O | X | X",
+            "O | X | X\n",
         );
         expectTurnForPlayerX(
             "X | O | X\n" +
@@ -218,7 +217,7 @@ describe("a Tic Tac Toe game on the console", () => {
             "X | O | O\n" +
             "---------\n" +
             "O | X | X\n" +
-            "Draw!",
+            "Draw!\n",
         );
     })
 
@@ -228,7 +227,7 @@ describe("a Tic Tac Toe game on the console", () => {
             "---------\n" +
             "4 | 5 | 6\n" +
             "---------\n" +
-            "7 | 8 | 9",
+            "7 | 8 | 9\n",
         );
         outputXDisplayCalls++;
     }
@@ -245,7 +244,7 @@ describe("a Tic Tac Toe game on the console", () => {
         expect(outputO.display.mock.calls[outputODisplayCalls][0]).toEqual("your turn...");
         expect(outputO.display.mock.calls[outputODisplayCalls + 1][0]).toEqual(boardRepresentation);
         outputODisplayCalls += 2;
-        expect(outputX.display.mock.calls[outputXDisplayCalls + 1][0]).toEqual(boardRepresentation);
+        expect(outputX.display.mock.calls[outputXDisplayCalls][0]).toEqual(boardRepresentation);
         outputXDisplayCalls++;
     }
 });

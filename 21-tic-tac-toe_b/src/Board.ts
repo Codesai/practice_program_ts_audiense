@@ -3,10 +3,10 @@ import {PlayerInteraction} from "./PlayerInteraction";
 import {Player} from "./Player";
 
 export abstract class Board {
-    protected readonly xPlayer: Player;
-    protected readonly oPlayer: Player;
-    protected readonly xPlayerInteraction: PlayerInteraction;
-    protected readonly oPlayerInteraction: PlayerInteraction;
+    private readonly xPlayer: Player;
+    private readonly oPlayer: Player;
+    private readonly xPlayerInteraction: PlayerInteraction;
+    private readonly oPlayerInteraction: PlayerInteraction;
 
     protected constructor(xPlayer: Player, oPlayer: Player, xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction) {
         this.xPlayer = xPlayer;
@@ -16,7 +16,7 @@ export abstract class Board {
     }
 
     static Initial(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction): Board {
-        return new TurnX(xPlayerInteraction, oPlayerInteraction, new Player([]), new Player([]));
+        return new BoardWhenTurnForX(xPlayerInteraction, oPlayerInteraction, new Player([], xPlayerInteraction), new Player([], oPlayerInteraction));
     }
 
     abstract turn(): Board;
@@ -29,21 +29,21 @@ export abstract class Board {
         return !this.xPlayer.hasWon() && !this.isBoardFull() && !this.oPlayer.hasWon();
     }
 
-    protected displayStateAfterTurn(): void {
-        this.xPlayerInteraction.display(this.toDto());
-        this.oPlayerInteraction.display(this.toDto());
+    protected playTurnOf(player: Player): void {
+        player.playTurn();
+        this.displayStateAfterTurn();
     }
 
-    protected createTurnForX(): Board {
-        return new TurnX(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
+    protected turnForX(): Board {
+        return new BoardWhenTurnForX(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
     }
 
-    protected createTurnForO(): Board {
-        return new TurnO(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
+    protected turnForO(): Board {
+        return new BoardWhenTurnForO(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
     }
 
     protected toDto(): GameStateDto {
-        if(this.gameGoesOn()) {
+        if (this.gameGoesOn()) {
             return this.OnGoingDto();
         }
         return this.NoWinnerDto();
@@ -60,41 +60,54 @@ export abstract class Board {
     private isBoardFull(): boolean {
         return (this.xPlayer.toDto().length + this.oPlayer.toDto().length) === 9;
     }
+
+    private displayStateAfterTurn(): void {
+        this.xPlayerInteraction.display(this.toDto());
+        this.oPlayerInteraction.display(this.toDto());
+    }
 }
 
-class TurnO extends Board {
+class BoardWhenTurnForO extends Board {
+    private readonly player: Player;
+    private readonly otherPlayer: Player;
+
     constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction, xPlayer: Player, oPlayer: Player) {
         super(xPlayer, oPlayer, xPlayerInteraction, oPlayerInteraction);
+        this.player = oPlayer;
+        this.otherPlayer = xPlayer;
     }
 
     turn(): Board {
-        this.oPlayer.addField(this.oPlayerInteraction.yourTurn());
-        this.displayStateAfterTurn();
-        return this.createTurnForX();
+        this.playTurnOf(this.player)
+        return this.turnForX();
     }
 
     protected toDto(): GameStateDto {
-        if (this.oPlayer.hasWon()) {
-            return GameStateDto.WinningO(this.xPlayer.toDto(), this.oPlayer.toDto());
+        if (this.player.hasWon()) {
+            return GameStateDto.WinningO(this.otherPlayer.toDto(), this.player.toDto());
         }
         return super.toDto();
     }
 }
 
-class TurnX extends Board {
+class BoardWhenTurnForX extends Board {
+    private readonly player: Player;
+    private readonly otherPlayer: Player;
+
     constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction, xPlayer: Player, oPlayer: Player) {
         super(xPlayer, oPlayer, xPlayerInteraction, oPlayerInteraction);
+        this.player = xPlayer;
+        this.otherPlayer = oPlayer;
     }
 
     turn(): Board {
-        this.xPlayer.addField(this.xPlayerInteraction.yourTurn());
-        this.displayStateAfterTurn();
-        return this.createTurnForO();
+        this.playTurnOf(this.player)
+        return this.turnForO();
     }
 
     protected toDto(): GameStateDto {
-        if (this.xPlayer.hasWon()) {
-            return GameStateDto.WinningX(this.xPlayer.toDto(), this.oPlayer.toDto());
+        if (this.player.hasWon()) {
+            return GameStateDto.WinningX(this.player.toDto(), this.otherPlayer.toDto());
         }
         return super.toDto();
     }

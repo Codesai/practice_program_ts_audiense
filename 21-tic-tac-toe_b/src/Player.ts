@@ -1,19 +1,14 @@
 import {Field} from "./Field";
 import {WinnerChecker} from "./WinnerChecker";
+import {PlayerInteraction} from "./PlayerInteraction";
 
 export class Player {
     private readonly fields: Field[];
+    private readonly playerInteraction: PlayerInteraction;
 
-    constructor(fields: Field[]) {
+    constructor(fields: Field[], playerInteraction: PlayerInteraction) {
         this.fields = fields;
-    }
-
-    addField(field: Field) {
-        this.fields.push(field);
-    }
-
-    toDto() {
-        return [...this.fields];
+        this.playerInteraction = playerInteraction;
     }
 
     hasWon(): boolean {
@@ -22,5 +17,17 @@ export class Player {
 
     owns(field: Field): boolean {
         return this.fields.includes(field);
+    }
+
+    playTurn(): void {
+        this.addField(this.playerInteraction.yourTurn());
+    }
+
+    toDto(): Field[] {
+        return [...this.fields];
+    }
+
+    private addField(field: Field) {
+        this.fields.push(field);
     }
 }
