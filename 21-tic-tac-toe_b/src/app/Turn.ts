@@ -2,7 +2,7 @@ import {GameStateDto} from "./GameStateDto";
 import {PlayerInteraction} from "./PlayerInteraction";
 import {Player} from "./Player";
 
-export abstract class Board {
+export abstract class Turn {
     private readonly xPlayer: Player;
     private readonly oPlayer: Player;
     private readonly xPlayerInteraction: PlayerInteraction;
@@ -15,17 +15,17 @@ export abstract class Board {
         this.oPlayerInteraction = oPlayerInteraction;
     }
 
-    static Initial(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction): Board {
-        return new BoardWhenTurnForX(xPlayerInteraction, oPlayerInteraction, new Player([], xPlayerInteraction), new Player([], oPlayerInteraction));
+    static Initial(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction): Turn {
+        return new TurnForX(xPlayerInteraction, oPlayerInteraction, new Player([], xPlayerInteraction), new Player([], oPlayerInteraction));
     }
 
-    abstract turn(): Board;
+    abstract play(): Turn;
 
     showInitialMessage(): void {
         this.xPlayerInteraction.display(this.toDto());
     }
 
-    gameGoesOn(): boolean {
+    thereIsNext(): boolean {
         return !this.xPlayer.hasWon() && !this.isBoardFull() && !this.oPlayer.hasWon();
     }
 
@@ -38,19 +38,19 @@ export abstract class Board {
         this.displayStateAfterTurn();
     }
 
-    protected turnForX(): Board {
-        return new BoardWhenTurnForX(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
+    protected turnForX(): Turn {
+        return new TurnForX(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
     }
 
-    protected turnForO(): Board {
-        return new BoardWhenTurnForO(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
+    protected turnForO(): Turn {
+        return new TurnForO(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
     }
 
     private toDto(): GameStateDto {
         if (this.currentPlayer().hasWon()) {
             return this.createWinningDto();
         }
-        if (this.gameGoesOn()) {
+        if (this.thereIsNext()) {
             return this.OnGoingDto();
         }
         return this.NoWinnerDto();
@@ -74,7 +74,7 @@ export abstract class Board {
     }
 }
 
-class BoardWhenTurnForO extends Board {
+class TurnForO extends Turn {
     private readonly player: Player;
     private readonly otherPlayer: Player;
 
@@ -84,7 +84,7 @@ class BoardWhenTurnForO extends Board {
         this.otherPlayer = xPlayer;
     }
 
-    turn(): Board {
+    play(): Turn {
         this.playTurnOf(this.player)
         return this.turnForX();
     }
@@ -98,7 +98,7 @@ class BoardWhenTurnForO extends Board {
     }
 }
 
-class BoardWhenTurnForX extends Board {
+class TurnForX extends Turn {
     private readonly player: Player;
     private readonly otherPlayer: Player;
 
@@ -108,7 +108,7 @@ class BoardWhenTurnForX extends Board {
         this.otherPlayer = oPlayer;
     }
 
-    turn(): Board {
+    play(): Turn {
         this.playTurnOf(this.currentPlayer())
         return this.turnForO();
     }

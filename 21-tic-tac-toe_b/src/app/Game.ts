@@ -1,25 +1,20 @@
 import {PlayerInteraction} from "./PlayerInteraction";
-import {Board} from "./Board";
+import {Turn} from "./Turn";
 
 export class Game {
-    private board: Board;
+    private turn: Turn;
 
     constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction) {
-        this.board = Board.Initial(xPlayerInteraction, oPlayerInteraction);
+        this.turn = Turn.Initial(xPlayerInteraction, oPlayerInteraction);
     }
 
     start(): void {
-        this.showInitialMessage();
-        this.startTurns();
+        this.turn.showInitialMessage();
+        this.playTurns();
     }
-
-    private showInitialMessage(): void {
-        this.board.showInitialMessage();
-    }
-
-    private startTurns(): void {
-        while (this.board.gameGoesOn()) {
-            this.board = this.board.turn();
+    private playTurns(): void {
+        while (this.turn.thereIsNext()) {
+            this.turn = this.turn.play();
         }
     }
 }
