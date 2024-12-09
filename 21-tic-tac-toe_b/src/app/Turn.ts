@@ -113,11 +113,11 @@ class TurnForX extends Turn {
         return this.turnForO();
     }
 
-    protected currentPlayer() {
+    protected currentPlayer(): Player {
         return this.player;
     }
 
-    protected createWinningDto() {
+    protected createWinningDto(): GameStateDto {
         return GameStateDto.WinningX(this.player.toDto(), this.otherPlayer.toDto());
     }
 }
