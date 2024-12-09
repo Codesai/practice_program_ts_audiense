@@ -1,5 +1,6 @@
 import {Field} from "./Field";
 import {PlayerInteraction} from "./PlayerInteraction";
+import {GameStateDto} from "./GameStateDto";
 
 export class Player {
     private readonly WINNING_COMBINATIONS: Field[][] = [
@@ -38,7 +39,11 @@ export class Player {
         return this.fields.length;
     }
 
-    private addField(field: Field) {
+    see(gameStateDto: GameStateDto): void {
+        this.playerInteraction.display(gameStateDto);
+    }
+
+    private addField(field: Field): void {
         this.fields.push(field);
     }
 

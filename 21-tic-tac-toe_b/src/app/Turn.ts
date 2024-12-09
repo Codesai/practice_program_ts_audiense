@@ -3,51 +3,50 @@ import {PlayerInteraction} from "./PlayerInteraction";
 import {Player} from "./Player";
 
 export abstract class Turn {
-    private readonly xPlayer: Player;
-    private readonly oPlayer: Player;
-    private readonly xPlayerInteraction: PlayerInteraction;
-    private readonly oPlayerInteraction: PlayerInteraction;
+    protected readonly xPlayer: Player;
+    protected readonly oPlayer: Player;
 
-    protected constructor(xPlayer: Player, oPlayer: Player, xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction) {
+    protected constructor(xPlayer: Player, oPlayer: Player) {
         this.xPlayer = xPlayer;
         this.oPlayer = oPlayer;
-        this.xPlayerInteraction = xPlayerInteraction;
-        this.oPlayerInteraction = oPlayerInteraction;
     }
 
     static Initial(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction): Turn {
-        return new TurnForX(xPlayerInteraction, oPlayerInteraction, new Player([], xPlayerInteraction), new Player([], oPlayerInteraction));
+        return new TurnForX(new Player([], xPlayerInteraction), new Player([], oPlayerInteraction));
     }
 
-    abstract play(): Turn;
+    play(): Turn {
+        this.currentPlayerPlayTurn();
+        this.displayStateAfterTurn();
+        return this.next();
+    }
 
     showInitialMessage(): void {
-        this.xPlayerInteraction.display(this.toDto());
+        this.xPlayer.see(this.toDto());
     }
 
     thereIsNext(): boolean {
         return !this.xPlayer.hasWon() && !this.isBoardFull() && !this.oPlayer.hasWon();
     }
 
-    protected abstract currentPlayer(): Player;
-
     protected abstract createWinningDto(): GameStateDto;
 
-    protected playTurnOf(player: Player): void {
-        player.playTurn();
-        this.displayStateAfterTurn();
-    }
+    protected abstract currentPlayerHasWon(): boolean;
+
+    protected abstract next(): Turn;
+
+    protected abstract currentPlayerPlayTurn(): void;
 
     protected turnForX(): Turn {
-        return new TurnForX(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
+        return new TurnForX(this.xPlayer, this.oPlayer);
     }
 
     protected turnForO(): Turn {
-        return new TurnForO(this.xPlayerInteraction, this.oPlayerInteraction, this.xPlayer, this.oPlayer);
+        return new TurnForO(this.xPlayer, this.oPlayer);
     }
 
     private toDto(): GameStateDto {
-        if (this.currentPlayer().hasWon()) {
+        if (this.currentPlayerHasWon()) {
             return this.createWinningDto();
         }
         if (this.thereIsNext()) {
@@ -69,55 +68,51 @@ export abstract class Turn {
     }
 
     private displayStateAfterTurn(): void {
-        this.xPlayerInteraction.display(this.toDto());
-        this.oPlayerInteraction.display(this.toDto());
+        this.xPlayer.see(this.toDto());
+        this.oPlayer.see(this.toDto());
     }
 }
 
 class TurnForO extends Turn {
-    private readonly player: Player;
-    private readonly otherPlayer: Player;
-
-    constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction, xPlayer: Player, oPlayer: Player) {
-        super(xPlayer, oPlayer, xPlayerInteraction, oPlayerInteraction);
-        this.player = oPlayer;
-        this.otherPlayer = xPlayer;
+    constructor(xPlayer: Player, oPlayer: Player) {
+        super(xPlayer, oPlayer, );
     }
 
-    play(): Turn {
-        this.playTurnOf(this.player)
+    protected currentPlayerPlayTurn(): void {
+        this.oPlayer.playTurn();
+    }
+
+    protected next(): Turn {
         return this.turnForX();
     }
 
-    protected currentPlayer(): Player {
-        return this.player;
+    protected currentPlayerHasWon(): boolean {
+        return this.oPlayer.hasWon();
     }
 
     protected createWinningDto(): GameStateDto {
-        return GameStateDto.WinningO(this.otherPlayer.toDto(), this.player.toDto());
+        return GameStateDto.WinningO(this.xPlayer.toDto(), this.oPlayer.toDto());
     }
 }
 
 class TurnForX extends Turn {
-    private readonly player: Player;
-    private readonly otherPlayer: Player;
-
-    constructor(xPlayerInteraction: PlayerInteraction, oPlayerInteraction: PlayerInteraction, xPlayer: Player, oPlayer: Player) {
-        super(xPlayer, oPlayer, xPlayerInteraction, oPlayerInteraction);
-        this.player = xPlayer;
-        this.otherPlayer = oPlayer;
+    constructor(xPlayer: Player, oPlayer: Player) {
+        super(xPlayer, oPlayer);
     }
 
-    play(): Turn {
-        this.playTurnOf(this.currentPlayer())
+    protected currentPlayerPlayTurn(): void {
+        this.xPlayer.playTurn();
+    }
+
+    protected next(): Turn {
         return this.turnForO();
     }
 
-    protected currentPlayer(): Player {
-        return this.player;
+    protected currentPlayerHasWon(): boolean {
+        return this.xPlayer.hasWon();
     }
 
     protected createWinningDto(): GameStateDto {
-        return GameStateDto.WinningX(this.player.toDto(), this.otherPlayer.toDto());
+        return GameStateDto.WinningX(this.xPlayer.toDto(), this.oPlayer.toDto());
     }
 }
