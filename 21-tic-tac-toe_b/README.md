@@ -160,9 +160,7 @@ Draw!
 The interface (public methods) of the `TicTacToeGame` class is:
 
 ```ts
-start()
-:
-void;
+start(): void;
 ```
 
 Inspired by https://kata-log.rocks/tic-tac-toe-kata
