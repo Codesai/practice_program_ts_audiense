@@ -1,6 +1,7 @@
 import {Player} from "./Player";
 import {Field} from "./Field";
 import {GameStateDto} from "./GameStateDto";
+import {WinnerDetector} from "./WinnerDetector";
 
 enum Turn {
     X,
@@ -87,16 +88,10 @@ export class Game {
     }
 
     private hasXWon(): boolean {
-        return this.playerXFields.length === 3
-            && this.playerXFields[0] === Field.One &&
-            this.playerXFields[1] === Field.Two &&
-            this.playerXFields[2] === Field.Three;
+        return WinnerDetector.hasWon(this.playerXFields);
     }
 
     private HasOWon(): boolean {
-        return this.playerOFields.length === 3
-            && this.playerOFields[0] === Field.One &&
-            this.playerOFields[1] === Field.Two &&
-            this.playerOFields[2] === Field.Three;
+        return WinnerDetector.hasWon(this.playerOFields);
     }
 }
