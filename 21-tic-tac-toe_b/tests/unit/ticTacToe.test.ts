@@ -37,7 +37,7 @@ describe("Tic Tac Toe", () => {
         expectInitialDisplay();
         expectPlayerTurn(1, gameDto.addingFieldToX(Field.One).build());
         expectPlayerTurn(2, gameDto.addingFieldToO(Field.Four).build());
-        expectPlayerTurn(3, gameDto.addingFieldToX( Field.Two).build());
+        expectPlayerTurn(3, gameDto.addingFieldToX(Field.Two).build());
         expectPlayerTurn(4, gameDto.addingFieldToO(Field.Five).build());
         expectPlayerTurn(5, gameDto.addingFieldToX(Field.Three).winningPlayerX().build());
     });

@@ -60,6 +60,6 @@ export class GameStateDtoBuilder {
     }
 
     build(): GameStateDto {
-       return new GameStateDto(this._playerX, this._playerO, this._status);
+        return new GameStateDto(this._playerX, this._playerO, this._status);
     }
 }

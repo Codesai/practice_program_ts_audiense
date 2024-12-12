@@ -12,6 +12,7 @@ export class Game {
         this.turn.showInitialMessage();
         this.playTurns();
     }
+
     private playTurns(): void {
         while (this.turn.thereIsNext()) {
             this.turn = this.turn.play();

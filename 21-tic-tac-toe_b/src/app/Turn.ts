@@ -39,6 +39,10 @@ export abstract class Turn {
 
     protected abstract OnGoingDto(): GameStateDto;
 
+    protected isBoardFull(): boolean {
+        return (this.currentPlayer.numberOfFields() + this.otherPlayer.numberOfFields()) === 9;
+    }
+
     private toDto(): GameStateDto {
         if (this.currentPlayer.hasWon()) {
             return this.createWinningDto();
@@ -47,10 +51,6 @@ export abstract class Turn {
             return this.OnGoingDto();
         }
         return this.NoWinnerDto();
-    }
-
-    protected isBoardFull(): boolean {
-        return (this.currentPlayer.numberOfFields() + this.otherPlayer.numberOfFields()) === 9;
     }
 
     private displayStateAfterTurn(): void {
