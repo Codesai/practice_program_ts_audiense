@@ -9,8 +9,8 @@ enum Turn {
 }
 
 export class Game {
-    public readonly playerXFields: Field[];
-    public readonly playerOFields: Field[];
+    private readonly playerXFields: Field[];
+    private readonly playerOFields: Field[];
     private readonly playerX: Player;
     private readonly playerO: Player;
     private turn: Turn;
