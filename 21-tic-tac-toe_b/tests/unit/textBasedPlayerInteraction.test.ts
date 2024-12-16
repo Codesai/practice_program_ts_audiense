@@ -1,8 +1,8 @@
-import {Input} from "../../src/app/ports/Input";
-import {Output} from "../../src/app/ports/Output";
+import {Input} from "../../src/infrastructure/Input";
+import {Output} from "../../src/infrastructure/Output";
 import {Field} from "../../src/app/Field";
 import {aGameStateDto, initialGameStateDto} from "../helpers/GameStateDtoBuilder";
-import {TextBasedPlayerInteraction} from "../../src/app/playerInteractions/TextBasedPlayerInteraction";
+import {TextBasedPlayerInteraction} from "../../src/infrastructure/TextBasedPlayerInteraction";
 
 describe('text based player interaction', () => {
     let input: jest.Mocked<Input>;

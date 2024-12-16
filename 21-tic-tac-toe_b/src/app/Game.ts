@@ -1,4 +1,4 @@
-import {PlayerInteraction} from "./PlayerInteraction";
+import {PlayerInteraction} from "./ports/PlayerInteraction";
 import {Turn} from "./Turn";
 
 export class Game {

@@ -1,5 +1,5 @@
 import {Field} from "./Field";
-import {PlayerInteraction} from "./PlayerInteraction";
+import {PlayerInteraction} from "./ports/PlayerInteraction";
 import {GameStateDto} from "./GameStateDto";
 
 export class Player {

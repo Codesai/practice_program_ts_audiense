@@ -1,4 +1,4 @@
-import {Output} from "../app/ports/Output";
+import {Output} from "./Output";
 
 export class ConsoleOutput implements Output {
     display(msg: string): void {

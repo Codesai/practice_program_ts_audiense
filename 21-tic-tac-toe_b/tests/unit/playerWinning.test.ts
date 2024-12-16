@@ -1,7 +1,7 @@
 import {Field} from "../../src/app/Field";
 
 import {Player} from "../../src/app/Player";
-import {PlayerInteraction} from "../../src/app/PlayerInteraction";
+import {PlayerInteraction} from "../../src/app/ports/PlayerInteraction";
 
 describe("A player", () => {
 

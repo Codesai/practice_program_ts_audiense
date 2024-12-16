@@ -1,5 +1,5 @@
 import {GameStateDto} from "./GameStateDto";
-import {PlayerInteraction} from "./PlayerInteraction";
+import {PlayerInteraction} from "./ports/PlayerInteraction";
 import {Player} from "./Player";
 
 export abstract class Turn {

@@ -1,5 +1,5 @@
 import {Game} from "../../src/app/Game";
-import {PlayerInteraction} from "../../src/app/PlayerInteraction";
+import {PlayerInteraction} from "../../src/app/ports/PlayerInteraction";
 import {GameStateDto} from "../../src/app/GameStateDto";
 import {Field} from "../../src/app/Field";
 import {aGameStateDto, GameStateDtoBuilder, initialGameStateDto} from "../helpers/GameStateDtoBuilder";
