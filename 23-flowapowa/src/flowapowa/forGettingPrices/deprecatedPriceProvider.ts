@@ -1,11 +1,11 @@
 export class DeprecatedPriceProvider {
-  private prices: { [name: string]: number } = {}
+    private prices: { [name: string]: number } = {}
 
-  getPrice(productName: string): number {
-    return this.prices[productName]
-  }
+    getPrice(productName: string): number {
+        return this.prices[productName]
+    }
 
-  add(product: string, number: number): void {
-    this.prices[product] = number
-  }
+    add(product: string, number: number): void {
+        this.prices[product] = number
+    }
 }

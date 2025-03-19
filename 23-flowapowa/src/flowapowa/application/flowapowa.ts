@@ -1,18 +1,23 @@
-import { BuildBouquet } from './buildBouquet'
-import { ReceiptPrinter } from './receiptPrinter'
+import {aBouquet} from './bouquetBuilder'
+import {ReceiptPrinter} from './receiptPrinter'
+import {DeprecatedPriceProvider} from "../forGettingPrices/deprecatedPriceProvider";
+import {Bouquet} from "./bouquet";
 
 export class Flowapowa {
-  private buildBouquet: BuildBouquet
-  private receiptPrinter: ReceiptPrinter
+    private receiptPrinter: ReceiptPrinter
+    private priceProvider: DeprecatedPriceProvider;
 
-  constructor(buildBouquet: BuildBouquet, receiptPrinter: ReceiptPrinter) {
-    this.buildBouquet = buildBouquet
-    this.receiptPrinter = receiptPrinter
-  }
+    constructor(receiptPrinter: ReceiptPrinter, priceProvider: DeprecatedPriceProvider) {
+        this.receiptPrinter = receiptPrinter
+        this.priceProvider = priceProvider;
+    }
 
-  craftBouquet(recipe: string, crafting: number): string {
-    const bouquet = this.buildBouquet.withRecipe(recipe, crafting)
-    this.receiptPrinter.print(bouquet)
-    return this.receiptPrinter.output()
-  }
+    craftBouquet(recipe: string, crafting: number): string {
+        const bouquet = this.createBouquet(recipe, crafting);
+        return this.receiptPrinter.printReceipt(bouquet);
+    }
+
+    private createBouquet(recipe: string, crafting: number): Bouquet {
+        return aBouquet().usingPriceProvider(this.priceProvider).usingRawRecipe(recipe).withCrafting(crafting).build();
+    }
 }
