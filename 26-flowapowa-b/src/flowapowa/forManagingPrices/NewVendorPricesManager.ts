@@ -1,7 +1,7 @@
 import {PricesManager} from "../application/ports/PricesManager";
 import {NewVendorProductProvider} from "../lib/NewVendorProductProvider";
 import {VendorProduct} from "../lib/VendorProduct";
-import {PriceNotFoundFor} from "../application/PriceNotFoundFor";
+import {PriceNotFound} from "../application/PriceNotFound";
 import {Price} from "../application/Price";
 import {ElementId} from "../application/ElementId";
 
@@ -15,7 +15,7 @@ export class NewVendorPricesManager implements PricesManager {
     getPrice(elementId: ElementId): number {
         const product = this.productProvider.getProductByName(elementId.asString());
         if (!product) {
-            throw new PriceNotFoundFor(elementId);
+            throw new PriceNotFound(elementId);
         }
         return product.unitPrice;
     }

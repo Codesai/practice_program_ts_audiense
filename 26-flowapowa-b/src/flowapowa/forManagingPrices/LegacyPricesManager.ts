@@ -1,6 +1,6 @@
 import {DeprecatedPriceProvider} from "./DeprecatedPriceProvider";
 import {PricesManager} from "../application/ports/PricesManager";
-import {PriceNotFoundFor} from "../application/PriceNotFoundFor";
+import {PriceNotFound} from "../application/PriceNotFound";
 import {Price} from "../application/Price";
 import {ElementId} from "../application/ElementId";
 
@@ -14,7 +14,7 @@ export class LegacyPricesManager implements PricesManager {
     getPrice(elementId: ElementId): number {
         const price = this.deprecatedPriceProvider.getPrice(elementId.asString());
         if (price === undefined) {
-            throw new PriceNotFoundFor(elementId);
+            throw new PriceNotFound(elementId);
         }
         return price;
     }

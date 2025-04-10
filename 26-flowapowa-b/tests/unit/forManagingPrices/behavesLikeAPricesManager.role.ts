@@ -1,4 +1,4 @@
-import {PriceNotFoundFor} from "../../../src/flowapowa/application/PriceNotFoundFor";
+import {PriceNotFound} from "../../../src/flowapowa/application/PriceNotFound";
 import {PricesManager} from "../../../src/flowapowa/application/ports/PricesManager";
 import {Price} from "../../../src/flowapowa/application/Price";
 import {ElementId} from "../../../src/flowapowa/application/ElementId";
@@ -28,7 +28,7 @@ export function behavesLikeAPricesManager(testContext: PricesManagerTestContext)
 
         test('throws an exception when trying to get a price for an unknown element', () => {
             const unknownElementId = ElementId.from('unknown');
-            expect(() => pricesManager.getPrice(unknownElementId)).toThrow(new PriceNotFoundFor(unknownElementId));
+            expect(() => pricesManager.getPrice(unknownElementId)).toThrow(new PriceNotFound(unknownElementId));
         });
     });
 }
