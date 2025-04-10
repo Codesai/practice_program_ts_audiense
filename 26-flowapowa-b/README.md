@@ -10,9 +10,14 @@ the deprecated service provider that we need to substitute.
 
 ## Goals
 
-1. Introduce an experiment to test in production that both implementations do the same.
+1. Change `PriceProvider` interface to have the method `getPrice(elementId: ElementId): Price;`
+   instead of `getPrice(elementId: ElementId): number;`. Do this change without breaking the tests in any moment.
 
-2. Remove the old implementation from the code base.
+2. Introduce an experiment to test in production that both implementations of `PricesManager` do the same.
+   The experiment should be transparent to the clients of the `PricesManager` interface (you can't change any code in
+   `appplication` to run this experiment).
+
+3. Remove the old implementation of `PricesManager` from the code base.
 
 ## Reference documents
 
