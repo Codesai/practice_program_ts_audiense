@@ -5,7 +5,7 @@ import {Flowapowa} from '../application/Flowapowa'
 import {LegacyPricesManager} from "../forManagingPrices/LegacyPricesManager";
 import {PricesManager} from "../application/ports/PricesManager";
 import {Price} from "../application/Price";
-import {PriceId} from "../application/PriceId";
+import {ElementId} from "../application/ElementId";
 
 function createStringReceiptPrinter(): StringReceiptPrinter {
     return new StringReceiptPrinter()
@@ -16,18 +16,18 @@ function CreatePricesManager(): PricesManager {
 }
 
 function createPrice(idString: string, value: number): Price {
-    return new Price(PriceId.from(idString), value);
+    return new Price(value);
 }
 
 function getConfiguredPricesManager(): PricesManager {
     const pricesManager = CreatePricesManager();
-    pricesManager.setPrice(createPrice('rose', 1.5));
-    pricesManager.setPrice(createPrice('daisy', 0.8));
-    pricesManager.setPrice(createPrice('lily', 1.3));
-    pricesManager.setPrice(createPrice('sunflower', 1.7));
-    pricesManager.setPrice(createPrice('tulip', 1.1));
-    pricesManager.setPrice(createPrice('foliage', 0.7));
-    pricesManager.setPrice(createPrice('ribbon', 2));
+    pricesManager.setPrice(ElementId.from('rose'), createPrice('rose', 1.5));
+    pricesManager.setPrice(ElementId.from('daisy'), createPrice('daisy', 0.8));
+    pricesManager.setPrice(ElementId.from('lily'), createPrice('lily', 1.3));
+    pricesManager.setPrice(ElementId.from('sunflower'), createPrice('sunflower', 1.7));
+    pricesManager.setPrice(ElementId.from('tulip'), createPrice('tulip', 1.1));
+    pricesManager.setPrice(ElementId.from('foliage'), createPrice('foliage', 0.7));
+    pricesManager.setPrice(ElementId.from('ribbon'), createPrice('ribbon', 2));
     return pricesManager;
 }
 

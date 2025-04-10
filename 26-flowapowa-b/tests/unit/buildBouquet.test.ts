@@ -1,11 +1,12 @@
 import {aBouquet} from '../../src/flowapowa/application/BouquetBuilder'
 import {PricesManager} from "../../src/flowapowa/application/ports/PricesManager";
 import {createPricesManager} from "../helpers/PricesManagerFactory";
-import {aPrice} from "../helpers/PricesHelper";
+import {newPrice} from "../helpers/PricesHelper";
+import {ElementId} from "../../src/flowapowa/application/ElementId";
 
 function createConfiguredPricesManager(): PricesManager {
     const pricesManager = createPricesManager();
-    pricesManager.setPrice(aPrice().forElement("rose").withValue(1.50).build());
+    pricesManager.setPrice(ElementId.from('rose'), newPrice(1.50));
     return pricesManager;
 }
 

@@ -1,5 +1,5 @@
-import {PriceId} from "../PriceId";
+import {ElementId} from "../ElementId";
 
 export interface PriceProvider {
-    getPrice(id: PriceId): number;
+    getPrice(elementId: ElementId): number;
 }

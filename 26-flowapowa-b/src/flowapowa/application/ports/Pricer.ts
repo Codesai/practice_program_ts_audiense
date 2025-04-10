@@ -1,5 +1,6 @@
 import {Price} from "../Price";
+import {ElementId} from "../ElementId";
 
 export interface Pricer {
-    setPrice(price: Price): void;
+    setPrice(elementId: ElementId, price: Price): void;
 }

@@ -1,7 +1,7 @@
 import {PriceNotFoundFor} from "../../../src/flowapowa/application/PriceNotFoundFor";
 import {PricesManager} from "../../../src/flowapowa/application/ports/PricesManager";
 import {Price} from "../../../src/flowapowa/application/Price";
-import {priceIdFor} from "../../helpers/PricesHelper";
+import {ElementId} from "../../../src/flowapowa/application/ElementId";
 
 type PricesManagerTestContext = {
     getInstance(): PricesManager;
@@ -16,19 +16,19 @@ export function behavesLikeAPricesManager(testContext: PricesManagerTestContext)
         });
 
         test('sets and provides prices for elements', () => {
-            const rosePriceId = priceIdFor('rose');
-            const daisyPriceId = priceIdFor('daisy');
+            const roseElementId = ElementId.from('rose');
+            const daisyElementId = ElementId.from('daisy');
 
-            pricesManager.setPrice(new Price(rosePriceId, 1.50));
-            pricesManager.setPrice(new Price(daisyPriceId, 0.80));
+            pricesManager.setPrice(roseElementId, new Price(1.50));
+            pricesManager.setPrice(daisyElementId, new Price(0.80));
 
-            expect(pricesManager.getPrice(rosePriceId)).toBe(1.50)
-            expect(pricesManager.getPrice(daisyPriceId)).toBe(0.80)
+            expect(pricesManager.getPrice(roseElementId)).toBe(1.50)
+            expect(pricesManager.getPrice(daisyElementId)).toBe(0.80)
         });
 
         test('throws an exception when trying to get a price for an unknown element', () => {
-            const unknownPriceId = priceIdFor('unknown');
-            expect(() => pricesManager.getPrice(unknownPriceId)).toThrow(new PriceNotFoundFor(unknownPriceId));
+            const unknownElementId = ElementId.from('unknown');
+            expect(() => pricesManager.getPrice(unknownElementId)).toThrow(new PriceNotFoundFor(unknownElementId));
         });
     });
 }

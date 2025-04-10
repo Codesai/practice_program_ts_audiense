@@ -3,7 +3,7 @@ import {NewVendorProductProvider} from "../lib/NewVendorProductProvider";
 import {VendorProduct} from "../lib/VendorProduct";
 import {PriceNotFoundFor} from "../application/PriceNotFoundFor";
 import {Price} from "../application/Price";
-import {PriceId} from "../application/PriceId";
+import {ElementId} from "../application/ElementId";
 
 export class NewVendorPricesManager implements PricesManager {
     private productProvider: NewVendorProductProvider;
@@ -12,15 +12,15 @@ export class NewVendorPricesManager implements PricesManager {
         this.productProvider = productProvider;
     }
 
-    getPrice(id: PriceId): number {
-        const product = this.productProvider.getProductByName(id.value());
+    getPrice(elementId: ElementId): number {
+        const product = this.productProvider.getProductByName(elementId.asString());
         if (!product) {
-            throw new PriceNotFoundFor(id);
+            throw new PriceNotFoundFor(elementId);
         }
         return product.unitPrice;
     }
 
-    setPrice(price: Price): void {
-        this.productProvider.store(new VendorProduct(price.idAsString(), price.value()));
+    setPrice(elementId: ElementId, price: Price): void {
+        this.productProvider.store(new VendorProduct(elementId.asString(), price.value()));
     }
 }

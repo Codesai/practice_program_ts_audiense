@@ -1,8 +1,8 @@
-import {PriceId} from "./PriceId";
+import {ElementId} from "./ElementId";
 
 export class PriceNotFoundFor extends Error {
 
-    constructor(priceId: PriceId) {
-        super(priceId.value());
+    constructor(elementId: ElementId) {
+        super(elementId.asString());
     }
 }

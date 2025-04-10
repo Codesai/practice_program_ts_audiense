@@ -1,7 +1,7 @@
 import {Bouquet} from './Bouquet'
 import {PriceProvider} from "./ports/PriceProvider";
 
-import {PriceId} from "./PriceId";
+import {ElementId} from "./ElementId";
 
 class Element {
     readonly name: string
@@ -39,7 +39,7 @@ export class Recipe {
     }
 
     private addElementToBouquet(priceProvider: PriceProvider, bouquet: Bouquet, element: Element): void {
-        const price = priceProvider.getPrice(PriceId.from(element.name));
+        const price = priceProvider.getPrice(ElementId.from(element.name));
         bouquet.addProduct(element.name, element.quantity, price)
     }
 

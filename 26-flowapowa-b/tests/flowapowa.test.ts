@@ -2,7 +2,8 @@ import {StringReceiptPrinter} from '../src/flowapowa/forPrintingRecipes/StringRe
 import {Flowapowa} from '../src/flowapowa/application/Flowapowa'
 import {PricesManager} from "../src/flowapowa/application/ports/PricesManager";
 import {createPricesManager} from "./helpers/PricesManagerFactory";
-import {aPrice} from "./helpers/PricesHelper";
+import {newPrice} from "./helpers/PricesHelper";
+import {ElementId} from "../src/flowapowa/application/ElementId";
 
 function createStringReceiptPrinter(): StringReceiptPrinter {
     return new StringReceiptPrinter()
@@ -10,8 +11,8 @@ function createStringReceiptPrinter(): StringReceiptPrinter {
 
 function getConfiguredPricesManager(): PricesManager {
     const pricesManager = createPricesManager();
-    pricesManager.setPrice(aPrice().forElement('rose').withValue(1.5).build());
-    pricesManager.setPrice(aPrice().forElement('daisy').withValue(0.8).build());
+    pricesManager.setPrice(ElementId.from('rose'), newPrice(1.5));
+    pricesManager.setPrice(ElementId.from('daisy'), newPrice(0.8));
     return pricesManager;
 }
 
