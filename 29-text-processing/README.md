@@ -26,15 +26,15 @@ Example:
 
 ## Features we want to have:
 
-* Count the words in the text.
-
 * Don't show some words using the `noshow` parameter (hint use `--noshow=[return constructor readonly class private public]`).
+
+* Show the frequency of each word.
 
 * Don't show infrequent words. Indicate the minimum frequency to show using the `minfreq` parameter (hint use `--minfreq=3`).
 
-* Indicate the maximum number of words to show. Use the parameter `--max`: `analyze Hello, this is an example --max=2`
+* Count the words in the text.
 
-* Show the frequency of each word.
+* Indicate the maximum number of words to show. Use the parameter `--max`: `analyze Hello, this is an example --max=2`
 
 * Rank the words from most used to less used.
 
