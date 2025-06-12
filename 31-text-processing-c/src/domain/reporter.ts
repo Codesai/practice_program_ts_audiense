@@ -1,5 +1,5 @@
-import {Analysis} from "./analysis";
+import {AnalysisResult} from "./analysisResult";
 
 export interface Reporter {
-    report(analysis: Analysis): void;
+    report(analysis: AnalysisResult): void;
 }

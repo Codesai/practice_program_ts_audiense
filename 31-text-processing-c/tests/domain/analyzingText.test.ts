@@ -1,6 +1,6 @@
 import {TextAnalyzer} from "../../src/domain/textAnalyzer";
 import {Reporter} from "../../src/domain/reporter";
-import {Analysis} from "../../src/domain/analysis";
+import {AnalysisResult} from "../../src/domain/analysisResult";
 import {RankedWord} from "../../src/domain/rankedWord";
 import {rankedWord} from "../helpers/builders";
 import {AllWordsExtraction} from "../../src/domain/wordsExtractions/allWordsExtraction";
@@ -41,7 +41,7 @@ describe('analysing text', () => {
         expect(actualAnalysis().rankedWords).toEqual(rankedWords);
     });
 
-    function actualAnalysis(): Analysis {
+    function actualAnalysis(): AnalysisResult {
         const [[analysis]] = reporter.report.mock.calls;
         return analysis;
     }

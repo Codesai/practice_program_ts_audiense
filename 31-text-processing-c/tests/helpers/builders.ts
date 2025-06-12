@@ -1,15 +1,15 @@
 import {RankedWord} from "../../src/domain/rankedWord";
-import {Analysis} from "../../src/domain/analysis";
+import {AnalysisResult} from "../../src/domain/analysisResult";
 
-export function anAnalysis(): AnalysisBuilder {
-    return new AnalysisBuilder([], 0);
+export function anAnalysisResult(): AnalysisResultBuilder {
+    return new AnalysisResultBuilder([], 0);
 }
 
 export function rankedWord(text: string = ""): RankedWordBuilder {
     return new RankedWordBuilder(text, 0);
 }
 
-class AnalysisBuilder {
+class AnalysisResultBuilder {
     private countedWords: number;
     private readonly rankedWords: Array<RankedWord>;
 
@@ -18,18 +18,18 @@ class AnalysisBuilder {
         this.countedWords = countedWords;
     }
 
-    public ofTextWithLength(countedWords: number): AnalysisBuilder {
+    public ofTextWithLength(countedWords: number): AnalysisResultBuilder {
         this.countedWords = countedWords;
         return this;
     }
 
-    public add(aRankedWordBuilder: RankedWordBuilder): AnalysisBuilder {
+    public add(aRankedWordBuilder: RankedWordBuilder): AnalysisResultBuilder {
         this.rankedWords.push(aRankedWordBuilder.build());
         return this;
     }
 
-    public build(): Analysis {
-        return new Analysis(this.rankedWords, this.countedWords);
+    public build(): AnalysisResult {
+        return new AnalysisResult(this.rankedWords, this.countedWords);
     }
 }
 

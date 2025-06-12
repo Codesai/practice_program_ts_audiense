@@ -1,5 +1,5 @@
 import {Display} from "../../domain/display";
-import {Analysis} from "../../domain/analysis";
+import {AnalysisResult} from "../../domain/analysisResult";
 import {Reporter} from "../../domain/reporter";
 import {RankedWord} from "../../domain/rankedWord";
 
@@ -10,11 +10,11 @@ export class TextBasedReporter implements Reporter {
         this.display = display;
     }
 
-    report(analysis: Analysis): void {
+    report(analysis: AnalysisResult): void {
         this.display.showText(this.composeReportFor(analysis));
     }
 
-    private composeReportFor(analysis: Analysis): string {
+    private composeReportFor(analysis: AnalysisResult): string {
         if (analysis.countedWords === 0) {
             return this.footer(analysis.countedWords);
         }

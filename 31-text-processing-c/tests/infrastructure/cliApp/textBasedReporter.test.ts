@@ -1,6 +1,6 @@
 import {Display} from "../../../src/domain/display";
 import {TextBasedReporter} from "../../../src/infrastructure/cliApp/textBasedReporter";
-import {anAnalysis, rankedWord} from "../../helpers/builders";
+import {anAnalysisResult, rankedWord} from "../../helpers/builders";
 
 describe('TextBasedReporter', () => {
     let display: jest.Mocked<Display>;
@@ -9,7 +9,7 @@ describe('TextBasedReporter', () => {
         display = {showText: jest.fn()};
         const analyzer = new TextBasedReporter(display);
 
-        analyzer.report(anAnalysis().build());
+        analyzer.report(anAnalysisResult().build());
 
         expect(display.showText).toHaveBeenCalledWith("The text contains 0 words.\n");
     });
@@ -22,7 +22,7 @@ describe('TextBasedReporter', () => {
         const analyzer = new TextBasedReporter(display);
 
         analyzer.report(
-            anAnalysis().ofTextWithLength(1).add(
+            anAnalysisResult().ofTextWithLength(1).add(
                 rankedWord(word).withFrequency(1)
             ).build()
         );
@@ -40,7 +40,7 @@ describe('TextBasedReporter', () => {
         const analyzer = new TextBasedReporter(display);
 
         analyzer.report(
-            anAnalysis().ofTextWithLength(3).add(
+            anAnalysisResult().ofTextWithLength(3).add(
                 rankedWord("koko").withFrequency(2)
             ).add(
                 rankedWord("word").withFrequency(1)
