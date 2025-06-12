@@ -8,11 +8,9 @@
 2. Don't show infrequent words. Indicate the minimum frequency to show using the `minfreq` parameter (hint use
    `--minfreq=3`).
 
-3. Indicate the maximum number of words to show. Use the parameter `--max`:
-   `analyze Hello, this is an example --max=2`
-
-4. Don't show words stored in a file using the `nowordsinfile` parameter (hint use
-   `--nowordsinfile=path_to_file`
+3. Indicate the maximum number of words to show. Use the `--max` parameter  (hint use `--max=2`).
+   
+4. Don't show words stored in a file using the `nowordsinfile` parameter (hint use `--nowordsinfile=path_to_file`).
 
 ## Constraints.
 
