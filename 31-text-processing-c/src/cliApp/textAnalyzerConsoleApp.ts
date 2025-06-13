@@ -8,7 +8,7 @@ export class TextAnalyzerConsoleApp {
     private readonly reporter: Reporter;
     private inputParser: InputParser;
 
-    constructor(display: jest.Mocked<Display>) {
+    constructor(display: Display) {
         this.reporter = new TextBasedReporter(display);
         this.inputParser = new InputParser();
     }
