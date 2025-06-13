@@ -6,26 +6,18 @@ import {AllWordsExtraction} from "./wordsExtractions/allWordsExtraction";
 
 export class TextAnalyzer {
     private readonly reporter: Reporter;
-    private readonly analysis: Analysis;
-
-    constructor(textBasedReporter: Reporter, wordsExtraction: WordsExtraction) {
-        this.reporter = textBasedReporter;
-        this.analysis = new Analysis(wordsExtraction);
-    }
-
-    analyze(text: string): void {
-        const analysisResult = this.analysis.runOn(text);
-        this.reporter.report(analysisResult);
-    }
-}
-
-class Analysis {
     private readonly wordsToRankExtraction: WordsExtraction;
     private readonly textWordsExtraction: WordsExtraction;
 
-    constructor(wordsToRankExtraction: WordsExtraction) {
+    constructor(textBasedReporter: Reporter, wordsToRankExtraction: WordsExtraction) {
+        this.reporter = textBasedReporter;
         this.wordsToRankExtraction = wordsToRankExtraction;
         this.textWordsExtraction = new AllWordsExtraction();
+    }
+
+    analyze(text: string): void {
+        const analysisResult = this.runOn(text);
+        this.reporter.report(analysisResult);
     }
 
     runOn(text: string): AnalysisResult {
