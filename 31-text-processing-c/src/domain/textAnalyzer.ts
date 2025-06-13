@@ -32,7 +32,7 @@ class Analysis {
         return new AnalysisResult(this.rankWordsIn(text), this.countWordsIn(text));
     }
 
-    private countWordsIn(text: string) {
+    private countWordsIn(text: string): number {
         return this.textWordsExtraction.extractFrom(text).length;
     }
 

@@ -26,7 +26,7 @@ describe('analysing text', () => {
     ])('counting words of "%s"', (text: string, countedWords: number) => {
         analyzer.analyze(text);
 
-        expect(actualAnalysis().countedWords).toBe(countedWords);
+        expect(actualAnalysisResult().countedWords).toBe(countedWords);
     });
 
     it.each([
@@ -38,11 +38,11 @@ describe('analysing text', () => {
     ])('ranking words by frequency "%s"', (text: string, rankedWords: RankedWord[]) => {
         analyzer.analyze(text);
 
-        expect(actualAnalysis().rankedWords).toEqual(rankedWords);
+        expect(actualAnalysisResult().rankedWords).toEqual(rankedWords);
     });
 
-    function actualAnalysis(): AnalysisResult {
-        const [[analysis]] = reporter.report.mock.calls;
-        return analysis;
+    function actualAnalysisResult(): AnalysisResult {
+        const [[analysisResult]] = reporter.report.mock.calls;
+        return analysisResult;
     }
 });

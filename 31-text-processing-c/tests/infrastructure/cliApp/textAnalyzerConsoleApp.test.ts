@@ -1,4 +1,4 @@
-import {Display} from "../../../src/domain/display";
+import {Display} from "../../../src/infrastructure/cliApp/display";
 import {TextAnalyzerConsoleApp} from "../../../src/infrastructure/cliApp/textAnalyzerConsoleApp";
 
 describe('Text Analyzer App', () => {

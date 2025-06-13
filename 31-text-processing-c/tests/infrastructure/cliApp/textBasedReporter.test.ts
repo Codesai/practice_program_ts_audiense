@@ -1,4 +1,4 @@
-import {Display} from "../../../src/domain/display";
+import {Display} from "../../../src/infrastructure/cliApp/display";
 import {TextBasedReporter} from "../../../src/infrastructure/cliApp/textBasedReporter";
 import {anAnalysisResult, rankedWord} from "../../helpers/builders";
 

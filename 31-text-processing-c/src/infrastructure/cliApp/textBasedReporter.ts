@@ -1,4 +1,4 @@
-import {Display} from "../../domain/display";
+import {Display} from "./display";
 import {AnalysisResult} from "../../domain/analysisResult";
 import {Reporter} from "../../domain/reporter";
 import {RankedWord} from "../../domain/rankedWord";
@@ -10,18 +10,18 @@ export class TextBasedReporter implements Reporter {
         this.display = display;
     }
 
-    report(analysis: AnalysisResult): void {
-        this.display.showText(this.composeReportFor(analysis));
+    report(analysisResult: AnalysisResult): void {
+        this.display.showText(this.composeReportFor(analysisResult));
     }
 
-    private composeReportFor(analysis: AnalysisResult): string {
-        if (analysis.countedWords === 0) {
-            return this.footer(analysis.countedWords);
+    private composeReportFor(analysisResult: AnalysisResult): string {
+        if (analysisResult.countedWords === 0) {
+            return this.footer(analysisResult.countedWords);
         }
 
-        return this.header(analysis.rankedWords.length) +
-            this.listRankedWords(analysis.rankedWords) +
-            this.footer(analysis.countedWords);
+        return this.header(analysisResult.rankedWords.length) +
+            this.listRankedWords(analysisResult.rankedWords) +
+            this.footer(analysisResult.countedWords);
     }
 
     private header(rankedWordsCount: number): string {

@@ -1,7 +1,7 @@
 import {Reporter} from "../../domain/reporter";
 import {InputParser} from "./inputParser";
 import {TextAnalyzerFactory} from "../../domain/textAnalyzerFactory";
-import {Display} from "../../domain/display";
+import {Display} from "./display";
 import {TextBasedReporter} from "./textBasedReporter";
 
 export class TextAnalyzerConsoleApp {
