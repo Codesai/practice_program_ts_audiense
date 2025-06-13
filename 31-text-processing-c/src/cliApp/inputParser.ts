@@ -1,5 +1,5 @@
-import {Options} from "../../domain/options";
-import {Input} from "../../domain/input";
+import {Options} from "../domain/options";
+import {Input} from "../domain/input";
 
 // Generated interacting with openai-gpt-4o, then fixing extractOptions method and refactoring the class bit.
 

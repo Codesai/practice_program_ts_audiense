@@ -1,6 +1,6 @@
-import {Reporter} from "../../domain/reporter";
+import {Reporter} from "../domain/reporter";
 import {InputParser} from "./inputParser";
-import {TextAnalyzerFactory} from "../../domain/textAnalyzerFactory";
+import {TextAnalyzerFactory} from "../domain/textAnalyzerFactory";
 import {Display} from "./display";
 import {TextBasedReporter} from "./textBasedReporter";
 

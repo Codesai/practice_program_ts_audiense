@@ -1,7 +1,7 @@
 import {Display} from "./display";
-import {AnalysisResult} from "../../domain/analysisResult";
-import {Reporter} from "../../domain/reporter";
-import {RankedWord} from "../../domain/rankedWord";
+import {AnalysisResult} from "../domain/analysisResult";
+import {Reporter} from "../domain/reporter";
+import {RankedWord} from "../domain/rankedWord";
 
 export class TextBasedReporter implements Reporter {
     private readonly display: Display;

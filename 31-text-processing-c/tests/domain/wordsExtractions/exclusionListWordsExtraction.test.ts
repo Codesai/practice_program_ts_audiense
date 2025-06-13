@@ -12,7 +12,7 @@ describe('extracting words not in exclusion list', () => {
         expect(words).toEqual(["text"]);
     });
 
-    it('when exclusion list is no empty, excluded words are not included', () => {
+    it('when exclusion list is not empty, excluded words are not included', () => {
         const wordsExtraction = new ExclusionListWordsExtraction(["text"], new AllWordsExtraction());
 
         const words = wordsExtraction.extractFrom("text will not be extracted");

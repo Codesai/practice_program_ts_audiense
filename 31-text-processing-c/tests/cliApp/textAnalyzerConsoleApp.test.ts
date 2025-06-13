@@ -1,7 +1,7 @@
-import {Display} from "../../../src/infrastructure/cliApp/display";
-import {TextAnalyzerConsoleApp} from "../../../src/infrastructure/cliApp/textAnalyzerConsoleApp";
+import {Display} from "../../src/cliApp/display";
+import {TextAnalyzerConsoleApp} from "../../src/cliApp/textAnalyzerConsoleApp";
 
-describe('Text Analyzer App', () => {
+describe('Text Analyzer Console App', () => {
     let display: jest.Mocked<Display>;
     let analyzerApp: TextAnalyzerConsoleApp;
 

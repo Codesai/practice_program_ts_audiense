@@ -1,4 +1,4 @@
-import {InputParser, UnknownOptionError} from "../../../src/infrastructure/cliApp/inputParser";
+import {InputParser, UnknownOptionError} from "../../src/cliApp/inputParser";
 
 // Generated interacting with openai-gpt-4o
 

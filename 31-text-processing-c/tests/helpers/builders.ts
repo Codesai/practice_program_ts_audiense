@@ -9,6 +9,10 @@ export function rankedWord(text: string = ""): RankedWordBuilder {
     return new RankedWordBuilder(text, 0);
 }
 
+export function rankedWords(...rankedWordBuilders: RankedWordBuilder[]): RankedWord[] {
+    return rankedWordBuilders.map(builder => builder.build());
+}
+
 class AnalysisResultBuilder {
     private countedWords: number;
     private readonly rankedWords: Array<RankedWord>;
