@@ -16,15 +16,15 @@ We'd like to create an endpoint from our existing code that provides the followi
 
 ## Constraints.
 
-- Reuse as much domain code as possible (not all domain code will be reused).
+- Reuse as much domain code as possible (hint: not all current domain code will be reused).
 
-- Use [express](https://expressjs.com/) and test the API with [supertest](https://www.npmjs.com/package/supertest).
+- Use [express](https://expressjs.com/) for the API and test it with [supertest](https://www.npmjs.com/package/supertest).
 
 ## Hints
 
 Think about:
 
-- what needs to be different, and what can remain the same if you were creating and endpoint that performs the same text analysis.
+- what needs to be different, and what can remain the same to create and endpoint that performs the current text analysis.
 
 - how you would refactor the current CLI application to separate what needs to be different from the parts that can remain the same.
 
