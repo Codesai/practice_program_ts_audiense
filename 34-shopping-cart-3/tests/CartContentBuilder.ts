@@ -11,7 +11,7 @@ export  function anEmptyCart(): CartContentBuilder {
 }
 
 class CartContentBuilder {
-    private orders: OrderDto[];
+    private readonly orders: OrderDto[];
     private totalProducts: number;
     private totalPrice: number;
 
@@ -19,11 +19,6 @@ class CartContentBuilder {
         this.orders = orderBuilders.map(orderBuilder => orderBuilder.build());
         this.totalProducts = 0;
         this.totalPrice = 0;
-    }
-
-    withOrders(... orderBuilders: OrderBuilder[]): CartContentBuilder {
-        this.orders = orderBuilders.map(orderBuilder => orderBuilder.build());
-        return this;
     }
 
     withTotalProducts(totalProducts: number): CartContentBuilder {
