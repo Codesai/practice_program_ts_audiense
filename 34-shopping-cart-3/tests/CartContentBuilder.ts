@@ -1,12 +1,12 @@
-import { CartSummary } from "../src/CartSummary";
-import { OrderDto } from "../src/OrderDto";
+import {CartSummary} from "../src/CartSummary";
+import {OrderDto} from "../src/OrderDto";
 import {OrderBuilder} from "./OrderBuilder";
 
-export function aCartContaining(... orderBuilders: OrderBuilder[]): CartContentBuilder {
+export function aCartContaining(...orderBuilders: OrderBuilder[]): CartContentBuilder {
     return new CartContentBuilder(orderBuilders);
 }
 
-export  function anEmptyCart(): CartContentBuilder {
+export function anEmptyCart(): CartContentBuilder {
     return aCartContaining();
 }
 

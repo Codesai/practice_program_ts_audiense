@@ -1,10 +1,11 @@
 import {SummaryView} from "../SummaryView";
 import {CartSummary} from "../CartSummary";
 import {Display} from "./Display";
-import { OrderDto } from "../OrderDto";
+import {OrderDto} from "../OrderDto";
 
 export class ConsoleSummaryView implements SummaryView {
     private readonly display: Display;
+    private readonly lineSeparator = "\n";
 
     constructor(display: Display) {
         this.display = display;
@@ -24,8 +25,6 @@ export class ConsoleSummaryView implements SummaryView {
         const summary = this.summaryText(content);
         return header + productsDetails + summary;
     }
-
-    private readonly lineSeparator = "\n";
 
     private headerText() {
         return "Product Name, Price with VAT, Quantity" + this.lineSeparator;

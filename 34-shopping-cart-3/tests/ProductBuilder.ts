@@ -1,5 +1,5 @@
-import { Product } from "../src/Product";
-import { Percentage } from "../src/Percentage";
+import {Product} from "../src/Product";
+import {Percentage} from "../src/Percentage";
 
 export function aProduct(): ProductBuilder {
     return new ProductBuilder();

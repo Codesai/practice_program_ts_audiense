@@ -1,4 +1,4 @@
-import { OrderDto } from "../src/OrderDto";
+import {OrderDto} from "../src/OrderDto";
 
 export function anOrder(): OrderBuilder {
     return new OrderBuilder();

@@ -2,7 +2,7 @@ import {SummaryView} from "../src/SummaryView";
 import {ConsoleSummaryView} from "../src/infrastructure/ConsoleSummaryView";
 import {Display} from "../src/infrastructure/Display";
 import {CartSummary} from "../src/CartSummary";
-import { OrderDto } from "../src/OrderDto";
+import {OrderDto} from "../src/OrderDto";
 
 describe('ConsoleSummaryView', () => {
     let contentDisplay: SummaryView;

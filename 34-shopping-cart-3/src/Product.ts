@@ -1,11 +1,10 @@
-import { Percentage } from "./Percentage";
+import {Percentage} from "./Percentage";
 
 export class Product {
     readonly name: string;
     private readonly cost: number;
     private readonly revenue: Percentage;
     private readonly tax: Percentage;
-
 
     constructor(name: string, cost: number, revenue: Percentage, tax: Percentage) {
         this.name = name;
@@ -26,7 +25,7 @@ export class Product {
         return amount + this.tax.calculateFor(amount);
     }
 
-    private roundUp(value: number) {
+    private roundUp(value: number): number {
         return Math.ceil(value * 100) / 100;
     }
 }
