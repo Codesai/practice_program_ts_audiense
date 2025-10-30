@@ -8,16 +8,4 @@ export class OrderDto {
         this.priceWithVat = priceWithVat;
         this.quantity = quantity;
     }
-
-    getQuantity(): number {
-        return this.quantity;
-    }
-
-    getPriceWithVat(): number {
-        return this.priceWithVat;
-    }
-
-    getProductName(): string {
-        return this.productName;
-    }
 }
