@@ -4,3 +4,4 @@ reports
 dist
 .idea
 build
+.stryker-tmp

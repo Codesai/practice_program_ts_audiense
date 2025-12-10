@@ -1,0 +1,13 @@
+export class DiscountCode {
+    readonly text: string;
+
+    constructor(code: string) {
+        this.text = code;
+    }
+
+    public static noDiscount(): DiscountCode {
+        return new DiscountCode('NO_DISCOUNT');
+    }
+
+
+}
