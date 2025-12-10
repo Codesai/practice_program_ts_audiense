@@ -44,7 +44,7 @@ export class ConsoleSummaryView implements SummaryView {
     private static ordersText(content: CartSummary): string {
         return content.orders.reduce(
             (acc, order) => {
-                return acc + this.format(order) + this.LINE_BREAK;
+                return acc + this.formatOrder(order) + this.LINE_BREAK;
             },
             "",
         );
@@ -52,7 +52,7 @@ export class ConsoleSummaryView implements SummaryView {
 
     private static footerText(content: CartSummary): string {
         let summaryText = "";
-        if (this.noDiscount(content.discount)) {
+        if (this.isNoDiscount(content.discount)) {
             summaryText += this.formatPromotion(content) + this.LINE_BREAK;
         }
         summaryText += this.formatTotalProducts(content) + this.LINE_BREAK;
@@ -60,23 +60,23 @@ export class ConsoleSummaryView implements SummaryView {
         return summaryText;
     }
 
-    private static noDiscount(discount: DiscountDto) {
+    private static isNoDiscount(discount: DiscountDto): boolean {
         return discount.code.text !== DiscountCode.noDiscount().text;
     }
 
-    private static formatPromotion(content: CartSummary) {
+    private static formatPromotion(content: CartSummary): string {
         return `Promotion: ${content.discount.percentage}% off with code ${content.discount.code.text}`;
     }
 
-    private static formatTotalPrice(content: CartSummary) {
+    private static formatTotalPrice(content: CartSummary): string {
         return "Total Price: " + `${this.formatPrice(content.totalPrice)}`;
     }
 
-    private static formatTotalProducts(content: CartSummary) {
+    private static formatTotalProducts(content: CartSummary): string {
         return "Total Products: " + `${content.totalProducts}`;
     }
 
-    private static format(order: OrderDto): string {
+    private static formatOrder(order: OrderDto): string {
         return `${order.productName}, ${this.formatPrice(order.priceWithVat)}, ${order.quantity}`;
     }
 

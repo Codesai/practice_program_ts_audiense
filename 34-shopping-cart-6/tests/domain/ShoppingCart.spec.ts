@@ -10,6 +10,7 @@ import {aDiscount, aDiscountCode} from "../helpers/DiscountBuilder";
 import {CartSummaryError} from "../../src/domain/CartSummaryError";
 import {ProductNotFoundException} from "../../src/domain/ProductNotFoundException";
 import {aDiscountDto} from "../helpers/DiscountDtoBuilder";
+import {DiscountNotFoundException} from "../../src/domain/DiscountNotFoundException";
 
 describe('ShoppingCart', () => {
     let view: jest.Mocked<SummaryView>;
@@ -133,16 +134,29 @@ describe('ShoppingCart', () => {
     });
 
     it('should display an error when adding an unknown product', () => {
-        const productName = 'potatoes';
-        const errorMessage = `${productName} not found`;
+        const unknownProductName = 'lalala';
+        const errorMessage = `${unknownProductName} not found`;
         availableProductsRepository.findProductWith.mockImplementationOnce(
             (): never => {
                 throw new ProductNotFoundException(errorMessage);
             }
         );
 
-        shoppingCart.orderProductWith(productName);
-        shoppingCart.display();
+        shoppingCart.orderProductWith(unknownProductName);
+
+        expect(view.error).toHaveBeenCalledWith(new CartSummaryError(errorMessage));
+    });
+
+    it('should display an error when applying an unknown discount', () => {
+        const unknownDiscountCode = 'ñññññ';
+        const errorMessage = `${unknownDiscountCode} not found`;
+        availableDiscountsRepository.findDiscountWith.mockImplementationOnce(
+            (): never => {
+                throw new DiscountNotFoundException(errorMessage);
+            }
+        );
+
+        shoppingCart.applyDiscount(unknownDiscountCode);
 
         expect(view.error).toHaveBeenCalledWith(new CartSummaryError(errorMessage));
     });

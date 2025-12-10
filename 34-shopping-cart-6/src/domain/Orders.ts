@@ -29,7 +29,7 @@ export class Orders {
             this.discount.toDto());
     }
 
-    private totalPriceWihDiscount() {
+    private totalPriceWihDiscount(): number {
         return this.totalPrice().applyDiscount(this.discount).value();
     }
 

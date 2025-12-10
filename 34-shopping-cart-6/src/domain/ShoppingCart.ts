@@ -6,20 +6,20 @@ import {DiscountsRepository} from "./DiscountsRepository";
 import {CartSummaryError} from "./CartSummaryError";
 
 export class ShoppingCart {
-    private readonly contentDisplay: SummaryView;
+    private readonly summaryView: SummaryView;
     private readonly availableProductsRepository: ProductsRepository;
     private readonly availableDiscountsRepository: DiscountsRepository;
     private readonly orders: Orders;
 
-    constructor(contentDisplay: SummaryView, availableProductsRepository: ProductsRepository, availableDiscountsRepository: DiscountsRepository) {
-        this.contentDisplay = contentDisplay;
+    constructor(summaryView: SummaryView, availableProductsRepository: ProductsRepository, availableDiscountsRepository: DiscountsRepository) {
+        this.summaryView = summaryView;
         this.availableProductsRepository = availableProductsRepository;
         this.availableDiscountsRepository = availableDiscountsRepository;
         this.orders = new Orders();
     }
 
     display(): void {
-        this.contentDisplay.show(this.generateCartSummary());
+        this.summaryView.show(this.generateCartSummary());
     }
 
     orderProductWith(productName: string): void {
@@ -27,13 +27,17 @@ export class ShoppingCart {
             const product = this.availableProductsRepository.findProductWith(productName);
             this.orders.order(product);
         } catch (e) {
-            this.contentDisplay.error(new CartSummaryError(`${productName} not found`));
+            this.summaryView.error(new CartSummaryError(`${productName} not found`));
         }
     }
 
     applyDiscount(discountCode: string): void {
-        const discount = this.availableDiscountsRepository.findDiscountWith(discountCode);
-        this.orders.applyDiscount(discount);
+        try {
+            const discount = this.availableDiscountsRepository.findDiscountWith(discountCode);
+            this.orders.applyDiscount(discount);
+        } catch (e) {
+            this.summaryView.error(new CartSummaryError(`${discountCode} not found`));
+        }
     }
 
     private generateCartSummary(): CartSummary {

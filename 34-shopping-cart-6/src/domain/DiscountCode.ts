@@ -5,7 +5,7 @@ export class DiscountCode {
         this.text = code;
     }
 
-    public static noDiscount(): DiscountCode {
+    static noDiscount(): DiscountCode {
         return new DiscountCode('NO_DISCOUNT');
     }
 
