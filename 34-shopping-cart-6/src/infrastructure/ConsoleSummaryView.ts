@@ -42,7 +42,7 @@ export class ConsoleSummaryView implements SummaryView {
     }
 
     private static ordersText(content: CartSummary): string {
-        return content.orders.reduce(
+        return content.orders.reduce<string>(
             (acc, order) => {
                 return acc + this.formatOrder(order) + this.LINE_BREAK;
             },
