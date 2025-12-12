@@ -3,5 +3,6 @@
     "typescript"
   ],
   "tsconfigFile": "tsconfig.json",
-  "timeoutMS": 10000
+  "timeoutMS": 100000,
+  "ignorePatterns": [".idea", "reports"]
 }
