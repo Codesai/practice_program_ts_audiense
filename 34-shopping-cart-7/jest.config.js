@@ -1,0 +1,11 @@
+/** @type {import('ts-jest/dist/types').InitialOptionsTsJest} */
+module.exports = {
+    coverageDirectory: "reports/coverage",
+    coverageReporters: ["lcov", "text"],
+    preset: 'ts-jest',
+    testEnvironment: 'node',
+    testPathIgnorePatterns: [
+        "<rootDir>/build/",
+        "<rootDir>/node_modules/"
+    ],
+};
