@@ -5,3 +5,4 @@ dist
 .idea
 build
 .stryker-tmp
+.DS_Store
