@@ -4,5 +4,8 @@
   ],
   "tsconfigFile": "tsconfig.json",
   "timeoutMS": 100000,
-  "ignorePatterns": [".idea", "reports"]
+  "ignorePatterns": [
+    ".idea",
+    "reports"
+  ]
 }
