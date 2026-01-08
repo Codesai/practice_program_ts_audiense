@@ -1,7 +1,7 @@
 import {Discount} from "../Discount";
 import {DiscountDto} from "../DiscountDto";
 
-export class DependingOnMinimumAmountDiscount implements Discount {
+export class AppliedOverMinimumAmountDiscount implements Discount {
     private readonly discount: Discount;
     private readonly minimumRequiredAmount: number;
 
