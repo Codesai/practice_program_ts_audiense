@@ -23,30 +23,30 @@ class ProductBuilder {
         return new Product(this.name, this.cost, this.revenue, this.tax);
     }
 
-    named(name: string): ProductBuilder {
+    named(name: string): this {
         this.name = name;
         return this;
     }
 
-    thatCosts(cost: number): ProductBuilder {
+    thatCosts(cost: number): this {
         this.cost = cost;
         return this;
     }
 
-    withNoRevenue(): ProductBuilder {
+    withNoRevenue(): this {
         return this.withRevenuePercentage(0);
     }
 
-    withNoTaxes(): ProductBuilder {
+    withNoTaxes(): this {
         return this.withTaxPercentage(0);
     }
 
-    withRevenuePercentage(revenuePercentage: number): ProductBuilder {
+    withRevenuePercentage(revenuePercentage: number): this {
         this.revenue = aPercentageOf(revenuePercentage);
         return this;
     }
 
-    withTaxPercentage(taxPercentage: number): ProductBuilder {
+    withTaxPercentage(taxPercentage: number): this {
         this.tax = aPercentageOf(taxPercentage);
         return this;
     }

@@ -53,7 +53,7 @@ describe('ShoppingCart', () => {
         );
         const percentage = 10;
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(
-            aPercentageDiscount().of(percentage).withDiscountCode(discountCode).build()
+            aPercentageDiscount().of(percentage).withCode(discountCode).build()
         );
 
         shoppingCart.orderProductWith(productName);
@@ -78,7 +78,7 @@ describe('ShoppingCart', () => {
         const discountCode = '-5EUR';
         const fixedDiscountAmount = 5;
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(
-            aFixedDiscount().of(fixedDiscountAmount).withDiscountCode(discountCode).build()
+            aFixedDiscount().of(fixedDiscountAmount).withCode(discountCode).build()
         );
 
         shoppingCart.orderProductWith(productName);
@@ -103,7 +103,7 @@ describe('ShoppingCart', () => {
         const discountCode = '20_MORE_THAN_100';
         const fixedDiscountAmount = 20;
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(
-            aFixedDiscount().of(fixedDiscountAmount).withDiscountCode(discountCode).build()
+            aFixedDiscount().of(fixedDiscountAmount).withCode(discountCode).build()
         );
 
         shoppingCart.orderProductWith(productName);

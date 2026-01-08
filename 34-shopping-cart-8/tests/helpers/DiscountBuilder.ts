@@ -19,18 +19,19 @@ class FixedDiscountBuilder {
 
     constructor() {
         this.fixedAmount = 0;
+        this.code = aDiscountCode("");
     }
 
     build(): Discount {
         return new FixedDiscount(this.fixedAmount, this.code);
     }
 
-    of(fixedAmount: number): FixedDiscountBuilder {
+    of(fixedAmount: number): this {
         this.fixedAmount = fixedAmount;
         return this;
     }
 
-    withDiscountCode(code: string): FixedDiscountBuilder {
+    withCode(code: string): this {
         this.code = aDiscountCode(code);
         return this;
     }
@@ -42,23 +43,20 @@ class PercentageDiscountBuilder {
 
     constructor() {
         this.percentage = 0;
+        this.code = aDiscountCode("");
     }
 
     build(): Discount {
         return new PercentageDiscount(aPercentageOf(this.percentage), this.code);
     }
 
-    of(percentage: number): PercentageDiscountBuilder {
+    of(percentage: number): this {
         this.percentage = percentage;
         return this;
     }
 
-    with(code: DiscountCode): PercentageDiscountBuilder {
-        this.code = code;
+    withCode(code: string): this {
+        this.code = aDiscountCode(code);
         return this;
-    }
-
-    withDiscountCode(code: string): PercentageDiscountBuilder {
-        return this.with(aDiscountCode(code));
     }
 }

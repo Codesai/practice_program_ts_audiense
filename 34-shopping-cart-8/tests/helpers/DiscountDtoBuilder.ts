@@ -12,13 +12,23 @@ export function aFixedDiscountDTO(): DiscountDtoBuilder {
     return aDiscountDto().withType(DiscountTypeDTO.FIXED);
 }
 
+export function aNoDiscountDto(): DiscountDtoBuilder {
+    return aDiscountDto();
+}
+
 export class DiscountDtoBuilder {
     private discountCode: DiscountCode;
-    private discountPercentage: number;
+    private value: number;
     private discountType: DiscountTypeDTO;
 
+    constructor() {
+        this.discountCode = aDiscountCode("NO_DISCOUNT");
+        this.value = 0;
+        this.discountType = DiscountTypeDTO.FIXED;
+    }
+
     build(): DiscountDto {
-        return new DiscountDto(this.discountCode, this.discountPercentage, this.discountType);
+        return new DiscountDto(this.discountCode, this.value, this.discountType);
     }
 
     withCode(code: string): this {
@@ -26,12 +36,12 @@ export class DiscountDtoBuilder {
         return this;
     }
 
-    withValue(discountPercentage: number): this {
-        this.discountPercentage = discountPercentage;
+    withValue(value: number): this {
+        this.value = value;
         return this;
     }
 
-    withType(discountType: DiscountTypeDTO) {
+    withType(discountType: DiscountTypeDTO): this {
         this.discountType = discountType;
         return this;
     }

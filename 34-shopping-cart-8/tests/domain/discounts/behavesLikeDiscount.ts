@@ -1,12 +1,14 @@
 import {Discount} from "../../../src/domain/discounts/Discount";
+import {DiscountDto} from "../../../src/domain/discounts/DiscountDto";
 
-type DiscountTestsContexts = {
+type ContextsForDiscountTests = {
     validDiscount: { discount: Discount, amount: number, expectedAmount: number },
     negativeDiscount: { discount: Discount },
-    tooMuch: { discount: Discount, amount: number }
+    tooMuch: { discount: Discount, amount: number },
+    toDto: { discount: Discount, expectedDto: DiscountDto }
 };
 
-export function behavesLikeDiscount(contexts: DiscountTestsContexts) {
+export function behavesLikeDiscount(contexts: ContextsForDiscountTests) {
     return () => describe('behaves like a Discount', () => {
         it('should decrease the amount of the price', () => {
             const {discount, amount, expectedAmount} = contexts.validDiscount;
@@ -30,6 +32,14 @@ export function behavesLikeDiscount(contexts: DiscountTestsContexts) {
             const discountedPrice = discount.applyTo(amount)
 
             expect(discountedPrice).toBeGreaterThanOrEqual(0);
+        });
+
+        it('should create its DTO correctly', () => {
+            const {discount, expectedDto} = contexts.toDto;
+
+            const dto = discount.toDto();
+
+            expect(dto).toEqual(expectedDto);
         });
     });
 }

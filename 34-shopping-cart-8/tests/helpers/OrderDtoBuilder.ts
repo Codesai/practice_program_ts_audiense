@@ -19,17 +19,17 @@ export class OrderDtoBuilder {
         return new OrderDto(this.productName, this.quantity, this.priceWithVat);
     }
 
-    withProductName(productName: string): OrderDtoBuilder {
+    withProductName(productName: string): this {
         this.productName = productName;
         return this;
     }
 
-    withPriceWithVat(priceWithVat: number): OrderDtoBuilder {
+    withPriceWithVat(priceWithVat: number): this {
         this.priceWithVat = priceWithVat;
         return this;
     }
 
-    withQuantity(quantity: number): OrderDtoBuilder {
+    withQuantity(quantity: number): this {
         this.quantity = quantity;
         return this;
     }

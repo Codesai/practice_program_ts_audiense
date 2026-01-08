@@ -1,4 +1,6 @@
 import {behavesLikeDiscount} from "./behavesLikeDiscount";
+import {aNoDiscountDto} from "../../helpers/DiscountDtoBuilder";
+import {Discount} from "../../../src/domain/discounts/Discount";
 import {NoDiscount} from "../../../src/domain/discounts/discountTypes/NoDiscount";
 
 describe('NoDiscount',
@@ -14,10 +16,14 @@ describe('NoDiscount',
         },
         negativeDiscount: {
             discount: noDiscount()
+        },
+        toDto: {
+            discount: noDiscount(),
+            expectedDto: aNoDiscountDto().build()
         }
     })
 );
 
-function noDiscount() {
+function noDiscount(): Discount {
     return new NoDiscount();
 }
