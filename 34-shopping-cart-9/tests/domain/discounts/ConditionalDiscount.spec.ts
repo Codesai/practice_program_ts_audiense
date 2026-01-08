@@ -3,39 +3,52 @@ import {when} from "jest-when";
 import {
     DependingOnMinimumAmountDiscount
 } from "../../../src/domain/discounts/discountTypes/DependingOnMinimumAmountDiscount";
+import {aFixedDiscountDTO} from "../../helpers/DiscountDtoBuilder";
 
-const amountAfterApplyingDiscount = 10;
 describe('DependingOnMinimumAmountDiscount', () => {
-    let discount: jest.Mocked<Discount>;
+    const amountAfterApplyingDiscount = 10;
+    const minimumRequiredAmount = 100;
+
+    let decoratedDiscount: jest.Mocked<Discount>;
 
     beforeEach(() => {
-        discount = {
+        decoratedDiscount = {
             applyTo: jest.fn(),
             toDto: jest.fn()
         };
     });
 
     it.each([
-        [100],
+        [minimumRequiredAmount],
         [100.01],
         [150]
-    ])('should apply discount when amount (%i) is greater than or equal to minimum amount', (amount) => {
-        const conditionalDiscount = aDiscountAppliedWhenOverMinimumAmount(discount, 100);
-        when(discount.applyTo).calledWith(amount).mockReturnValue(amountAfterApplyingDiscount);
+    ])('should apply discount when amount (%i) is greater than or equal to minimum amount', (amount: any) => {
+        const conditionalDiscount = aDiscountAppliedWhenOverMinimumAmount(decoratedDiscount, minimumRequiredAmount);
+        when(decoratedDiscount.applyTo).calledWith(amount).mockReturnValue(amountAfterApplyingDiscount);
 
-        const result = conditionalDiscount.applyTo(amount);
+        const amountAfterDiscount = conditionalDiscount.applyTo(amount);
 
-        expect(result).toBe(amountAfterApplyingDiscount);
+        expect(amountAfterDiscount).toBe(amountAfterApplyingDiscount);
     });
 
     it('should not apply discount when amount is less than minimum amount', () => {
         const amount = 99.99;
-        const conditionalDiscount = aDiscountAppliedWhenOverMinimumAmount(discount, 100);
-        when(discount.applyTo).calledWith(amount).mockReturnValue(amountAfterApplyingDiscount);
+        const conditionalDiscount = aDiscountAppliedWhenOverMinimumAmount(decoratedDiscount, minimumRequiredAmount);
+        when(decoratedDiscount.applyTo).calledWith(amount).mockReturnValue(amountAfterApplyingDiscount);
 
-        const result = conditionalDiscount.applyTo(amount);
+        const amountAfterDiscount = conditionalDiscount.applyTo(amount);
 
-        expect(result).toBe(amount);
+        expect(amountAfterDiscount).toBe(amount);
+    });
+
+    it('should create its DTO correctly', () => {
+        const conditionalDiscount = aDiscountAppliedWhenOverMinimumAmount(decoratedDiscount, minimumRequiredAmount);
+        const decoratedDiscountDto = aFixedDiscountDTO().build();
+        when(decoratedDiscount.toDto).mockReturnValue(decoratedDiscountDto);
+
+        let discountDto = conditionalDiscount.toDto();
+
+        expect(discountDto).toStrictEqual(decoratedDiscountDto);
     });
 
     function aDiscountAppliedWhenOverMinimumAmount(discount: Discount, minimumRequiredAmount: number): DependingOnMinimumAmountDiscount {
