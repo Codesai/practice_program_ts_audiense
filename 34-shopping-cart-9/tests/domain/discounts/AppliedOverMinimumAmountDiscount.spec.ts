@@ -6,7 +6,7 @@ import {
 import {aFixedDiscountDTO} from "../../helpers/DiscountDtoBuilder";
 
 describe('AppliedOverMinimumAmountDiscount', () => {
-    const minimumRequiredAmount = 100;
+    const minimumRequiredAmount: number = 100.00;
     let decoratedDiscount: jest.Mocked<Discount>;
     let conditionalDiscount: Discount;
 
@@ -19,17 +19,18 @@ describe('AppliedOverMinimumAmountDiscount', () => {
     });
 
     it.each([
-        [minimumRequiredAmount],
-        [100.01],
-        [150]
-    ])('should apply discount when amount (%i) is greater than or equal to the minimum required amount', (amount: number) => {
-        const amountAfterDecoratedDiscount = 10;
-        when(decoratedDiscount.applyTo).calledWith(amount).mockReturnValue(amountAfterDecoratedDiscount);
+        [minimumRequiredAmount, minimumRequiredAmount],
+        [100.01, minimumRequiredAmount],
+        [150.00, minimumRequiredAmount]
+    ])('should apply discount when amount (%f) greater than or equal to minimum required amount (%f)',
+        (amount: number, _: number) => {
+            const amountAfterDecoratedDiscount = 10;
+            when(decoratedDiscount.applyTo).calledWith(amount).mockReturnValue(amountAfterDecoratedDiscount);
 
-        const finalAmount = conditionalDiscount.applyTo(amount);
+            const finalAmount = conditionalDiscount.applyTo(amount);
 
-        expect(finalAmount).toBe(amountAfterDecoratedDiscount);
-    });
+            expect(finalAmount).toBe(amountAfterDecoratedDiscount);
+        });
 
     it('should not apply discount when amount is less than the minimum required amount', () => {
         const amount = 99.99;
