@@ -10,7 +10,7 @@ describe('NoDiscount',
             amount: 100,
             expectedAmount: 100
         },
-        tooMuch: {
+        tooMuchDiscount: {
             discount: noDiscount(),
             amount: 4.9
         },

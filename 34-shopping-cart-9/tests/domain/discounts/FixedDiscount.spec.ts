@@ -9,7 +9,7 @@ describe('FixedDiscount',
             amount: 100,
             expectedAmount: 95
         },
-        tooMuch: {
+        tooMuchDiscount: {
             discount: aFixedDiscount().of(5).withCode('TOO_MUCH_DISCOUNT').build(),
             amount: 4.9
         },

@@ -4,7 +4,7 @@ import {DiscountDto} from "../../../src/domain/discounts/DiscountDto";
 type ContextsForDiscountTests = {
     validDiscount: { discount: Discount, amount: number, expectedAmount: number },
     negativeDiscount: { discount: Discount },
-    tooMuch: { discount: Discount, amount: number },
+    tooMuchDiscount: { discount: Discount, amount: number },
     toDto: { discount: Discount, expectedDto: DiscountDto }
 };
 
@@ -27,7 +27,7 @@ export function behavesLikeDiscount(contexts: ContextsForDiscountTests) {
         });
 
         it('should not lead to a negative amount', () => {
-            const {discount, amount} = contexts.tooMuch;
+            const {discount, amount} = contexts.tooMuchDiscount;
 
             const discountedPrice = discount.applyTo(amount)
 

@@ -9,7 +9,7 @@ describe('PercentageDiscount',
             amount: 100,
             expectedAmount: 95
         },
-        tooMuch: {
+        tooMuchDiscount: {
             discount: aPercentageDiscount().of(110).withCode('TOO_MUCH_DISCOUNT').build(),
             amount: 100
         },
