@@ -77,7 +77,7 @@ describe('ConsoleSummaryView', () => {
         );
     });
 
-    it('should display a cart with 1 product a fixed amount discount', () => {
+    it('should display a cart with 1 product and a fixed amount discount', () => {
         const discountCode = '5EUR';
         const discountAmount = 5;
         summaryView.show(
