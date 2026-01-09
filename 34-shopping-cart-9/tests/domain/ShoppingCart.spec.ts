@@ -74,7 +74,6 @@ describe('ShoppingCart', () => {
         when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(80).named(productName).build()
         );
-
         const discountCode = '-5EUR';
         const fixedDiscountAmount = 5;
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(
@@ -99,7 +98,6 @@ describe('ShoppingCart', () => {
         when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(101).named(productName).build()
         );
-
         const discountCode = '20_MORE_THAN_100';
         const fixedDiscountAmount = 20;
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(
@@ -141,7 +139,7 @@ describe('ShoppingCart', () => {
         );
     });
 
-    it('should display a cart with 2 available products', () => {
+    it('should display a cart with 2 non free available products', () => {
         const productA = 'A';
         const productB = 'B';
         when(availableProductsRepository.findProductWith).calledWith(productA).mockReturnValue(
@@ -163,7 +161,7 @@ describe('ShoppingCart', () => {
         );
     });
 
-    it('should display a cart with 1 available product twice', () => {
+    it('should display a cart with 1 available product ordered twice', () => {
         const productA = 'A';
         when(availableProductsRepository.findProductWith).calledWith(productA).mockReturnValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productA).build()
