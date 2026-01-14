@@ -6,7 +6,7 @@ import {anOrder} from "../helpers/OrderDtoBuilder";
 import {aCartContaining, anEmptyCart} from "../helpers/CartSummaryBuilder";
 import {DiscountsRepository} from "../../src/domain/DiscountsRepository";
 import {when} from 'jest-when'
-import {aFixedDiscount, aPercentageDiscount} from "../helpers/DiscountBuilder";
+import {aFixedDiscount, aPercentageDiscount, apply} from "../helpers/DiscountBuilder";
 import {aFixedDiscountDTO, aPercentageDiscountDTO} from "../helpers/DiscountDtoBuilder";
 
 describe('ShoppingCart', () => {
@@ -45,7 +45,7 @@ describe('ShoppingCart', () => {
         );
     });
 
-    it('should display a cart with 1 available product and an available discount', () => {
+    it('should display a cart with 1 available product and an available percentage discount', () => {
         const discountCode = 'PROMO_10';
         const productName = 'Iceberg';
         when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
@@ -69,7 +69,7 @@ describe('ShoppingCart', () => {
         )
     });
 
-    it('should display a cart with 1 available product and an absolute discount', () => {
+    it('should display a cart with 1 available product and an fixed discount', () => {
         const productName = 'Iceberg';
         when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(80).named(productName).build()
@@ -88,30 +88,6 @@ describe('ShoppingCart', () => {
             aCartContaining(
                 anOrder().withProductName(productName).withPriceWithVat(80).withQuantity(1)
             ).withTotalProducts(1).withTotalPrice(75).withDiscount(
-                aFixedDiscountDTO().withCode(discountCode).withValue(fixedDiscountAmount)
-            ).build()
-        )
-    });
-
-    it('should display a cart with 1 available product and a discount for buying more than 100', () => {
-        const productName = 'Iceberg';
-        when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
-            aProduct().withNoTaxes().withNoRevenue().thatCosts(101).named(productName).build()
-        );
-        const discountCode = '20_MORE_THAN_100';
-        const fixedDiscountAmount = 20;
-        when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(
-            aFixedDiscount().of(fixedDiscountAmount).withCode(discountCode).build()
-        );
-
-        shoppingCart.orderProductWith(productName);
-        shoppingCart.applyDiscount(discountCode);
-        shoppingCart.display();
-
-        expect(summaryView.show).toHaveBeenCalledWith(
-            aCartContaining(
-                anOrder().withProductName(productName).withPriceWithVat(101).withQuantity(1)
-            ).withTotalProducts(1).withTotalPrice(81).withDiscount(
                 aFixedDiscountDTO().withCode(discountCode).withValue(fixedDiscountAmount)
             ).build()
         )
@@ -176,5 +152,48 @@ describe('ShoppingCart', () => {
                 anOrder().withProductName(productA).withPriceWithVat(1.00).withQuantity(2),
             ).withTotalProducts(2).withTotalPrice(2.00).build()
         );
+    });
+
+    it.each([
+        {
+            discountCode: '20_MORE_THAN_100',
+            productName: 'Iceberg',
+            product: aProduct().withNoTaxes().withNoRevenue().thatCosts(99.99).named('Iceberg').build(),
+            discount: apply(
+                aFixedDiscount().of(20).withCode('20_MORE_THAN_100')
+            ).whenTotalPriceIsEqualOrGreaterThan(100.00).build(),
+            cartSummary: aCartContaining(
+                anOrder().withProductName('Iceberg').withPriceWithVat(99.99).withQuantity(1)
+            ).withTotalProducts(1).withTotalPrice(99.99).build(),
+            caseDescription: 'when the condition for applying the discount is not met'
+        },
+        {
+            discountCode: '20_MORE_THAN_100',
+            productName: 'Iceberg',
+            product: aProduct().withNoTaxes().withNoRevenue().thatCosts(100.00).named('Iceberg').build(),
+            discount: apply(
+                aFixedDiscount().of(20).withCode('20_MORE_THAN_100')
+            ).whenTotalPriceIsEqualOrGreaterThan(100.00).build(),
+            cartSummary: aCartContaining(anOrder().withProductName('Iceberg').withPriceWithVat(100.00)
+                .withQuantity(1)).withTotalProducts(1).withTotalPrice(80.00).withDiscount(
+                aFixedDiscountDTO().withCode('20_MORE_THAN_100').withValue(20)
+            ).build(),
+            caseDescription: 'when the condition for applying the discount is met'
+        }
+    ])('should display a cart with 1 available product and a discount $caseDescription', ({
+                                                                                              discountCode,
+                                                                                              productName,
+                                                                                              product,
+                                                                                              discount,
+                                                                                              cartSummary
+                                                                                          }) => {
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(product);
+        when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(discount);
+
+        shoppingCart.orderProductWith(productName);
+        shoppingCart.applyDiscount(discountCode);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(cartSummary);
     });
 });

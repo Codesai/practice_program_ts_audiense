@@ -1,8 +1,9 @@
-import {DiscountDto, DiscountTypeDTO} from "../../src/domain/discounts/DiscountDto";
+import {DiscountDto} from "../../src/domain/discounts/DiscountDto";
 import {DiscountCode} from "../../src/domain/discounts/DiscountCode";
 
 
 import {aDiscountCode} from "./DiscountCodeFactory";
+import {DiscountTypeDTO} from "../../src/domain/discounts/DiscountTypeDTO";
 
 export function aPercentageDiscountDTO(): DiscountDtoBuilder {
     return aDiscountDto().withType(DiscountTypeDTO.PERCENTAGE);

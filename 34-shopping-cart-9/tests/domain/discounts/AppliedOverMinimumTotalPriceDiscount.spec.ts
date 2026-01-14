@@ -1,11 +1,11 @@
 import {Discount} from '../../../src/domain/discounts/Discount';
 import {when} from "jest-when";
 import {
-    AppliedOverMinimumAmountDiscount
-} from "../../../src/domain/discounts/discountTypes/AppliedOverMinimumAmountDiscount";
+    AppliedOverMinimumTotalPriceDiscount
+} from "../../../src/domain/discounts/discountTypes/AppliedOverMinimumTotalPriceDiscount";
 import {aFixedDiscountDTO} from "../../helpers/DiscountDtoBuilder";
 
-describe('AppliedOverMinimumAmountDiscount', () => {
+describe('AppliedOverMinimumTotalPriceDiscount', () => {
     const minimumRequiredAmount: number = 100.00;
     let proxiedDiscount: jest.Mocked<Discount>;
     let conditionalDiscount: Discount;
@@ -49,8 +49,8 @@ describe('AppliedOverMinimumAmountDiscount', () => {
         expect(discountDto).toStrictEqual(proxiedDiscountDto);
     });
 
-    function aDiscountAppliedWhenOverMinimumAmount(discount: Discount, minimumRequiredAmount: number): AppliedOverMinimumAmountDiscount {
-        return new AppliedOverMinimumAmountDiscount(discount, minimumRequiredAmount);
+    function aDiscountAppliedWhenOverMinimumAmount(discount: Discount, minimumRequiredAmount: number): AppliedOverMinimumTotalPriceDiscount {
+        return new AppliedOverMinimumTotalPriceDiscount(discount, minimumRequiredAmount);
     }
 });
 

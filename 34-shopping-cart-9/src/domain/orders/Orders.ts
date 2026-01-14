@@ -4,6 +4,7 @@ import {CartSummary} from "../cartSummary/CartSummary";
 import {Discount} from "../discounts/Discount";
 import {Price} from "./Price";
 import {NoDiscount} from "../discounts/discountTypes/NoDiscount";
+import {DiscountDto} from "../discounts/DiscountDto";
 
 export class Orders {
     private discount: Discount;
@@ -27,8 +28,15 @@ export class Orders {
             this.ordersList().map(order => order.toDto()),
             this.numberOfProducts(),
             this.totalPriceWihDiscount(),
-            this.discount.toDto()
+            this.appliedDiscountDto()
         );
+    }
+
+    private appliedDiscountDto(): DiscountDto {
+        if (this.totalPrice().value() === this.totalPriceWihDiscount()) {
+            return new NoDiscount().toDto();
+        }
+        return this.discount.toDto();
     }
 
     private totalPriceWihDiscount(): number {

@@ -4,8 +4,9 @@ import {Display} from "./Display";
 import {OrderDto} from "../domain/cartSummary/OrderDto";
 import {CartSummaryError} from "../domain/cartSummary/CartSummaryError";
 import {DiscountCode} from "../domain/discounts/DiscountCode";
-import {DiscountDto, DiscountTypeDTO} from "../domain/discounts/DiscountDto";
+import {DiscountDto} from "../domain/discounts/DiscountDto";
 import {ErrorType} from "../domain/cartSummary/ErrorType";
+import {DiscountTypeDTO} from "../domain/discounts/DiscountTypeDTO";
 
 export class ConsoleSummaryView implements SummaryView {
     private static readonly LINE_BREAK = "\n";

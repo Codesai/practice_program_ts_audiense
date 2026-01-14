@@ -1,9 +1,5 @@
 import {DiscountCode} from "./DiscountCode";
-
-export enum DiscountTypeDTO {
-    PERCENTAGE,
-    FIXED
-}
+import {DiscountTypeDTO} from "./DiscountTypeDTO";
 
 export class DiscountDto {
     readonly code: DiscountCode;

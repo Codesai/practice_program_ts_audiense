@@ -4,59 +4,74 @@ import {DiscountCode} from "../../src/domain/discounts/DiscountCode";
 import {PercentageDiscount} from "../../src/domain/discounts/discountTypes/PercentageDiscount";
 import {FixedDiscount} from "../../src/domain/discounts/discountTypes/FixedDiscount";
 import {aDiscountCode} from "./DiscountCodeFactory";
+import {
+    AppliedOverMinimumTotalPriceDiscount
+} from "../../src/domain/discounts/discountTypes/AppliedOverMinimumTotalPriceDiscount";
+import {DiscountTypeDTO} from "../../src/domain/discounts/DiscountTypeDTO";
 
-export function aPercentageDiscount(): PercentageDiscountBuilder {
-    return new PercentageDiscountBuilder();
+export function aPercentageDiscount(): DiscountBuilder {
+    return new DiscountBuilder(DiscountTypeDTO.PERCENTAGE);
 }
 
-export function aFixedDiscount(): FixedDiscountBuilder {
-    return new FixedDiscountBuilder();
+export function aFixedDiscount(): DiscountBuilder {
+    return new DiscountBuilder(DiscountTypeDTO.FIXED);
 }
 
-class FixedDiscountBuilder {
-    private fixedAmount: number;
+export function apply(discountBuilder: DiscountBuilder): AppliedOverMinimumTotalPriceDiscountBuilder {
+    return new AppliedOverMinimumTotalPriceDiscountBuilder(discountBuilder);
+}
+
+class DiscountBuilder {
+    private value: number;
     private code: DiscountCode;
+    private readonly discountType: DiscountTypeDTO;
 
-    constructor() {
-        this.fixedAmount = 0;
+    constructor(discountType: DiscountTypeDTO) {
+        this.discountType = discountType;
+        this.value = 0;
         this.code = aDiscountCode("");
     }
 
     build(): Discount {
-        return new FixedDiscount(this.fixedAmount, this.code);
-    }
+        if (this.discountType === DiscountTypeDTO.PERCENTAGE) {
+            return new PercentageDiscount(aPercentageOf(this.value), this.code);
+        }
 
-    of(fixedAmount: number): this {
-        this.fixedAmount = fixedAmount;
-        return this;
-    }
+        if (this.discountType === DiscountTypeDTO.FIXED) {
+            return new FixedDiscount(
+                this.value,
+                this.code
+            )
+        }
 
-    withCode(code: string): this {
-        this.code = aDiscountCode(code);
-        return this;
-    }
-}
-
-class PercentageDiscountBuilder {
-    private percentage: number;
-    private code: DiscountCode;
-
-    constructor() {
-        this.percentage = 0;
-        this.code = aDiscountCode("");
-    }
-
-    build(): Discount {
-        return new PercentageDiscount(aPercentageOf(this.percentage), this.code);
+        throw new Error("Unknown discount type");
     }
 
     of(percentage: number): this {
-        this.percentage = percentage;
+        this.value = percentage;
         return this;
     }
 
     withCode(code: string): this {
         this.code = aDiscountCode(code);
+        return this;
+    }
+}
+
+class AppliedOverMinimumTotalPriceDiscountBuilder {
+    private minimumPrice: number;
+    private readonly discountBuilder: DiscountBuilder;
+
+    constructor(discountBuilder: DiscountBuilder) {
+        this.discountBuilder = discountBuilder;
+    }
+
+    build(): Discount {
+        return new AppliedOverMinimumTotalPriceDiscount(this.discountBuilder.build(), this.minimumPrice);
+    }
+
+    whenTotalPriceIsEqualOrGreaterThan(minimumPrice: number): this {
+        this.minimumPrice = minimumPrice;
         return this;
     }
 }
