@@ -182,9 +182,9 @@ describe('ShoppingCart', () => {
         }
     ])('should display a cart with 1 available product and a discount $caseDescription', ({
                                                                                               discountCode,
+                                                                                              discount,
                                                                                               productName,
                                                                                               product,
-                                                                                              discount,
                                                                                               cartSummary
                                                                                           }) => {
         when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(product);
