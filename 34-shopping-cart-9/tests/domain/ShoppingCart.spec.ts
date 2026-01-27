@@ -29,13 +29,13 @@ describe('ShoppingCart', () => {
         expect(summaryView.show).toHaveBeenCalledWith(anEmptyCart().build());
     });
 
-    it('should display a cart with 1 available product', () => {
+    it('should display a cart with 1 available product', async () => {
         const productName = 'A';
-        when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productName).build()
         );
 
-        shoppingCart.orderProductWith(productName);
+        await shoppingCart.orderProductWith(productName);
         shoppingCart.display();
 
         expect(summaryView.show).toHaveBeenCalledWith(
@@ -45,10 +45,10 @@ describe('ShoppingCart', () => {
         );
     });
 
-    it('should display a cart with 1 available product and an available percentage discount', () => {
+    it('should display a cart with 1 available product and an available percentage discount', async () => {
         const discountCode = 'PROMO_10';
         const productName = 'Iceberg';
-        when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(100).named(productName).build()
         );
         const percentage = 10;
@@ -56,7 +56,7 @@ describe('ShoppingCart', () => {
             aPercentageDiscount().of(percentage).withCode(discountCode).build()
         );
 
-        shoppingCart.orderProductWith(productName);
+        await shoppingCart.orderProductWith(productName);
         shoppingCart.applyDiscount(discountCode);
         shoppingCart.display();
 
@@ -69,9 +69,9 @@ describe('ShoppingCart', () => {
         )
     });
 
-    it('should display a cart with 1 available product and an fixed discount', () => {
+    it('should display a cart with 1 available product and an fixed discount', async () => {
         const productName = 'Iceberg';
-        when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(80).named(productName).build()
         );
         const discountCode = '-5EUR';
@@ -80,7 +80,7 @@ describe('ShoppingCart', () => {
             aFixedDiscount().of(fixedDiscountAmount).withCode(discountCode).build()
         );
 
-        shoppingCart.orderProductWith(productName);
+        await shoppingCart.orderProductWith(productName);
         shoppingCart.applyDiscount(discountCode);
         shoppingCart.display();
 
@@ -93,18 +93,18 @@ describe('ShoppingCart', () => {
         )
     });
 
-    it('should display a cart with 2 free available products', () => {
+    it('should display a cart with 2 free available products', async () => {
         const productA = 'A';
         const productB = 'B';
-        when(availableProductsRepository.findProductWith).calledWith(productA).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productA).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(0).named(productA).build()
         );
-        when(availableProductsRepository.findProductWith).calledWith(productB).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productB).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(0).named(productB).build()
         );
 
-        shoppingCart.orderProductWith(productA);
-        shoppingCart.orderProductWith(productB);
+        await shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productB);
         shoppingCart.display();
 
         expect(summaryView.show).toHaveBeenCalledWith(
@@ -115,18 +115,18 @@ describe('ShoppingCart', () => {
         );
     });
 
-    it('should display a cart with 2 non free available products', () => {
+    it('should display a cart with 2 non free available products', async () => {
         const productA = 'A';
         const productB = 'B';
-        when(availableProductsRepository.findProductWith).calledWith(productA).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productA).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(2.00).named(productA).build()
         );
-        when(availableProductsRepository.findProductWith).calledWith(productB).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productB).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productB).build()
         );
 
-        shoppingCart.orderProductWith(productA);
-        shoppingCart.orderProductWith(productB);
+        await shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productB);
         shoppingCart.display();
 
         expect(summaryView.show).toHaveBeenCalledWith(
@@ -137,14 +137,14 @@ describe('ShoppingCart', () => {
         );
     });
 
-    it('should display a cart with 1 available product ordered twice', () => {
+    it('should display a cart with 1 available product ordered twice', async () => {
         const productA = 'A';
-        when(availableProductsRepository.findProductWith).calledWith(productA).mockReturnValue(
+        when(availableProductsRepository.findProductWith).calledWith(productA).mockResolvedValue(
             aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productA).build()
         );
 
-        shoppingCart.orderProductWith(productA);
-        shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productA);
         shoppingCart.display();
 
         expect(summaryView.show).toHaveBeenCalledWith(
@@ -180,17 +180,17 @@ describe('ShoppingCart', () => {
             ).build(),
             caseDescription: 'when the condition for applying the discount is met'
         }
-    ])('should display a cart with 1 available product and a discount $caseDescription', ({
+    ])('should display a cart with 1 available product and a discount $caseDescription', async ({
                                                                                               discountCode,
                                                                                               discount,
                                                                                               productName,
                                                                                               product,
                                                                                               cartSummary
                                                                                           }) => {
-        when(availableProductsRepository.findProductWith).calledWith(productName).mockReturnValue(product);
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(product);
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(discount);
 
-        shoppingCart.orderProductWith(productName);
+        await shoppingCart.orderProductWith(productName);
         shoppingCart.applyDiscount(discountCode);
         shoppingCart.display();
 

@@ -22,8 +22,8 @@ export class StatefulShoppingCart implements ShoppingCart {
         this.summaryView.show(this.generateCartSummary());
     }
 
-    orderProductWith(productName: string): void {
-        const product = this.availableProductsRepository.findProductWith(productName);
+    async orderProductWith(productName: string): Promise<void> {
+        const product = await this.availableProductsRepository.findProductWith(productName);
         this.orders.order(product);
     }
 

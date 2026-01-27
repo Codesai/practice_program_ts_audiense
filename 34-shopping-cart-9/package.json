@@ -4,6 +4,9 @@
   "description": "Shopping cart",
   "main": "build/index.js",
   "keywords": [],
+  "dependencies": {
+    "mariadb": "^3.4.5"
+  },
   "devDependencies": {
     "@babel/core": "^7.18.10",
     "@babel/preset-env": "^7.18.10",
@@ -17,13 +20,17 @@
     "ts-jest": "^28.0.8",
     "ts-node": "^10.9.1",
     "tsarch": "^5.4.1",
+    "testcontainers": "^11.11.0",
+    "@testcontainers/mariadb": "^11.11.0",
     "typescript": "^4.7.4"
   },
   "scripts": {
     "compile": "tsc --project tsconfig.json",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage",
+    "test": "npm run test:unit && npm run test:integration",
+    "test:unit": "jest --selectProjects unit",
+    "test:integration": "jest --selectProjects integration --runInBand",
+    "test:unit_watch": "jest --selectProjects unit --watch",
+    "test:coverage": "jest --selectProjects all --coverage",
     "test:mutants": "stryker run"
   }
 }
