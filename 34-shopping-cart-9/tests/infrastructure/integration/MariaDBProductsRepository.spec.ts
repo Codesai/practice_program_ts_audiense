@@ -40,6 +40,20 @@ describe('Product Repository', () => {
         expect(product).toEqual(expectedProduct);
     });
 
+    it('should throw an error when product is not found', async () => {
+        const aProduct = {
+            name: "existing_product",
+            cost: 1.00,
+            revenuePercentage: 0,
+            taxPercentage: 0
+        };
+        await productsTable.addProduct(aProduct);
+
+        await expect(productRepository.findProductWith("non_existing_product"))
+            .rejects
+            .toThrow('Not found non_existing_product');
+    });
+
     function percentage(value: number): Percentage {
         return new Percentage(value);
     }

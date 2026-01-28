@@ -13,6 +13,9 @@ export class MariaDBProductsRepository implements ProductsRepository {
 
     async findProductWith(productName: string): Promise<Product> {
         const rows = await this._connection.query("select * from products where name = ?", [productName]);
+        if (rows.length === 0) {
+            throw new Error(`Not found ${productName}`);
+        }
         const firstProductData = rows[0];
         return new Product(firstProductData.name,
             parseFloat(firstProductData.cost),
