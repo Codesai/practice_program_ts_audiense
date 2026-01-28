@@ -6,6 +6,7 @@ import {Connection} from "mariadb";
 import {dbConnection} from "./setup/DatabaseConnection";
 import {getProductsTable, ProductsTable} from "./helpers/ProductsTable";
 import {ProductsRepository} from "../../../src/domain/ProductsRepository";
+import {ProductNotFoundException} from "../../../src/domain/products/ProductNotFoundException";
 
 describe('Product Repository', () => {
     let productsTable: ProductsTable;
@@ -51,7 +52,7 @@ describe('Product Repository', () => {
 
         await expect(productRepository.findProductWith("non_existing_product"))
             .rejects
-            .toThrow('Not found non_existing_product');
+            .toThrow(ProductNotFoundException);
     });
 
     function percentage(value: number): Percentage {
