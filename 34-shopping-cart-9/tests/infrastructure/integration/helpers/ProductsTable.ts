@@ -17,12 +17,12 @@ export class ProductsTable {
         cost: number,
         revenuePercentage: number,
         taxPercentage: number
-    }) {
+    }): Promise<void> {
         await this.connection.query("INSERT INTO products (name, cost, revenue_percentage, tax_percentage)\n" +
             "VALUES (?, ?, ?, ?);", [name, cost, revenuePercentage, taxPercentage]);
     }
 
-    async drop() {
+    async drop(): Promise<void> {
         await this.connection.query("DELETE FROM products;");
     }
 }
