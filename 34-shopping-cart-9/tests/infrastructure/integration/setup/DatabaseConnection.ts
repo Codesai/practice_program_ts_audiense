@@ -1,7 +1,7 @@
 import mariadb, {Connection} from "mariadb";
 import {SharedState} from "./SharedState";
 
-export function dbConnection() {
+export function dbConnection(): DatabaseConnection {
     return SharedState.getDbConnection();
 }
 
@@ -14,7 +14,7 @@ export class DatabaseConnection {
     private connection?: Connection;
 
     constructor(param: { host: string; port: number; database: string; user: string; password: string }) {
-        ({ host: this.host, port: this.port, database: this.database, user: this.user, password: this.password } = param);
+        ({host: this.host, port: this.port, database: this.database, user: this.user, password: this.password} = param);
     }
 
     async get(): Promise<Connection> {
@@ -28,7 +28,7 @@ export class DatabaseConnection {
         return this.connection;
     }
 
-    async close() {
+    async close(): Promise<void> {
         if (this.connection) {
             await this.connection.end();
         }

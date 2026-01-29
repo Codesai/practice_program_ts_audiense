@@ -180,13 +180,14 @@ describe('ShoppingCart', () => {
             ).build(),
             caseDescription: 'when the condition for applying the discount is met'
         }
-    ])('should display a cart with 1 available product and a discount $caseDescription', async ({
-                                                                                              discountCode,
-                                                                                              discount,
-                                                                                              productName,
-                                                                                              product,
-                                                                                              cartSummary
-                                                                                          }) => {
+    ])('should display a cart with 1 available product and a discount $caseDescription', async (
+        {
+            discountCode,
+            discount,
+            productName,
+            product,
+            cartSummary
+        }) => {
         when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(product);
         when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockReturnValue(discount);
 

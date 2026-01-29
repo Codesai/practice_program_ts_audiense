@@ -1,6 +1,6 @@
 import {SharedState} from "./SharedState";
 
-export default async function globalTeardown() {
+export default async function globalTeardown(): Promise<void> {
 
     const databaseContainer = SharedState.getStartedDbContainer();
     const network = SharedState.getStartedNetworkContainer();

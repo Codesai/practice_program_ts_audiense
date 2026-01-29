@@ -4,14 +4,14 @@ import {DatabaseConnection} from "./DatabaseConnection";
 
 export class SharedState {
 
-    static create(StartedDbContainer: StartedMariaDbContainer, startedNetwork: StartedNetwork, dbConfig: any) {
+    static create(startedDbContainer: StartedMariaDbContainer, startedNetwork: StartedNetwork, dbConfig: any): void {
         const myGlobal = globalThis as any;
         myGlobal.__SHOPPING_CART__ = {
-            dbContainer: StartedDbContainer,
+            dbContainer: startedDbContainer,
             networkContainer: startedNetwork,
             dbConnection: new DatabaseConnection(
                 Object.assign({}, dbConfig, {
-                    port: StartedDbContainer.getMappedPort(dbConfig.port),
+                    port: startedDbContainer.getMappedPort(dbConfig.port),
                 }))
         };
     }
@@ -20,19 +20,19 @@ export class SharedState {
         return this.getGlobalState().dbConnection;
     }
 
-    static getStartedDbContainer(): StartedMariaDbContainer{
-        return  this.getGlobalState().dbContainer;
+    static getStartedDbContainer(): StartedMariaDbContainer {
+        return this.getGlobalState().dbContainer;
     }
 
     static getStartedNetworkContainer(): StartedNetwork {
-        return  this.getGlobalState().networkContainer;
+        return this.getGlobalState().networkContainer;
     }
 
-    static reset() {
+    static reset(): void {
         delete (globalThis as any).__SHOPPING_CART__;
     }
 
-    private static getGlobalState() {
+    private static getGlobalState(): any {
         return (globalThis as any).__SHOPPING_CART__;
     }
 }

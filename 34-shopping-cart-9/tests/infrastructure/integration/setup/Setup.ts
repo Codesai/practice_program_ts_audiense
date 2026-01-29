@@ -1,5 +1,5 @@
 import {GenericContainer, Network, StartedNetwork, Wait} from "testcontainers";
-import {MariaDbContainer} from "@testcontainers/mariadb";
+import {MariaDbContainer, StartedMariaDbContainer} from "@testcontainers/mariadb";
 import {SharedState} from "./SharedState";
 
 export default async function globalSetup() {
@@ -7,17 +7,17 @@ export default async function globalSetup() {
     const startTime = Date.now();
     const startedNetwork = await new Network().start();
     const dbNetworkAliases = "db";
-    const StartedDbContainer = await StartDbContainer(startedNetwork, dbNetworkAliases);
+    const startedDbContainer = await startDbContainer(startedNetwork, dbNetworkAliases);
     await runDbMigrations(dbNetworkAliases, startedNetwork);
 
     const endTime = Date.now();
     console.log(`\nContainers started in ${endTime - startTime}ms...\n`);
-    SharedState.create(StartedDbContainer, startedNetwork, getDbConfig());
+    SharedState.create(startedDbContainer, startedNetwork, getDbConfig());
 }
 
-async function StartDbContainer(startedNetwork: StartedNetwork, dbNetworkAliases: string) {
+async function startDbContainer(startedNetwork: StartedNetwork, dbNetworkAliases: string): Promise<StartedMariaDbContainer> {
     const dbConfig = getDbConfig();
-    const StartedDbContainer = await new MariaDbContainer("mariadb:11.7")
+    return await new MariaDbContainer("mariadb:11.7")
         .withNetwork(startedNetwork)
         .withNetworkAliases(dbNetworkAliases)
         .withUsername(dbConfig.user)
@@ -25,10 +25,9 @@ async function StartDbContainer(startedNetwork: StartedNetwork, dbNetworkAliases
         .withDatabase(dbConfig.database)
         .withExposedPorts(dbConfig.port)
         .start();
-    return StartedDbContainer;
 }
 
-async function runDbMigrations(dbNetworkAliases: string, network: StartedNetwork) {
+async function runDbMigrations(dbNetworkAliases: string, network: StartedNetwork): Promise<void> {
     const dbConfig = getDbConfig();
     const migrationContainer = await new GenericContainer("flyway/flyway:latest")
         .withCommand([
