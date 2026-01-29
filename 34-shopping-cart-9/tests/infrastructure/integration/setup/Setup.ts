@@ -11,7 +11,7 @@ export default async function globalSetup() {
     await runDbMigrations(dbNetworkAliases, startedNetwork);
 
     const endTime = Date.now();
-    console.log(`\nContainers started in ${endTime - startTime}ms...\n`);
+    console.log(`\nContainers start took ${(endTime - startTime) / 1000} seconds...\n`);
     SharedState.create(startedDbContainer, startedNetwork, getDbConfig());
 }
 
