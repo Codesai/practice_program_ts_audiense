@@ -1,0 +1,200 @@
+import {StatefulShoppingCart} from "../../src/domain/StatefulShoppingCart";
+import {SummaryView} from "../../src/domain/SummaryView";
+import {ProductsRepository} from "../../src/domain/ProductsRepository";
+import {aProduct} from "../helpers/ProductBuilder";
+import {anOrder} from "../helpers/OrderDtoBuilder";
+import {aCartContaining, anEmptyCart} from "../helpers/CartSummaryBuilder";
+import {DiscountsRepository} from "../../src/domain/DiscountsRepository";
+import {when} from 'jest-when'
+import {aFixedDiscount, aPercentageDiscount, apply} from "../helpers/DiscountBuilder";
+import {aFixedDiscountDTO, aPercentageDiscountDTO} from "../helpers/DiscountDtoBuilder";
+
+describe('ShoppingCart', () => {
+    let summaryView: jest.Mocked<SummaryView>;
+    let shoppingCart: StatefulShoppingCart;
+    let availableProductsRepository: jest.Mocked<ProductsRepository>;
+    let availableDiscountsRepository: jest.Mocked<DiscountsRepository>;
+
+    beforeEach(() => {
+            summaryView = {show: jest.fn(), error: jest.fn()}
+            availableProductsRepository = {findProductWith: jest.fn()};
+            availableDiscountsRepository = {findDiscountWith: jest.fn()};
+            shoppingCart = new StatefulShoppingCart(summaryView, availableProductsRepository, availableDiscountsRepository);
+        }
+    );
+
+    it('should display an empty cart', () => {
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(anEmptyCart().build());
+    });
+
+    it('should display a cart with 1 available product', async () => {
+        const productName = 'A';
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productName).build()
+        );
+
+        await shoppingCart.orderProductWith(productName);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(
+            aCartContaining(
+                anOrder().withProductName(productName).withPriceWithVat(1.00).withQuantity(1)
+            ).withTotalProducts(1).withTotalPrice(1.00).build()
+        );
+    });
+
+    it('should display a cart with 1 available product and an available percentage discount', async () => {
+        const discountCode = 'PROMO_10';
+        const productName = 'Iceberg';
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(100).named(productName).build()
+        );
+        const percentage = 10;
+        when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockResolvedValue(
+            aPercentageDiscount().of(percentage).withCode(discountCode).build()
+        );
+
+        await shoppingCart.orderProductWith(productName);
+        await shoppingCart.applyDiscount(discountCode);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(
+            aCartContaining(
+                anOrder().withProductName(productName).withPriceWithVat(100).withQuantity(1)
+            ).withTotalProducts(1).withTotalPrice(90).withDiscount(
+                aPercentageDiscountDTO().withCode(discountCode).withValue(percentage)
+            ).build()
+        )
+    });
+
+    it('should display a cart with 1 available product and an fixed discount', async () => {
+        const productName = 'Iceberg';
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(80).named(productName).build()
+        );
+        const discountCode = '-5EUR';
+        const fixedDiscountAmount = 5;
+        when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockResolvedValue(
+            aFixedDiscount().of(fixedDiscountAmount).withCode(discountCode).build()
+        );
+
+        await shoppingCart.orderProductWith(productName);
+        await shoppingCart.applyDiscount(discountCode);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(
+            aCartContaining(
+                anOrder().withProductName(productName).withPriceWithVat(80).withQuantity(1)
+            ).withTotalProducts(1).withTotalPrice(75).withDiscount(
+                aFixedDiscountDTO().withCode(discountCode).withValue(fixedDiscountAmount)
+            ).build()
+        )
+    });
+
+    it('should display a cart with 2 free available products', async () => {
+        const productA = 'A';
+        const productB = 'B';
+        when(availableProductsRepository.findProductWith).calledWith(productA).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(0).named(productA).build()
+        );
+        when(availableProductsRepository.findProductWith).calledWith(productB).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(0).named(productB).build()
+        );
+
+        await shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productB);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(
+            aCartContaining(
+                anOrder().withProductName(productA).withPriceWithVat(0.00).withQuantity(1),
+                anOrder().withProductName(productB).withPriceWithVat(0.00).withQuantity(1)
+            ).withTotalProducts(2).withTotalPrice(0.00).build()
+        );
+    });
+
+    it('should display a cart with 2 non free available products', async () => {
+        const productA = 'A';
+        const productB = 'B';
+        when(availableProductsRepository.findProductWith).calledWith(productA).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(2.00).named(productA).build()
+        );
+        when(availableProductsRepository.findProductWith).calledWith(productB).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productB).build()
+        );
+
+        await shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productB);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(
+            aCartContaining(
+                anOrder().withProductName(productA).withPriceWithVat(2.00).withQuantity(1),
+                anOrder().withProductName(productB).withPriceWithVat(1.00).withQuantity(1)
+            ).withTotalProducts(2).withTotalPrice(3.00).build()
+        );
+    });
+
+    it('should display a cart with 1 available product ordered twice', async () => {
+        const productA = 'A';
+        when(availableProductsRepository.findProductWith).calledWith(productA).mockResolvedValue(
+            aProduct().withNoTaxes().withNoRevenue().thatCosts(1.00).named(productA).build()
+        );
+
+        await shoppingCart.orderProductWith(productA);
+        await shoppingCart.orderProductWith(productA);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(
+            aCartContaining(
+                anOrder().withProductName(productA).withPriceWithVat(1.00).withQuantity(2),
+            ).withTotalProducts(2).withTotalPrice(2.00).build()
+        );
+    });
+
+    it.each([
+        {
+            discountCode: '20_MORE_THAN_100',
+            productName: 'Iceberg',
+            product: aProduct().withNoTaxes().withNoRevenue().thatCosts(99.99).named('Iceberg').build(),
+            discount: apply(
+                aFixedDiscount().of(20).withCode('20_MORE_THAN_100')
+            ).whenTotalPriceIsEqualOrGreaterThan(100.00).build(),
+            cartSummary: aCartContaining(
+                anOrder().withProductName('Iceberg').withPriceWithVat(99.99).withQuantity(1)
+            ).withTotalProducts(1).withTotalPrice(99.99).build(),
+            caseDescription: 'when the condition for applying the discount is not met'
+        },
+        {
+            discountCode: '20_MORE_THAN_100',
+            productName: 'Iceberg',
+            product: aProduct().withNoTaxes().withNoRevenue().thatCosts(100.00).named('Iceberg').build(),
+            discount: apply(
+                aFixedDiscount().of(20).withCode('20_MORE_THAN_100')
+            ).whenTotalPriceIsEqualOrGreaterThan(100.00).build(),
+            cartSummary: aCartContaining(anOrder().withProductName('Iceberg').withPriceWithVat(100.00)
+                .withQuantity(1)).withTotalProducts(1).withTotalPrice(80.00).withDiscount(
+                aFixedDiscountDTO().withCode('20_MORE_THAN_100').withValue(20)
+            ).build(),
+            caseDescription: 'when the condition for applying the discount is met'
+        }
+    ])('should display a cart with 1 available product and a discount $caseDescription', async (
+        {
+            discountCode,
+            discount,
+            productName,
+            product,
+            cartSummary
+        }) => {
+        when(availableProductsRepository.findProductWith).calledWith(productName).mockResolvedValue(product);
+        when(availableDiscountsRepository.findDiscountWith).calledWith(discountCode).mockResolvedValue(discount);
+
+        await shoppingCart.orderProductWith(productName);
+        await shoppingCart.applyDiscount(discountCode);
+        shoppingCart.display();
+
+        expect(summaryView.show).toHaveBeenCalledWith(cartSummary);
+    });
+});

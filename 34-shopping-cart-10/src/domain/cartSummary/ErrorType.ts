@@ -1,0 +1,4 @@
+export enum ErrorType {
+    NOT_FOUND_PRODUCT = 'NOT_FOUND_PRODUCT',
+    NOT_FOUND_DISCOUNT = 'NOT_FOUND_DISCOUNT'
+}

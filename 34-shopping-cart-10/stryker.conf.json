@@ -1,0 +1,11 @@
+{
+  "checkers": [
+    "typescript"
+  ],
+  "tsconfigFile": "tsconfig.json",
+  "timeoutMS": 100000,
+  "ignorePatterns": [
+    ".idea",
+    "reports"
+  ]
+}
