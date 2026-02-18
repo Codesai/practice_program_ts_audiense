@@ -1,6 +1,6 @@
 # Shopping Cart
 
-A kata to practice TDD with test doubles.
+A kata to practice writing focused integration tests using [test containers](https://testcontainers.com/?language=nodejs).
 
 
 ### Hints
