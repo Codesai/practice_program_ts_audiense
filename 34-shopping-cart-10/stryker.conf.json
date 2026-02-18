@@ -2,7 +2,7 @@
   "checkers": [
     "typescript"
   ],
-  "tsconfigFile": "tsconfig.json",
+  "tsconfigFile": "tsconfig.test.json",
   "timeoutMS": 100000,
   "ignorePatterns": [
     ".idea",
