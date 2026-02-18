@@ -6,3 +6,4 @@ dist
 build
 .stryker-tmp
 .DS_Store
+.output.txt
