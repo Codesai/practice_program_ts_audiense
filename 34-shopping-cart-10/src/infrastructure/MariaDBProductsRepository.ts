@@ -1,8 +1,7 @@
 import {Product} from "../domain/products/Product";
-import {ProductsRepository} from "../domain/ProductsRepository";
+import {ProductNotFoundException, ProductsRepository} from "../domain/ProductsRepository";
 import {Percentage} from "../domain/orders/Percentage";
 import {Connection} from "mariadb";
-import {ProductNotFoundException} from "../domain/products/ProductNotFoundException";
 
 export class MariaDBProductsRepository implements ProductsRepository {
 

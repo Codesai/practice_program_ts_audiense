@@ -3,8 +3,9 @@ import {SummaryView} from "../../src/domain/SummaryView";
 import {ShoppingCart} from "../../src/domain/ShoppingCart";
 import {CartSummaryError} from "../../src/domain/cartSummary/CartSummaryError";
 import {ErrorType} from "../../src/domain/cartSummary/ErrorType";
-import {ProductNotFoundException} from "../../src/domain/products/ProductNotFoundException";
-import {DiscountNotFoundException} from "../../src/domain/discounts/DiscountNotFoundException";
+
+import {DiscountNotFoundException} from "../../src/domain/DiscountsRepository";
+import {ProductNotFoundException} from "../../src/domain/ProductsRepository";
 
 describe('WithErrorHandlingShoppingCart', () => {
     let shoppingCart: ShoppingCart;

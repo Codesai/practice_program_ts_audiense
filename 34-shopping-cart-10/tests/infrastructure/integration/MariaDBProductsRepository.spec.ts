@@ -2,8 +2,7 @@ import {MariaDBProductsRepository} from "../../../src/infrastructure/MariaDBProd
 
 import {dbConnection} from "./setup/DatabaseConnection";
 import {getProductsTable, ProductsInDb} from "./helpers/ProductsInDb";
-import {ProductsRepository} from "../../../src/domain/ProductsRepository";
-import {ProductNotFoundException} from "../../../src/domain/products/ProductNotFoundException";
+import {ProductNotFoundException, ProductsRepository} from "../../../src/domain/ProductsRepository";
 import {aProduct} from "../../helpers/ProductBuilder";
 
 describe('Product Repository', () => {
@@ -22,34 +21,31 @@ describe('Product Repository', () => {
     });
 
     it('should find a product given its name', async () => {
-        const aProductData = {
+        await productsTable.addProduct({
+            name: "Pera",
+            cost: 3.00,
+            revenuePercentage: 15,
+            taxPercentage: 6
+        });
+        await productsTable.addProduct({
             name: "Aguacate",
             cost: 1.00,
             revenuePercentage: 50,
             taxPercentage: 5
-        };
-        await productsTable.addProduct(aProductData);
+        });
 
-        const product = await productRepository.findProductWith(aProductData.name);
+        const product = await productRepository.findProductWith("Aguacate");
 
-        const expectedProduct = aProduct()
-            .named(aProductData.name)
-            .thatCosts(aProductData.cost)
-            .withTaxPercentage(aProductData.taxPercentage)
-            .withRevenuePercentage(aProductData.revenuePercentage).build();
-
-        expect(product).toEqual(expectedProduct);
+        expect(product).toEqual(
+            aProduct()
+                .named("Aguacate")
+                .thatCosts(1.00)
+                .withTaxPercentage(5)
+                .withRevenuePercentage(50).build()
+        );
     });
 
     it('should throw an error when product is not found', async () => {
-        const aProductData = {
-            name: "existing_product",
-            cost: 1.00,
-            revenuePercentage: 0,
-            taxPercentage: 0
-        };
-        await productsTable.addProduct(aProductData);
-
         await expect(productRepository.findProductWith("non_existing_product"))
             .rejects
             .toThrow(ProductNotFoundException);
