@@ -34,6 +34,8 @@
     "test:unit_watch": "jest --selectProjects unit --watch",
     "test:coverage": "npm run typecheck:test && jest --selectProjects all --coverage",
     "test:mutants": "stryker run",
-    "test:fast-mutants": "stryker run stryker-fast.conf.json"
+    "test:fast-mutants": "stryker run stryker-fast.conf.json",
+    "test:persistence-mutants": "stryker run stryker-persistence.conf.json",
+    "test:persistence": "jest --selectProjects integration --runInBand tests/infrastructure/integration/MariaDBDiscountsRepository.spec.ts tests/infrastructure/integration/MariaDBProductsRepository.spec.ts"
   }
 }

@@ -1,0 +1,19 @@
+{
+  "checkers": [
+    "typescript"
+  ],
+  "tsconfigFile": "tsconfig.test.json",
+  "timeoutMS": 100000,
+  "testRunner": "command",
+  "commandRunner": {
+    "command": "npm run test:persistence"
+  },
+  "ignorePatterns": [
+    ".idea",
+    "reports"
+  ],
+  "mutate": [
+    "src/infrastructure/MariaDBDiscountsRepository.ts",
+    "src/infrastructure/MariaDBProductsRepository.ts"
+  ]
+}
