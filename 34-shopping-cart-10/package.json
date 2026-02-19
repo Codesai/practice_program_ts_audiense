@@ -29,9 +29,11 @@
     "typecheck:test": "tsc --project tsconfig.test.json --noEmit",
     "test": "npm run typecheck:test && npm run test:unit && npm run test:integration",
     "test:unit": "jest --selectProjects unit",
+    "test:fast": "npm run test:unit",
     "test:integration": "jest --selectProjects integration --runInBand",
     "test:unit_watch": "jest --selectProjects unit --watch",
     "test:coverage": "npm run typecheck:test && jest --selectProjects all --coverage",
-    "test:mutants": "stryker run"
+    "test:mutants": "stryker run",
+    "test:fast-mutants": "stryker run stryker-fast.conf.json"
   }
 }
