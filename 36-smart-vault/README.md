@@ -1,6 +1,6 @@
 # Smart Vault System
 
-A kata to practice extracting examples from user stories and writing unit tests using [test doubles](https://gist.github.com/trikitrok/c35768c3f67e10f4f0c6ecb0320e64d7).
+A kata to practice extracting examples from user stories and writing unit tests using test doubles.
 
 ## The Smart Vault system
 
