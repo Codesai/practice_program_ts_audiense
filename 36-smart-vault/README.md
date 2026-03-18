@@ -25,7 +25,7 @@ The system monitors the Door Mechanism for status reports:
 * **Mechanical Failure:** If the door reports a "Jammed" status, the system pushes a specific error message to the Keypad display. A log entry is recorded in the **Activity Log**.
 * **Successful Entry:** A log entry is recorded when the door confirms a status of "Open."
 
-### **3. Post-Closure Inventory Sweep**
+#### **3. Post-Closure Inventory Sweep**
 Once the door is closed, the **Inventory Scanner** triggers a sweep. The system then applies conditional logic based on item counts:
 
 | Item Count | Action Taken |
