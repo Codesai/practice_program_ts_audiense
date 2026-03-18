@@ -36,28 +36,27 @@ Once the door is closed, the **Inventory Scanner** triggers a sweep. The system 
 
 ### User stories
 
->> As a staff member, when I enter a valid code on the keypad, the door unlocks to let me in.
+> As a staff member, when I enter a valid code on the keypad, the door unlocks to let me in.
 
->> As a staff member entering a valid code,
->> when the door jams,
->> a specific error is displayed on the keypad display, so that I can call a technician.
+> As a staff member entering a valid code,
+> when the door jams,
+> a specific error is displayed on the keypad display, so that I can call a technician.
 
->> As a staff member, 
->> when I enter an incorrect code on the keypad 
->> and the door does not unlock,
->> a specific error is displayed on the keypad display to let me know.
+> As a staff member, 
+> when I enter an incorrect code on the keypad 
+> and the door does not unlock,
+> a specific error is displayed on the keypad display to let me know.
 
->> As a Operations Manager when a staff member unlocks the door, 
->> I want the activity log to have an entry indicating that the door was opened and by whom, 
->> so that we maintain a continuous and reliable record of activity.
+> As a Operations Manager when a staff member unlocks the door, 
+> I want the activity log to have an entry indicating that the door was opened and by whom, 
+> so that we maintain a continuous and reliable record of activity.
 
->> As a Operations Manager, when a staff member can't unlock the door, 
->> I want the activity log to have an entry indicating why the door could not be unlocked and who tired to do it, 
->> so that we maintain a continuous and reliable record of activity.
+> As a Operations Manager, when a staff member can't unlock the door, 
+> I want the activity log to have an entry indicating why the door could not be unlocked and who tired to do it, 
+> so that we maintain a continuous and reliable record of activity.
 
->> As a Supplier, when the door is closed, 
->> I want to be notified when the inventory sensor counts 5 or fewer items, so that I can replenish stock efficiently.
-
+> As a Supplier, when the door is closed, 
+> I want to be notified when the inventory sensor counts 5 or fewer items, so that I can replenish stock efficiently.
 
 ### Constraints
 
