@@ -1,0 +1,88 @@
+# Smart Vault System
+
+A kata to practice extracting examples from user stories and writing unit tests using test doubles.
+
+## The Smart Vault system
+
+### **Hardware Components**
+
+* **Keypad Interface:** Serves as the primary input point for access codes and provides visual feedback/error messaging
+  to the user.
+* **Registry Service:** A centralised database used to validate access credentials and provide authorisation signals.
+* **Door Mechanism:** An electromechanical assembly equipped with sensors to detect and report its physical state (*
+  *Unlocked**, **Open**, or **Jammed**).
+* **Inventory Scanner:** A hardware-software suite that performs automated sweeps of the vault contents upon closure.
+* **Activity Log & Emergency Buffer:** Dual-layered storage systems; the first is a networked log for standard entries,
+  and the second is a local fail-safe for when network connectivity is compromised.
+* **Communication Terminals:** Automated interfaces that route "Restock Orders" to fulfillment systems and "Emergency
+  Alerts" to management consoles.
+
+### **System Behavior & Logic**
+
+#### **1. Access and Authorisation**
+
+The process is initiated when a code is entered via the **Keypad**. The system queries the **Registry Service** to
+verify authorisation.
+
+* **If Unauthorised:** The system remains idle.
+* **If Authorised:** A signal is sent to the **Door Mechanism** to unlock.
+
+#### **2. Mechanical Feedback and Entry Logging**
+
+The system monitors the Door Mechanism for status reports:
+
+* **Mechanical Failure:** If the door reports a "Jammed" status, the system pushes a specific error message to the
+  Keypad display. A log entry is recorded in the **Activity Log**.
+* **Successful Entry:** A log entry is recorded when the door confirms a status of "Open."
+
+#### **3. Post-Closure Inventory Sweep**
+
+Once the door is closed, the **Inventory Scanner** triggers a sweep. The system then applies conditional logic based on
+item counts:
+
+| Item Count    | Action Taken                                               |
+|:--------------|:-----------------------------------------------------------|
+| **6 or more** | No action required.                                        |
+| **1 to 5**    | Trigger an automated **Restock Order**.                    |
+| **Exactly 0** | Trigger an **Emergency Alert** to the Management Terminal. |
+
+### User stories
+
+> As an Operations Manager when a staff member unlocks the door,
+> I want the activity log to have an entry indicating that the door was opened and by whom,
+> so that we maintain a continuous and reliable record of activity.
+
+> As an Operations Manager, when a staff member can't unlock the door,
+> I want the activity log to have an entry indicating why the door could not be unlocked and who tired to do it,
+> so that we maintain a continuous and reliable record of activity.
+
+> As a Supplier, when the door closes,
+> I want to be notified when the inventory sensor counts five or fewer items
+> so that I can replenish stock efficiently.
+
+> As an Operations Manager, when the door closes,
+> I want to receive an "Emergency Alert" if an item count hits zero,
+> so that I can immediately investigate a potential security breach or oversight.
+
+> As a Manufacturer of the vault, I'd like that the messages on the display could appear in Spanish,
+> so that I can sell the vault in Latin American countries.
+
+> As an Auditor, I want the system to retry sending entries to the activity log up to three times when the network is
+> down, so that we maintain a continuous and reliable record of activity.
+
+> As an Auditor, I want that after three unsuccessful attempts failed activity log entries 
+> are saved to a local emergency buffer, so that data is preserved for manual syncing and never lost.
+
+### Constraints.
+
+The `SmartVaultSystem` class has only two public methods:
+
+1. `onCodeIntroduced(code: Code, id: EmployeeId): void;`
+2. `onDoorClosed(): void;`
+
+### Help.
+
+* [Examples of test doubles with Jests](https://gist.github.com/trikitrok/c35768c3f67e10f4f0c6ecb0320e64d7)
+
+* Use [jest-when](https://www.npmjs.com/package/jest-when) for more readable stubs.
+
