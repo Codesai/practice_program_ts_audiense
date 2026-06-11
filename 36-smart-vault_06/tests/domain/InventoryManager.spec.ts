@@ -1,16 +1,17 @@
 import {CommunicationsTerminal, Order} from "../../src/domain/CommunicationsTerminal";
 import {InventoryScanner} from "../../src/domain/InventoryScanner";
-import {AcmeInventoryManager} from "../../src/domain/AcmeInventoryManager";
+import {InventoryManager} from "../../src/domain/InventoryManager";
+import {InventoryManagerFactory} from "../../src/infrastructure/appConfiguration/InventoryManagerFactory";
 
 describe('inventory manager', () => {
     let inventoryScanner: jest.Mocked<InventoryScanner>;
     let communicationsTerminal: jest.Mocked<CommunicationsTerminal>;
-    let inventoryManager: AcmeInventoryManager;
+    let inventoryManager: InventoryManager;
 
     beforeEach(() => {
         inventoryScanner = {numberOfItems: jest.fn()};
         communicationsTerminal = {route: jest.fn()};
-        inventoryManager = new AcmeInventoryManager(inventoryScanner, communicationsTerminal)
+        inventoryManager = InventoryManagerFactory.create(inventoryScanner, communicationsTerminal)
     })
 
     it.each([
