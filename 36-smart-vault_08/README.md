@@ -46,6 +46,11 @@ item counts:
 | **1 to 5**    | Trigger an automated **Restock Order**.                    |
 | **Exactly 0** | Trigger an **Emergency Alert** to the Management Terminal. |
 
+
+#### **4. Network problems**
+
+If we use the activity log when the network is down, the `AcmeActivityLog` will throw an exception of type `NetworkDownException`.
+
 ### User stories
 
 > As an Auditor, I want the system to retry sending entries to the activity log up to three times when the network is
@@ -60,6 +65,7 @@ The `SmartVaultSystem` class has only two public methods:
 
 1. `onCodeIntroduced(code: Code, id: EmployeeId): void;`
 2. `onDoorClosed(): void;`
+
 
 ### Help.
 
