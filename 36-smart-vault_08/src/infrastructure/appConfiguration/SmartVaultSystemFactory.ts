@@ -20,12 +20,11 @@ export class SmartVaultSystemFactory {
         display: Display,
         displayedLanguage: DisplayedLanguage
     ): SmartVaultSystem {
-        const eventsPublisher = AccessEventsPublisherFactory.create(display, displayedLanguage);
         return new SmartVaultSystem(
             RegistryServiceFactory.create(activityLog, registryService),
             DoorFactory.create(doorMechanism, activityLog),
             InventoryManagerFactory.create(inventoryScanner, communicationsTerminal),
-            eventsPublisher
+            AccessEventsPublisherFactory.create(display, displayedLanguage)
         );
     }
 }
