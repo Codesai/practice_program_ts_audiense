@@ -70,3 +70,9 @@ interface GuardNotifier {
 }
 
 ```
+
+### Help.
+
+* [Examples of test doubles with Jests](https://gist.github.com/trikitrok/c35768c3f67e10f4f0c6ecb0320e64d7)
+
+* Use [jest-when](https://www.npmjs.com/package/jest-when) for more readable stubs.
