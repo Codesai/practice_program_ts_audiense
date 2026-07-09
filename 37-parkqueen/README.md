@@ -5,6 +5,8 @@ It is automatically triggered by a license plate reader and is responsible for c
 
 When a vehicle arrives at the entrance, the system receives the license plate, records it along with the exact entry time, and signals the parking barrier to open.
 
+All license plates from the license plate reader are valid.
+
 Later, when the vehicle reaches the exit, the system reads the plate again and calculates the total time spent inside.
 With this duration, it determines the corresponding fee and sends it to the external payment system.
 
@@ -20,7 +22,7 @@ This is our value proposition. For this we will take control of the market.
 ### Edge Cases
 
 * **Unknown Plate at Exit:** If a vehicle attempts to exit but its plate is not registered in the system, do not open the barrier and immediately notify the security guard.
-* **Duplicate Entry:** If a vehicle attempts to enter but is already registered as inside the parking lot, ignore the new entry read and do not open the barrier.
+* **Duplicate Entry:** If a vehicle attempts to enter but is already registered as inside the parking lot, do not open the barrier and immediately notify the security guard.
 
 ### Parking Fees
 
