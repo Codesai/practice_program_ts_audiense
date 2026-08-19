@@ -4,6 +4,7 @@ import {Clock} from './Clock';
 import {GuardNotifier} from './GuardNotifier';
 import {FeesCalculator} from './FeesCalculator';
 import {TimeInsideParking} from "./TimeInsideParking";
+import {ParkingFee} from "./ParkingFee";
 
 export class Parking {
   private readonly barrier: Barrier;
@@ -27,8 +28,7 @@ export class Parking {
   }
 
   exit(plate: string): void {
-    const timeInsideParking = this.computeTimeInsideParking();
-    const fee = this.feesCalculator.calculate(timeInsideParking);
+    const fee = this.computeFee();
 
     if (this.paymentGateway.process(fee.amount)) {
       this.barrier.open();
@@ -37,7 +37,12 @@ export class Parking {
     }
   }
 
-  private computeTimeInsideParking(): TimeInsideParking {
+  private computeFee(): ParkingFee {
+    const timeInsideParking = this.getTimeInsideParking();
+    return this.feesCalculator.calculate(timeInsideParking);
+  }
+
+  private getTimeInsideParking(): TimeInsideParking {
     const exitTime = this.clock.now();
     return new TimeInsideParking(this.entryTime, exitTime);
   }
