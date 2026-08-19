@@ -27,13 +27,18 @@ export class Parking {
   }
 
   exit(plate: string): void {
-    const exitTime = this.clock.now();
-    const fee = this.feesCalculator.calculate(new TimeInsideParking(this.entryTime, exitTime));
+    const timeInsideParking = this.computeTimeInsideParking();
+    const fee = this.feesCalculator.calculate(timeInsideParking);
 
     if (this.paymentGateway.process(fee.amount)) {
       this.barrier.open();
     } else {
       this.guardNotifier.notify(plate);
     }
+  }
+
+  private computeTimeInsideParking(): TimeInsideParking {
+    const exitTime = this.clock.now();
+    return new TimeInsideParking(this.entryTime, exitTime);
   }
 }
